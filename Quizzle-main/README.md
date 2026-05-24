@@ -82,7 +82,7 @@ services:
 docker-compose up -d
 ```
 
-## Entwicklung
+## Development
 
 ```bash
 # Repository klonen
