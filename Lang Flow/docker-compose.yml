@@ -1,0 +1,21 @@
+services:
+  langflow:
+    image: langflowai/langflow:latest
+    container_name: langflow
+    ports:
+      - "7860:7860"
+    environment:
+      LANGFLOW_CORS_ORIGINS: '[
+        "http://localhost:3000",
+        "http://127.0.0.1:3000"
+      ]'
+      LANGFLOW_CORS_ALLOW_METHODS: '["GET","POST","PUT","PATCH","DELETE","OPTIONS"]'
+      LANGFLOW_CORS_ALLOW_HEADERS: '["Content-Type","Authorization","x-api-key"]'
+      LANGFLOW_CORS_ALLOW_CREDENTIALS: 'True'
+      LANGFLOW_SKIP_AUTH_AUTO_LOGIN: 'True'
+    volumes:
+      - langflow-data:/app/langflow
+    restart: unless-stopped
+
+volumes:
+  langflow-data:

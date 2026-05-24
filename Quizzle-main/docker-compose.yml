@@ -1,0 +1,5 @@
+services:
+  quizzle:
+    build: .
+    ports:
+      - "3000:6412"
