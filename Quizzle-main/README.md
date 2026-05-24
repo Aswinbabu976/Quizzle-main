@@ -1,75 +1,221 @@
-<div align="center">
-  <img src="landing/public/quizzle-title.png" alt="Quizzle Logo" width="400"/>
-  
-  **Eine kostenlose Open-Source-Quizplattform für Schulen**
-  
-  *Self-hosted • Datenschutz-konform • Keine monatlichen Kosten*
-  
-  [![GitHub stars](https://img.shields.io/github/stars/gnmyt/Quizzle?style=for-the-badge)](https://github.com/gnmyt/Quizzle/stargazers)
-  [![GitHub license](https://img.shields.io/github/license/gnmyt/Quizzle?style=for-the-badge)](https://github.com/gnmyt/Quizzle/blob/main/LICENSE)
-  [![Docker Pulls](https://img.shields.io/docker/pulls/germannewsmaker/quizzle?style=for-the-badge)](https://hub.docker.com/r/germannewsmaker/quizzle)
-  
-</div>
+# Quizzle Main
+
+## Overview
+
+Quizzle Main is an AI-powered quiz and learning platform developed as part of a Senior IT Project.
+
+The platform provides interactive quizzes, intelligent learning support, and a modern responsive interface to improve student engagement and learning experiences.
 
 ---
 
-## Was ist Quizzle?
+# Features
 
-Quizzle ist eine self-hosted Quizplattform für Unterricht und Lernen.
-Ihr könnt Live-Quizze im Klassenraum durchführen oder Übungsquizze zur Vorbereitung bereitstellen.
+- Interactive quiz system
+- AI-assisted learning experience
+- Responsive modern UI
+- Fast frontend performance
+- Docker support
+- Organized project architecture
+- GitHub workflow integration
 
-- **Live-Quizze** - Schüler treten per QR-Code bei, ohne Konto
-- **Übungsquizze** - Für die selbstständige Vorbereitung
-- **Self-hosted** - Läuft auf eurem Server, die Daten bleiben bei euch
-- **Kostenlos** - Open Source ohne Abo-Modell
-- **Mobil nutzbar** - Funktioniert auf Smartphone, Tablet und Desktop
+---
 
-## Schnellstart mit Docker
+# User Personas
 
-```bash
-# docker-compose.yml anlegen
-version: '3.8'
-services:
-  quizzle:
-    image: germannewsmaker/quizzle:latest
-    ports:
-      - "6412:6412"
-    volumes:
-      - ./data:/quizzle/data
-    environment:
-      - TZ=Europe/Berlin
-    restart: unless-stopped
+## 1. Student Learner
 
-# starten
-docker-compose up -d
+- Age: 18–25
+- Goal: Improve knowledge through quizzes
+- Needs:
+  - Easy-to-use interface
+  - Instant feedback
+  - Interactive learning experience
+
+## 2. Teacher / Instructor
+
+- Goal: Create and manage quizzes
+- Needs:
+  - Organized question management
+  - Student performance tracking
+  - Efficient quiz creation
+
+## 3. Competitive Quiz User
+
+- Goal: Test knowledge and improve scores
+- Needs:
+  - Fast quiz sessions
+  - Score comparison
+  - Performance analytics
+
+---
+
+# User Scenarios
+
+## Scenario 1 – Student Taking a Quiz
+
+1. User opens the website
+2. Selects quiz category
+3. Starts the quiz
+4. Answers questions
+5. Receives score and feedback
+
+## Scenario 2 – Teacher Managing Quizzes
+
+1. Teacher accesses dashboard
+2. Creates quiz questions
+3. Assigns categories
+4. Publishes quiz for students
+
+## Scenario 3 – AI Assisted Learning
+
+1. User completes a quiz
+2. System analyzes weak areas
+3. AI recommends practice topics
+4. User improves through repeated learning
+
+---
+
+# Technologies Used
+
+## Frontend
+
+- React
+- TypeScript
+- Tailwind CSS
+- Vite
+
+## Backend / Tools
+
+- Docker
+- GitHub Actions
+- Node.js
+
+---
+
+# Project Structure
+
+```text
+Quizzle-main/
+│
+├── .github/            # GitHub workflows
+├── content/            # Project content
+├── landing/            # Landing page
+├── src/                # Main source code
+├── public/             # Static assets
+├── Dockerfile          # Docker configuration
+├── package.json        # Dependencies
+├── README.md           # Documentation
+└── LICENSE             # License
 ```
 
-## Entwicklung
+---
+
+# Installation
+
+## Clone Repository
 
 ```bash
-# Repository klonen
-git clone https://github.com/gnmyt/Quizzle.git
-cd Quizzle
-
-# Backend starten
-yarn install
-yarn run dev
-
-# Frontend (neues Terminal)
-cd webui
-yarn install  
-yarn run dev
+git clone https://github.com/YOUR_USERNAME/Quizzle-main.git
 ```
 
-## Beitragen
+## Open Project Folder
 
-Contributions sind willkommen!
+```bash
+cd Quizzle-main
+```
 
-- **Fehler melden** - [Issue erstellen](https://github.com/gnmyt/Quizzle/issues)
-- **Features vorschlagen** - Ideen einreichen
-- **Code beitragen** - Pull Request öffnen
+## Install Dependencies
 
-## Lizenz
+```bash
+npm install
+```
 
-Dieses Projekt steht unter der [MIT Lizenz](LICENSE).
+## Run Development Server
 
+```bash
+npm run dev
+```
+
+---
+
+# Docker Setup
+
+## Build Docker Image
+
+```bash
+docker build -t quizzle-main .
+```
+
+## Run Docker Container
+
+```bash
+docker run -p 3000:3000 quizzle-main
+```
+
+---
+
+# Screenshots
+
+## Home Page
+
+Add screenshot here.
+
+## Quiz Page
+
+Add screenshot here.
+
+## Dashboard
+
+Add screenshot here.
+
+---
+
+# System Architecture
+
+```text
+Frontend → API → AI Module → Database
+```
+
+---
+
+# Challenges Faced
+
+- Docker configuration
+- Frontend optimization
+- State management
+- Responsive UI implementation
+- GitHub integration
+
+---
+
+# Lessons Learned
+
+- GitHub collaboration
+- Docker deployment
+- Modern frontend development
+- Agile project workflow
+- UI/UX design principles
+
+---
+
+# Future Improvements
+
+- AI-generated quiz recommendations
+- User authentication
+- Leaderboard system
+- Analytics dashboard
+- Multi-language support
+
+---
+
+# Team Members
+
+- Your Name
+- Member 2
+- Member 3
+
+---
+
+# License
+
+This project was developed for educational purposes as part of the Senior IT Project.
