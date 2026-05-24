@@ -1,9 +1,9 @@
 <div align="center">
   <img src="landing/public/quizzle-title.png" alt="Quizzle Logo" width="400"/>
   
-  **Eine kostenlose Open-Source-Quizplattform für Schulen**
+  **A free, open-source quiz platform for schools**
   
-  *Self-hosted • Datenschutz-konform • Keine monatlichen Kosten*
+  *Self-hosted • Data privacy compliant • No monthly costs*
   
   [![GitHub stars](https://img.shields.io/github/stars/gnmyt/Quizzle?style=for-the-badge)](https://github.com/gnmyt/Quizzle/stargazers)
   [![GitHub license](https://img.shields.io/github/license/gnmyt/Quizzle?style=for-the-badge)](https://github.com/gnmyt/Quizzle/blob/main/LICENSE)
@@ -13,18 +13,18 @@
 
 ---
 
-## Was ist Quizzle?
+## What is Quizzle?
 
-Quizzle ist eine self-hosted Quizplattform für Unterricht und Lernen.
-Ihr könnt Live-Quizze im Klassenraum durchführen oder Übungsquizze zur Vorbereitung bereitstellen.
+Quizzle is a self-hosted quiz platform designed for classrooms and learning environments. 
+You can host live quizzes directly in the classroom or provide practice quizzes for independent preparation.
 
-- **Live-Quizze** - Schüler treten per QR-Code bei, ohne Konto
-- **Übungsquizze** - Für die selbstständige Vorbereitung
-- **Self-hosted** - Läuft auf eurem Server, die Daten bleiben bei euch
-- **Kostenlos** - Open Source ohne Abo-Modell
-- **Mobil nutzbar** - Funktioniert auf Smartphone, Tablet und Desktop
+* **Live Quizzes:** Students join instantly via QR code without needing to create an account.
+* **Practice Quizzes:** Designed for self-paced independent preparation.
+* **Self-Hosted:** Runs locally on your own server, ensuring full control over your data.
+* **Free & Open Source:** Complete access to all features without any subscription models.
+* **Mobile Friendly:** Works seamlessly on smartphones, tablets, and desktops.
 
-## Schnellstart mit Docker
+## Quick Start with Docker
 
 ```bash
 # docker-compose.yml anlegen
