@@ -162,7 +162,7 @@ docker run -p 3000:3000 quizzle-main
 
 ## Quiz Page
 
-![Quiz Page](assets/Quiz page.jpg)
+![Quiz Page](assets/Quiz%20page.jpg)
 
 ## Dashboard
 
