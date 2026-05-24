@@ -158,7 +158,7 @@ docker run -p 3000:3000 quizzle-main
 
 ## Home Page
 
-Add screenshot here.
+![Home Page](assets/home.jpg)
 
 ## Quiz Page
 
