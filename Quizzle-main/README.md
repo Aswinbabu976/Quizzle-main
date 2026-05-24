@@ -210,9 +210,9 @@ Frontend → API → AI Module → Database
 
 # Team Members
 
-- Your Name
-- Member 2
-- Member 3
+- Aswin Babu
+- Anto Tom
+- Bhaskar yadav
 
 ---
 
