@@ -61,15 +61,14 @@ yarn install
 yarn run dev
 ```
 
-## Beitragen
+## Contributing
 
-Contributions sind willkommen!
+Contributions are always welcome!
 
-- **Fehler melden** - [Issue erstellen](https://github.com/gnmyt/Quizzle/issues)
-- **Features vorschlagen** - Ideen einreichen
-- **Code beitragen** - Pull Request öffnen
+* **Report Bugs:** Open an [Issue](https://github.com/gnmyt/Quizzle/issues) to report any bugs.
+* **Suggest Features:** Submit your ideas and feature requests.
+* **Contribute Code:** Open a Pull Request to contribute directly.
 
-## Lizenz
+## License
 
-Dieses Projekt steht unter der [MIT Lizenz](LICENSE).
-
+This project is licensed under the [MIT License](LICENSE).
