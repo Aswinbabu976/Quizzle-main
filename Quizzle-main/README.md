@@ -26,6 +26,44 @@ You can host live quizzes directly in the classroom or provide practice quizzes 
 
 ## Quick Start with Docker
 
+## Features
+
+- Interactive quiz system
+- AI-assisted learning experience
+- Modern responsive UI
+- Docker support
+- Fast frontend performance
+- User-friendly design
+
+---
+
+## Technologies Used
+
+### Frontend
+- React
+- TypeScript
+- Tailwind CSS
+- Vite
+
+### Backend / Tools
+- Docker
+- Node.js
+- GitHub Actions
+
+---
+
+## Project Structure
+
+```text
+Quizzle-main/
+├── src/               # Main application source code
+├── public/            # Static files
+├── content/           # Branding and configuration
+├── landing/           # Landing page files
+├── .github/workflows/ # CI/CD workflows
+├── Dockerfile         # Docker configuration
+└── README.md
+
 ```bash
 # docker-compose.yml anlegen
 version: '3.8'
