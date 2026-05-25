@@ -8,3 +8,8 @@ You can host live quizzes directly in the classroom or provide practice quizzes 
 * **Self-Hosted:** Runs locally on your own server, ensuring full control over your data.
 * **Free & Open Source:** Complete access to all features without any subscription models.
 * **Mobile Friendly:** Works seamlessly on smartphones, tablets, and desktops.
+
+Team Members
+Aswin Babu
+Anto Tom
+Bhaskar yadav
