@@ -10,6 +10,7 @@ You can host live quizzes directly in the classroom or provide practice quizzes 
 * **Mobile Friendly:** Works seamlessly on smartphones, tablets, and desktops.
 
 Team Members
+
 Aswin Babu
 Anto Tom
 Bhaskar yadav
