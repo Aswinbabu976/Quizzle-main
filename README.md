@@ -11,8 +11,8 @@ You can host live quizzes directly in the classroom or provide practice quizzes 
 
 Team Members
 
-*Aswin Babu
+Aswin Babu
 
-*Anto Tom
+Anto Tom
 
-*Bhaskar yadav
+Bhaskar yadav
