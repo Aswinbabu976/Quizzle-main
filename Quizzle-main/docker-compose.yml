@@ -1,5 +1,77 @@
 services:
-  quizzle:
+  # 1. Your Main Quizzle Web App
+  web:
     build: .
-    ports:
-      - "3000:6412"
+    container_name: quizzle-web
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - LANGFLOW_API_URL=http://langflow:7860
+    networks:
+      - amantotom_langflow-net
+      - caddy
+    labels:
+      caddy: quizzleaba.duckdns.org
+      caddy.reverse_proxy: "{{upstreams 3000}}"
+
+  # 2. Your Portainer Dashboard
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    networks:
+      - caddy
+    labels:
+      caddy: portainer.quizzleaba.duckdns.org
+      caddy.reverse_proxy: "{{upstreams 9000}}"
+
+  # 3. Your Langflow Service
+  langflow:
+    image: langflowai/langflow:latest
+    container_name: langflow
+    environment:
+      - LANGFLOW_CONFIG_DIR=/app/langflow
+      - LANGFLOW_DATABASE_URL=postgresql://langflow:langflow@postgres:5432/langflow
+      - DO_NOT_TRACK=True
+      - LANGFLOW_SECRET_KEY=${LANGFLOW_SECRET_KEY}
+    volumes:
+      - langflow-data:/app/langflow
+    restart: unless-stopped
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+    networks:
+      - amantotom_langflow-net
+      - caddy
+    labels:
+      caddy: langflow.quizzleaba.duckdns.org
+      caddy.reverse_proxy: "{{upstreams 7860}}"
+
+  # 4. Your Postgres Database Service
+  postgres:
+    image: postgres:16-trixie
+    environment:
+      POSTGRES_USER: langflow
+      POSTGRES_PASSWORD: langflow
+      POSTGRES_DB: langflow
+    networks:
+      - amantotom_langflow-net
+    volumes:
+      - langflow-postgres:/var/lib/postgresql/data
+
+volumes:
+  langflow-data:
+  langflow-postgres:
+  portainer_data:
+
+networks:
+  amantotom_langflow-net:
+    driver: bridge
+  caddy:
+    external: true
