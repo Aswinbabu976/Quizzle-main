@@ -1,0 +1,51 @@
+{
+  "home": {
+    "imprint": "Impressum",
+    "privacy": "Datenschutz",
+    "credits": "Credits",
+    "or": "oder",
+    "viewResults": "Ergebnisse einsehen",
+    "createQuiz": "Quiz erstellen",
+    "hostRoom": "Raum hosten",
+    "admin": "Admin",
+    "login": "Anmelden",
+    "logout": "Abmelden",
+    "errors": {
+      "practiceNotFound": "Übungsquiz nicht gefunden",
+      "practiceCheckFailed": "Fehler beim Überprüfen des Übungsquiz",
+      "roomNotFound": "Raum nicht gefunden",
+      "connectionError": "Verbindungsfehler",
+      "invalidCode": "Ungültiger Code",
+      "joinError": "Fehler beim Beitreten",
+      "loggedOut": "Abgemeldet."
+    }
+  },
+  "setup": {
+    "welcome": "Willkommen bei Quizzle!",
+    "welcomeDesc": "Richte dein Quizzle in wenigen Schritten ein. Erstelle zunächst einen",
+    "adminAccount": "Administrator-Account",
+    "welcomeDesc2": "um alle Einstellungen zu verwalten.",
+    "startSetup": "Einrichtung starten",
+    "chooseUsername": "Benutzername wählen",
+    "usernameDesc": "Wähle einen Benutzernamen für den Administrator-Account.",
+    "usernamePlaceholder": "Benutzername",
+    "setPassword": "Passwort festlegen",
+    "passwordDesc": "Wähle ein sicheres Passwort für",
+    "passwordPlaceholder": "Passwort",
+    "confirmPlaceholder": "Passwort bestätigen",
+    "back": "Zurück",
+    "next": "Weiter",
+    "finish": "Abschließen",
+    "errors": {
+      "usernameRequired": "Benutzername ist erforderlich",
+      "usernameMin": "Mindestens 3 Zeichen",
+      "usernameMax": "Maximal 32 Zeichen",
+      "usernameInvalid": "Nur Buchstaben, Zahlen, Punkte, Bindestriche und Unterstriche",
+      "passwordRequired": "Passwort ist erforderlich",
+      "passwordMin": "Mindestens 6 Zeichen",
+      "passwordMismatch": "Passwörter stimmen nicht überein",
+      "confirmRequired": "Bitte Passwort bestätigen",
+      "setupFailed": "Setup fehlgeschlagen"
+    }
+  }
+}

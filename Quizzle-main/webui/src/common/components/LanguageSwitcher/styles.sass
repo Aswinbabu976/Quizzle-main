@@ -1,0 +1,60 @@
+.lang-switcher
+  position: fixed
+  top: 1rem
+  right: 1rem
+  z-index: 1000
+
+  &__btn
+    display: flex
+    align-items: center
+    gap: 0.4rem
+    padding: 0.4rem 0.8rem
+    background: rgba(255, 255, 255, 0.15)
+    backdrop-filter: blur(10px)
+    border: 1px solid rgba(255, 255, 255, 0.2)
+    border-radius: 0.5rem
+    color: white
+    cursor: pointer
+    font-size: 0.85rem
+    font-weight: 600
+    transition: background 0.2s
+
+    &:hover
+      background: rgba(255, 255, 255, 0.25)
+
+  &__arrow
+    transition: transform 0.2s
+    &.open
+      transform: rotate(180deg)
+
+  &__dropdown
+    position: absolute
+    top: calc(100% + 0.5rem)
+    right: 0
+    background: rgba(30, 30, 50, 0.95)
+    backdrop-filter: blur(10px)
+    border: 1px solid rgba(255, 255, 255, 0.15)
+    border-radius: 0.5rem
+    overflow: hidden
+    min-width: 140px
+
+  &__option
+    display: flex
+    align-items: center
+    gap: 0.6rem
+    width: 100%
+    padding: 0.6rem 1rem
+    background: none
+    border: none
+    color: white
+    cursor: pointer
+    font-size: 0.85rem
+    text-align: left
+    transition: background 0.15s
+
+    &:hover
+      background: rgba(255, 255, 255, 0.1)
+
+    &.active
+      background: rgba(255, 255, 255, 0.15)
+      font-weight: 600

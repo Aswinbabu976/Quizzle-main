@@ -10,6 +10,8 @@ import CodeInput from "@/pages/Home/components/CodeInput";
 import CharacterSelection from "@/pages/Home/components/CharacterSelection";
 import ResultsDialog from "@/pages/Home/components/ResultsDialog";
 import {QuizContext} from "@/common/contexts/Quiz";
+import { useTranslation } from 'react-i18next'
+import LanguageSwitcher from '@/common/components/LanguageSwitcher'
 import {AuthContext} from "@/common/contexts/Auth";
 import QrScanner from "qr-scanner";
 import toast from "react-hot-toast";
@@ -19,6 +21,7 @@ export const Home = () => {
     const {titleImg, imprint, privacy, version} = useContext(BrandingContext);
     const {setRoomCode, setUsername, setPracticeUserData} = useContext(QuizContext);
     const {isAuthenticated, isAdmin, requireAuth, logout} = useContext(AuthContext);
+    const { t } = useTranslation()
     const {setCirclePosition} = useOutletContext();
     const [code, setCode] = useState(() => {
         const params = new URLSearchParams(window.location.search);
@@ -90,14 +93,12 @@ export const Home = () => {
                         setCode(code.toUpperCase());
                         setIsPracticeMode(true);
                     } else {
-                        showError(data.message || "Übungsquiz nicht gefunden");
-                    }
+showError(data.message || t('home.errors.practiceNotFound'));                    }
                 })
                 .catch(error => {
                     setLoading(false);
                     console.error('Error checking practice quiz:', error);
-                    showError("Fehler beim Überprüfen des Übungsquiz");
-                });
+showError(t('home.errors.practiceCheckFailed'));                });
             return;
         }
 
@@ -108,15 +109,12 @@ export const Home = () => {
                         setCode(parseInt(code));
                         setIsPracticeMode(false);
                     } else {
-                        showError(response?.error || "Raum nicht gefunden");
-                    }
+showError(response?.error || t('home.errors.roomNotFound'));                    }
                 });
             }).catch(() => {
-                showError("Verbindungsfehler");
-            });
+showError(t('home.errors.connectionError'));            });
         } else {
-            showError("Ungültiger Code");
-        }
+showError(t('home.errors.invalidCode'));        }
     }
 
     const joinRoom = async (name, character, code) => {
@@ -145,8 +143,7 @@ export const Home = () => {
                     })
                     .catch((error) => {
                         setLoading(false);
-                        toast.error(error.message || "Fehler beim Beitreten");
-                        reject(error);
+toast.error(error.message || t('home.errors.joinError'));                        reject(error);
                     });
             }
         });
@@ -202,10 +199,8 @@ export const Home = () => {
     return (
         <div className="home-page">
             <motion.div className="legal-area" initial={{opacity: 0, y: 50}} animate={{opacity: 1, y: 0}}>
-                <a href={imprint} target="_blank" rel="noreferrer">Impressum</a>
-                <a href={privacy} target="_blank" rel="noreferrer">Datenschutz</a>
-                <a href="/credits" onClick={(e) => { e.preventDefault(); navigate('/credits'); }}>Credits</a>
-                {version && <span className="version">v{version}</span>}
+<a href={imprint} target="_blank" rel="noreferrer">{t('home.imprint')}</a>
+<a href={privacy} target="_blank" rel="noreferrer">{t('home.privacy')}</a>                {version && <span className="version">v{version}</span>}
             </motion.div>
 
             <div className={"scan-dialog" + (scannerShown ? " scanner-shown" : "")} onClick={() => stopScan()}>
@@ -225,12 +220,10 @@ export const Home = () => {
                         <div className="result-area">
                             <div className="alternative">
                                 <hr/>
-                                <h2>oder</h2>
-                                <hr/>
+<h2>{t('home.or')}</h2>                                <hr/>
                             </div>
                             <Button
-                                text="Ergebnisse einsehen"
-                                icon={faChartBar}
+text={t('home.viewResults')}                                icon={faChartBar}
                                 onClick={() => setShowResultsDialog(true)}
                                 variant="secondary"
                                 padding="0.6rem 1.2rem"
@@ -239,13 +232,13 @@ export const Home = () => {
                     )}
                 </div>
                 <div className={`action-area ${code !== null ? 'disabled' : ''}`}>
-                    <Button text="Quiz erstellen" icon={faSwatchbook} padding={"0.8rem 2.5rem"}
+                    <Button text={t('home.createQuiz')} icon={faSwatchbook} padding={"0.8rem 2.5rem"}
                             disabled={code !== null}
                             onClick={() => {
                                 setCirclePosition("-30rem 0 0 -30rem");
                                 setTimeout(() => navigate("/create"), 500);
                             }}/>
-                    <Button text="Raum hosten" icon={faShareFromSquare} padding={"0.8rem 2.5rem"}
+                    <Button text={t('home.hostRoom')} icon={faShareFromSquare} padding={"0.8rem 2.5rem"}
                             disabled={code !== null}
                             onClick={() => {
                                 setCirclePosition("-30rem 0 0 -30rem");
@@ -260,17 +253,16 @@ export const Home = () => {
                                 }}/>
                     )}
                     {!isAuthenticated && (
-                        <Button text="Anmelden" icon={faRightToBracket} padding={"0.8rem 2.5rem"} type="secondary"
+                        <Button text={t('home.login')} icon={faRightToBracket} padding={"0.8rem 2.5rem"} type="secondary"
                                 disabled={code !== null}
                                 onClick={() => requireAuth(() => {})}/>
                     )}
                     {isAuthenticated && (
-                        <Button text="Abmelden" icon={faRightFromBracket} padding={"0.8rem 2.5rem"} type="secondary"
+                        <Button text={t('home.logout')} icon={faRightFromBracket} padding={"0.8rem 2.5rem"} type="secondary"
                                 disabled={code !== null}
                                 onClick={() => {
                                     logout();
-                                    toast.success("Abgemeldet.");
-                                }}/>
+toast.success(t('home.errors.loggedOut'));                                }}/>
                     )}
                 </div>
             </motion.div>
@@ -281,6 +273,7 @@ export const Home = () => {
                 practiceCode={code}
                 onSuccess={handleResultsSuccess}
             />
+            <LanguageSwitcher />
         </div>
     )
 }
