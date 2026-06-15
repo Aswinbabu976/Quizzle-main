@@ -19,5 +19,33 @@
       "joinError": "Error joining room",
       "loggedOut": "Logged out."
     }
+  },
+   "setup": {
+    "welcome": "Welcome to Quizzle!",
+    "welcomeDesc": "Set up your Quizzle in a few steps. First create an",
+    "adminAccount": "Administrator Account",
+    "welcomeDesc2": "to manage all settings.",
+    "startSetup": "Start Setup",
+    "chooseUsername": "Choose Username",
+    "usernameDesc": "Choose a username for the administrator account.",
+    "usernamePlaceholder": "Username",
+    "setPassword": "Set Password",
+    "passwordDesc": "Choose a secure password for",
+    "passwordPlaceholder": "Password",
+    "confirmPlaceholder": "Confirm Password",
+    "back": "Back",
+    "next": "Next",
+    "finish": "Finish",
+    "errors": {
+      "usernameRequired": "Username is required",
+      "usernameMin": "At least 3 characters",
+      "usernameMax": "Maximum 32 characters",
+      "usernameInvalid": "Only letters, numbers, dots, dashes and underscores",
+      "passwordRequired": "Password is required",
+      "passwordMin": "At least 6 characters",
+      "passwordMismatch": "Passwords do not match",
+      "confirmRequired": "Please confirm your password",
+      "setupFailed": "Setup failed"
+    }
   }
 }

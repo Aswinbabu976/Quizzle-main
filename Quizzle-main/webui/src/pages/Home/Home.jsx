@@ -199,10 +199,8 @@ toast.error(error.message || t('home.errors.joinError'));                       
     return (
         <div className="home-page">
             <motion.div className="legal-area" initial={{opacity: 0, y: 50}} animate={{opacity: 1, y: 0}}>
-                <a href={imprint} target="_blank" rel="noreferrer">Impressum</a>
-                <a href={privacy} target="_blank" rel="noreferrer">Datenschutz</a>
-                <a href="/credits" onClick={(e) => { e.preventDefault(); navigate('/credits'); }}>Credits</a>
-                {version && <span className="version">v{version}</span>}
+<a href={imprint} target="_blank" rel="noreferrer">{t('home.imprint')}</a>
+<a href={privacy} target="_blank" rel="noreferrer">{t('home.privacy')}</a>                {version && <span className="version">v{version}</span>}
             </motion.div>
 
             <div className={"scan-dialog" + (scannerShown ? " scanner-shown" : "")} onClick={() => stopScan()}>
@@ -222,12 +220,10 @@ toast.error(error.message || t('home.errors.joinError'));                       
                         <div className="result-area">
                             <div className="alternative">
                                 <hr/>
-                                <h2>oder</h2>
-                                <hr/>
+<h2>{t('home.or')}</h2>                                <hr/>
                             </div>
                             <Button
-                                text="Ergebnisse einsehen"
-                                icon={faChartBar}
+text={t('home.viewResults')}                                icon={faChartBar}
                                 onClick={() => setShowResultsDialog(true)}
                                 variant="secondary"
                                 padding="0.6rem 1.2rem"
@@ -236,13 +232,13 @@ toast.error(error.message || t('home.errors.joinError'));                       
                     )}
                 </div>
                 <div className={`action-area ${code !== null ? 'disabled' : ''}`}>
-                    <Button text="Quiz erstellen" icon={faSwatchbook} padding={"0.8rem 2.5rem"}
+                    <Button text={t('home.createQuiz')} icon={faSwatchbook} padding={"0.8rem 2.5rem"}
                             disabled={code !== null}
                             onClick={() => {
                                 setCirclePosition("-30rem 0 0 -30rem");
                                 setTimeout(() => navigate("/create"), 500);
                             }}/>
-                    <Button text="Raum hosten" icon={faShareFromSquare} padding={"0.8rem 2.5rem"}
+                    <Button text={t('home.hostRoom')} icon={faShareFromSquare} padding={"0.8rem 2.5rem"}
                             disabled={code !== null}
                             onClick={() => {
                                 setCirclePosition("-30rem 0 0 -30rem");
@@ -257,12 +253,12 @@ toast.error(error.message || t('home.errors.joinError'));                       
                                 }}/>
                     )}
                     {!isAuthenticated && (
-                        <Button text="Anmelden" icon={faRightToBracket} padding={"0.8rem 2.5rem"} type="secondary"
+                        <Button text={t('home.login')} icon={faRightToBracket} padding={"0.8rem 2.5rem"} type="secondary"
                                 disabled={code !== null}
                                 onClick={() => requireAuth(() => {})}/>
                     )}
                     {isAuthenticated && (
-                        <Button text="Abmelden" icon={faRightFromBracket} padding={"0.8rem 2.5rem"} type="secondary"
+                        <Button text={t('home.logout')} icon={faRightFromBracket} padding={"0.8rem 2.5rem"} type="secondary"
                                 disabled={code !== null}
                                 onClick={() => {
                                     logout();
@@ -277,6 +273,7 @@ toast.success(t('home.errors.loggedOut'));                                }}/>
                 practiceCode={code}
                 onSuccess={handleResultsSuccess}
             />
+            <LanguageSwitcher />
         </div>
     )
 }
