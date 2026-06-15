@@ -1,0 +1,23 @@
+{
+  "home": {
+    "imprint": "Imprint",
+    "privacy": "Privacy Policy",
+    "credits": "Credits",
+    "or": "or",
+    "viewResults": "View Results",
+    "createQuiz": "Create Quiz",
+    "hostRoom": "Host Room",
+    "admin": "Admin",
+    "login": "Login",
+    "logout": "Logout",
+    "errors": {
+      "practiceNotFound": "Practice quiz not found",
+      "practiceCheckFailed": "Error checking practice quiz",
+      "roomNotFound": "Room not found",
+      "connectionError": "Connection error",
+      "invalidCode": "Invalid code",
+      "joinError": "Error joining room",
+      "loggedOut": "Logged out."
+    }
+  }
+}

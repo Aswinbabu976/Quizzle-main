@@ -10,6 +10,8 @@ import CodeInput from "@/pages/Home/components/CodeInput";
 import CharacterSelection from "@/pages/Home/components/CharacterSelection";
 import ResultsDialog from "@/pages/Home/components/ResultsDialog";
 import {QuizContext} from "@/common/contexts/Quiz";
+import { useTranslation } from 'react-i18next'
+import LanguageSwitcher from '@/common/components/LanguageSwitcher'
 import {AuthContext} from "@/common/contexts/Auth";
 import QrScanner from "qr-scanner";
 import toast from "react-hot-toast";
@@ -19,6 +21,7 @@ export const Home = () => {
     const {titleImg, imprint, privacy, version} = useContext(BrandingContext);
     const {setRoomCode, setUsername, setPracticeUserData} = useContext(QuizContext);
     const {isAuthenticated, isAdmin, requireAuth, logout} = useContext(AuthContext);
+    const { t } = useTranslation()
     const {setCirclePosition} = useOutletContext();
     const [code, setCode] = useState(() => {
         const params = new URLSearchParams(window.location.search);
@@ -90,14 +93,12 @@ export const Home = () => {
                         setCode(code.toUpperCase());
                         setIsPracticeMode(true);
                     } else {
-                        showError(data.message || "Übungsquiz nicht gefunden");
-                    }
+showError(data.message || t('home.errors.practiceNotFound'));                    }
                 })
                 .catch(error => {
                     setLoading(false);
                     console.error('Error checking practice quiz:', error);
-                    showError("Fehler beim Überprüfen des Übungsquiz");
-                });
+showError(t('home.errors.practiceCheckFailed'));                });
             return;
         }
 
@@ -108,15 +109,12 @@ export const Home = () => {
                         setCode(parseInt(code));
                         setIsPracticeMode(false);
                     } else {
-                        showError(response?.error || "Raum nicht gefunden");
-                    }
+showError(response?.error || t('home.errors.roomNotFound'));                    }
                 });
             }).catch(() => {
-                showError("Verbindungsfehler");
-            });
+showError(t('home.errors.connectionError'));            });
         } else {
-            showError("Ungültiger Code");
-        }
+showError(t('home.errors.invalidCode'));        }
     }
 
     const joinRoom = async (name, character, code) => {
@@ -145,8 +143,7 @@ export const Home = () => {
                     })
                     .catch((error) => {
                         setLoading(false);
-                        toast.error(error.message || "Fehler beim Beitreten");
-                        reject(error);
+toast.error(error.message || t('home.errors.joinError'));                        reject(error);
                     });
             }
         });
@@ -269,8 +266,7 @@ export const Home = () => {
                                 disabled={code !== null}
                                 onClick={() => {
                                     logout();
-                                    toast.success("Abgemeldet.");
-                                }}/>
+toast.success(t('home.errors.loggedOut'));                                }}/>
                     )}
                 </div>
             </motion.div>

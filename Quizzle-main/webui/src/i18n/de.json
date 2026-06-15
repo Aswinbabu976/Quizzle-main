@@ -1,0 +1,23 @@
+{
+  "home": {
+    "imprint": "Impressum",
+    "privacy": "Datenschutz",
+    "credits": "Credits",
+    "or": "oder",
+    "viewResults": "Ergebnisse einsehen",
+    "createQuiz": "Quiz erstellen",
+    "hostRoom": "Raum hosten",
+    "admin": "Admin",
+    "login": "Anmelden",
+    "logout": "Abmelden",
+    "errors": {
+      "practiceNotFound": "Übungsquiz nicht gefunden",
+      "practiceCheckFailed": "Fehler beim Überprüfen des Übungsquiz",
+      "roomNotFound": "Raum nicht gefunden",
+      "connectionError": "Verbindungsfehler",
+      "invalidCode": "Ungültiger Code",
+      "joinError": "Fehler beim Beitreten",
+      "loggedOut": "Abgemeldet."
+    }
+  }
+}
