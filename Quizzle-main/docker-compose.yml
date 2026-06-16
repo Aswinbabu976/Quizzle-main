@@ -12,7 +12,7 @@ services:
       - caddy
     labels:
       caddy: quizzleaba.duckdns.org
-      caddy.reverse_proxy: "{{upstreams 3000}}"
+      caddy.reverse_proxy: "{{upstreams 6412}}"
 
   # 2. Your Portainer Dashboard
   portainer:
