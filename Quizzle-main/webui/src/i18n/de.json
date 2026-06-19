@@ -47,5 +47,24 @@
       "confirmRequired": "Bitte Passwort bestätigen",
       "setupFailed": "Setup fehlgeschlagen"
     }
+  },
+  "codeInput": {
+    "enterCode": "Code eingeben",
+    "scanCode": "Code Scannen"
+  },
+  "loginDialog": {
+    "title": "Anmelden",
+    "cancel": "Abbrechen",
+    "description": "Bitte melde dich mit deinem",
+    "account": "Benutzerkonto",
+    "descriptionEnd": "an.",
+    "usernamePlaceholder": "Benutzername",
+    "passwordPlaceholder": "Passwort",
+    "success": "Erfolgreich angemeldet.",
+    "errors": {
+      "usernameRequired": "Benutzername ist erforderlich",
+      "passwordRequired": "Passwort ist erforderlich",
+      "loginFailed": "Anmeldung fehlgeschlagen."
+    }
   }
 }

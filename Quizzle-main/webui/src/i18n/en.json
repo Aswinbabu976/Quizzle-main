@@ -20,7 +20,7 @@
       "loggedOut": "Logged out."
     }
   },
-   "setup": {
+  "setup": {
     "welcome": "Welcome to Quizzle!",
     "welcomeDesc": "Set up your Quizzle in a few steps. First create an",
     "adminAccount": "Administrator Account",
@@ -46,6 +46,25 @@
       "passwordMismatch": "Passwords do not match",
       "confirmRequired": "Please confirm your password",
       "setupFailed": "Setup failed"
+    }
+  },
+  "codeInput": {
+    "enterCode": "Enter Code",
+    "scanCode": "Scan Code"
+  },
+  "loginDialog": {
+    "title": "Login",
+    "cancel": "Cancel",
+    "description": "Please log in with your",
+    "account": "account",
+    "descriptionEnd": ".",
+    "usernamePlaceholder": "Username",
+    "passwordPlaceholder": "Password",
+    "success": "Successfully logged in.",
+    "errors": {
+      "usernameRequired": "Username is required",
+      "passwordRequired": "Password is required",
+      "loginFailed": "Login failed."
     }
   }
 }
