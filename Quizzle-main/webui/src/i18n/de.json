@@ -66,5 +66,78 @@
       "passwordRequired": "Passwort ist erforderlich",
       "loginFailed": "Anmeldung fehlgeschlagen."
     }
+  },
+  "admin": {
+    "logout": "Abmelden",
+    "aiConfig": "KI-Konfiguration",
+    "aiConfigDesc": "Konfiguriere den KI-Anbieter für die automatische Quiz-Generierung.",
+    "media": "Medien",
+    "mediaDesc": "Konfiguriere API-Schlüssel für die Bildersuche im Quiz-Editor. Beide Dienste sind kostenlos.",
+    "branding": "Branding",
+    "brandingDesc": "Passe das Erscheinungsbild deiner Quizzle-Instanz an.",
+    "users": "Benutzerverwaltung",
+    "usersDesc": "Verwalte Benutzerkonten und Berechtigungen.",
+    "provider": "Anbieter",
+    "providerPlaceholder": "Anbieter wählen...",
+    "apiKey": "API-Schlüssel",
+    "model": "Modell",
+    "modelLoading": "Modelle werden geladen...",
+    "modelPlaceholder": "Modell wählen...",
+    "baseUrl": "Basis-URL",
+    "save": "Speichern",
+    "logo": "Logo",
+    "banner": "Banner",
+    "chooseImage": "Bild wählen",
+    "upload": "Hochladen",
+    "reset": "Zurücksetzen",
+    "name": "Name",
+    "primaryColor": "Primärfarbe",
+    "imprintUrl": "Impressum-URL",
+    "privacyUrl": "Datenschutz-URL",
+    "newUser": "Neuer Benutzer",
+    "createUser": "Erstellen",
+    "cancel": "Abbrechen",
+    "resetPassword": "Passwort zurücksetzen",
+    "newPassword": "Neues Passwort (min. 6 Zeichen)",
+    "you": "Du",
+    "administrator": "Administrator",
+    "teacher": "Lehrkraft",
+    "roleSwitch": "Rolle wechseln",
+    "passwordReset": "Passwort zurücksetzen",
+    "delete": "Löschen",
+    "providers": {
+      "disabled": "Deaktiviert"
+    },
+    "errors": {
+      "settingsLoadFailed": "Einstellungen konnten nicht geladen werden.",
+      "usersLoadFailed": "Benutzer konnten nicht geladen werden.",
+      "saveFailed": "Fehler beim Speichern.",
+      "uploadFailed": "Fehler beim Hochladen.",
+      "resetFailed": "Fehler beim Zurücksetzen.",
+      "createFailed": "Fehler beim Erstellen.",
+      "deleteFailed": "Fehler beim Löschen.",
+      "updateFailed": "Fehler beim Aktualisieren.",
+      "passwordTooShort": "Passwort muss mindestens 6 Zeichen lang sein.",
+      "allFieldsRequired": "Alle Felder sind erforderlich.",
+      "imageTooLarge": "Bild ist zu groß (max. 5 MB)."
+    },
+    "success": {
+      "aiSaved": "KI-Einstellungen gespeichert.",
+      "mediaSaved": "Medien-Einstellungen gespeichert.",
+      "brandingSaved": "Branding gespeichert. Änderungen werden nach einem Neustart wirksam.",
+      "userCreated": "Benutzer erstellt.",
+      "userDeleted": "Benutzer gelöscht.",
+      "roleUpdated": "Rolle aktualisiert.",
+      "passwordReset": "Passwort zurückgesetzt.",
+      "logoUploaded": "Logo hochgeladen.",
+      "bannerUploaded": "Banner hochgeladen.",
+      "logoReset": "Logo zurückgesetzt.",
+      "bannerReset": "Banner zurückgesetzt."
+    },
+    "confirm": {
+      "deleteUser": "Benutzer wirklich löschen"
+    },
+    "unsplashHint": "Erstelle eine App auf unsplash.com/developers und kopiere den Access Key.",
+    "giphyHint": "Erstelle eine App auf developers.giphy.com und kopiere den API Key."
   }
 }
