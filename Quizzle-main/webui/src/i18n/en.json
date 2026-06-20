@@ -139,5 +139,40 @@
     },
     "unsplashHint": "Create an app on unsplash.com/developers and copy the Access Key.",
     "giphyHint": "Create an app on developers.giphy.com and copy the API Key."
+  },
+  "characterSelection": {
+    "character": "Character",
+    "clickToChange": "Click to change",
+    "yourName": "Your Name",
+    "joining": "Joining...",
+    "startQuiz": "Start Quiz",
+    "join": "Join",
+    "chooseCharacter": "Choose your Character",
+    "selectCharacter": "Select character"
+  },
+  "quizCreator": {
+    "titlePlaceholder": "Enter quiz title",
+    "undo": "Undo (Ctrl+Z)",
+    "redo": "Redo (Ctrl+Shift+Z)",
+    "settings": "Quiz Settings",
+    "import": "Import quiz from file",
+    "download": "Download quiz as file",
+    "uploadLive": "Upload as live quiz",
+    "uploadPractice": "Publish as practice quiz",
+    "loginRequired": "Login required",
+    "clearQuiz": "Reset quiz",
+    "errors": {
+      "titleEmpty": "Quiz title cannot be empty.",
+      "importFailed": "Invalid file format.",
+      "storageFull": "Your quiz exceeds the local storage capacity. Please upload it to prevent losing it when you leave the page.",
+      "serverFull": "Your quiz exceeds the server storage capacity. Please download it locally.",
+      "uploadFailed": "Error uploading quiz.",
+      "practiceCreateFailed": "Error creating practice quiz.",
+      "importSuccess": "Quiz imported successfully!",
+      "uploadSuccess": "Quiz uploaded successfully.",
+      "quizId": "Quiz ID: ",
+      "practiceSuccess": "Practice quiz created successfully!",
+      "practiceCode": "Practice code: "
+    }
   }
 }

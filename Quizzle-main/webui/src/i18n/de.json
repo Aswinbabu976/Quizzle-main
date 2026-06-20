@@ -139,5 +139,40 @@
     },
     "unsplashHint": "Erstelle eine App auf unsplash.com/developers und kopiere den Access Key.",
     "giphyHint": "Erstelle eine App auf developers.giphy.com und kopiere den API Key."
+  },
+  "characterSelection": {
+    "character": "Charakter",
+    "clickToChange": "Klicken zum Ändern",
+    "yourName": "Dein Name",
+    "joining": "Beitreten...",
+    "startQuiz": "Quiz starten",
+    "join": "Beitreten",
+    "chooseCharacter": "Wähle deinen Charakter",
+    "selectCharacter": "Charakter auswählen"
+  },
+  "quizCreator": {
+    "titlePlaceholder": "Quiz-Titel eingeben",
+    "undo": "Rückgängig (Strg+Z)",
+    "redo": "Wiederholen (Strg+Shift+Z)",
+    "settings": "Quiz-Einstellungen",
+    "import": "Quiz aus Datei importieren",
+    "download": "Quiz als Datei herunterladen",
+    "uploadLive": "Als Live-Quiz hochladen",
+    "uploadPractice": "Als Übungsquiz veröffentlichen",
+    "loginRequired": "Anmeldung erforderlich",
+    "clearQuiz": "Quiz zurücksetzen",
+    "errors": {
+      "titleEmpty": "Quiz-Titel darf nicht leer sein.",
+      "importFailed": "Ungültiges Dateiformat.",
+      "storageFull": "Dein Quiz übersteigt die lokale Speicherkapazität. Bitte lade es hoch, um zu verhindern, dass es verloren geht wenn du die Seite verlässt.",
+      "serverFull": "Dein Quiz übersteigt die Speicherkapazität des Servers. Bitte lade es lokal herunter.",
+      "uploadFailed": "Fehler beim Hochladen des Quiz.",
+      "practiceCreateFailed": "Fehler beim Erstellen des Übungsquiz.",
+      "importSuccess": "Quiz erfolgreich importiert!",
+      "uploadSuccess": "Quiz erfolgreich hochgeladen.",
+      "quizId": "Quiz-ID: ",
+      "practiceSuccess": "Übungsquiz erfolgreich erstellt!",
+      "practiceCode": "Übungscode: "
+    }
   }
 }
