@@ -1,1 +1,1 @@
-export {LoginDialog as default} from "./LoginDialog.jsx";
+export {LoginDialog as default} from "./";

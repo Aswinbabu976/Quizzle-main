@@ -4,11 +4,13 @@ import {faRightToBracket} from '@fortawesome/free-solid-svg-icons';
 import Dialog from '@/common/components/Dialog';
 import Input from '@/common/components/Input';
 import {AuthContext} from '@/common/contexts/Auth';
+import { useTranslation } from 'react-i18next';
 import toast from 'react-hot-toast';
 import './styles.sass';
 
 export const LoginDialog = ({isOpen, onClose, onSuccess}) => {
     const {login} = useContext(AuthContext);
+    const { t } = useTranslation();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -16,26 +18,24 @@ export const LoginDialog = ({isOpen, onClose, onSuccess}) => {
 
     const handleConfirm = async () => {
         if (!username.trim()) {
-            setError('Benutzername ist erforderlich');
+            setError(t('loginDialog.errors.usernameRequired'));
             return;
         }
         if (!password) {
-            setError('Passwort ist erforderlich');
+            setError(t('loginDialog.errors.passwordRequired'));
             return;
         }
-
         setLoading(true);
         setError('');
-
         try {
             await login(username.trim(), password);
-            toast.success('Erfolgreich angemeldet.');
+            toast.success(t('loginDialog.success'));
             setUsername('');
             setPassword('');
             setError('');
             onSuccess?.();
         } catch (err) {
-            setError(err.message || 'Anmeldung fehlgeschlagen.');
+            setError(err.message || t('loginDialog.errors.loginFailed'));
         } finally {
             setLoading(false);
         }
@@ -57,27 +57,27 @@ export const LoginDialog = ({isOpen, onClose, onSuccess}) => {
             title={
                 <div className="login-dialog-title">
                     <FontAwesomeIcon icon={faRightToBracket} className="login-dialog-title-icon"/>
-                    Anmelden
+                    {t('loginDialog.title')}
                 </div>
             }
-            confirmText={loading ? "..." : "Anmelden"}
-            cancelText="Abbrechen"
+            confirmText={loading ? "..." : t('loginDialog.title')}
+            cancelText={t('loginDialog.cancel')}
             className="login-dialog"
         >
             <div className="login-dialog-content">
                 <p className="login-dialog-text">
-                    Bitte melde dich mit deinem <strong>Benutzerkonto</strong> an.
+                    {t('loginDialog.description')} <strong>{t('loginDialog.account')}</strong> {t('loginDialog.descriptionEnd')}
                 </p>
                 <div className="login-input-wrapper">
                     <Input
-                        placeholder="Benutzername"
+                        placeholder={t('loginDialog.usernamePlaceholder')}
                         value={username}
                         onChange={(e) => {setUsername(e.target.value); setError('');}}
                         onKeyDown={(e) => e.key === 'Enter' && handleConfirm()}
                     />
                     <Input
                         type="password"
-                        placeholder="Passwort"
+                        placeholder={t('loginDialog.passwordPlaceholder')}
                         value={password}
                         onChange={(e) => {setPassword(e.target.value); setError('');}}
                         error={error}

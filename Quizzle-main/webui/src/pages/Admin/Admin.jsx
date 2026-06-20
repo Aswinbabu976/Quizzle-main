@@ -14,10 +14,11 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import {motion} from "framer-motion";
 import toast from "react-hot-toast";
+import { useTranslation } from 'react-i18next';
 import "./styles.sass";
 
-const AI_PROVIDERS = [
-    {value: '', label: 'Deaktiviert'},
+const AI_PROVIDERS = (t) => [
+    {value: '', label: t('admin.providers.disabled')},
     {value: 'openai', label: 'OpenAI'},
     {value: 'anthropic', label: 'Anthropic'},
     {value: 'google', label: 'Google'},
@@ -28,6 +29,7 @@ export const Admin = () => {
     const {user, isAdmin, logout} = useContext(AuthContext);
     const {titleImg, logoImg, refreshBranding} = useContext(BrandingContext);
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     const [activeTab, setActiveTab] = useState('ai');
     const [settings, setSettings] = useState(null);
@@ -106,7 +108,7 @@ export const Admin = () => {
             setBrandImprint(data.branding?.imprint || '');
             setBrandPrivacy(data.branding?.privacy || '');
         } catch (error) {
-            toast.error('Einstellungen konnten nicht geladen werden.');
+            toast.error(t('admin.errors.settingsLoadFailed'));
         } finally {
             setLoading(false);
         }
@@ -117,7 +119,7 @@ export const Admin = () => {
             const data = await jsonRequest('/admin/users');
             setUsers(data.users || []);
         } catch (error) {
-            toast.error('Benutzer konnten nicht geladen werden.');
+            toast.error(t('admin.errors.usersLoadFailed'));
         }
     };
 
@@ -126,9 +128,9 @@ export const Admin = () => {
             await putRequest('/admin/settings', {
                 config: {ai: {provider: aiProvider, apiKey: aiApiKey, model: aiModel, baseUrl: aiBaseUrl}}
             });
-            toast.success('KI-Einstellungen gespeichert.');
+            toast.success(t('admin.success.aiSaved'));
         } catch (error) {
-            toast.error(error.message || 'Fehler beim Speichern.');
+            toast.error(error.message || t('admin.errors.saveFailed'));
         }
     };
 
@@ -137,9 +139,9 @@ export const Admin = () => {
             await putRequest('/admin/settings', {
                 config: {media: {unsplashAccessKey, giphyApiKey}}
             });
-            toast.success('Medien-Einstellungen gespeichert.');
+            toast.success(t('admin.success.mediaSaved'));
         } catch (error) {
-            toast.error(error.message || 'Fehler beim Speichern.');
+            toast.error(error.message || t('admin.errors.saveFailed'));
         }
     };
 
@@ -148,21 +150,19 @@ export const Admin = () => {
             await putRequest('/admin/settings', {
                 branding: {name: brandName, color: brandColor, imprint: brandImprint, privacy: brandPrivacy}
             });
-            toast.success('Branding gespeichert. Änderungen werden nach einem Neustart wirksam.');
+            toast.success(t('admin.success.brandingSaved'));
         } catch (error) {
-            toast.error(error.message || 'Fehler beim Speichern.');
+            toast.error(error.message || t('admin.errors.saveFailed'));
         }
     };
 
     const handleImageSelect = (type, e) => {
         const file = e.target.files?.[0];
         if (!file) return;
-
         if (file.size > 5 * 1024 * 1024) {
-            toast.error('Bild ist zu groß (max. 5 MB).');
+            toast.error(t('admin.errors.imageTooLarge'));
             return;
         }
-
         const reader = new FileReader();
         reader.onload = () => {
             if (type === 'logo') setLogoPreview(reader.result);
@@ -174,33 +174,32 @@ export const Admin = () => {
     const uploadImage = async (type) => {
         const image = type === 'logo' ? logoPreview : titlePreview;
         if (!image) return;
-
         try {
             await putRequest(`/admin/branding/${type}`, {image});
-            toast.success(`${type === 'logo' ? 'Logo' : 'Banner'} hochgeladen.`);
+            toast.success(type === 'logo' ? t('admin.success.logoUploaded') : t('admin.success.bannerUploaded'));
             if (type === 'logo') setLogoPreview(null);
             else setTitlePreview(null);
             refreshBranding?.();
         } catch (error) {
-            toast.error(error.message || 'Fehler beim Hochladen.');
+            toast.error(error.message || t('admin.errors.uploadFailed'));
         }
     };
 
     const resetImage = async (type) => {
         try {
             await deleteRequest(`/admin/branding/${type}`);
-            toast.success(`${type === 'logo' ? 'Logo' : 'Banner'} zurückgesetzt.`);
+            toast.success(type === 'logo' ? t('admin.success.logoReset') : t('admin.success.bannerReset'));
             if (type === 'logo') setLogoPreview(null);
             else setTitlePreview(null);
             refreshBranding?.();
         } catch (error) {
-            toast.error(error.message || 'Fehler beim Zurücksetzen.');
+            toast.error(error.message || t('admin.errors.resetFailed'));
         }
     };
 
     const createUser = async () => {
         if (!newUsername.trim() || !newPassword) {
-            setNewUserError('Alle Felder sind erforderlich.');
+            setNewUserError(t('admin.errors.allFieldsRequired'));
             return;
         }
         try {
@@ -209,7 +208,7 @@ export const Admin = () => {
                 password: newPassword,
                 role: newRole
             });
-            toast.success(`Benutzer "${newUsername}" erstellt.`);
+            toast.success(t('admin.success.userCreated'));
             setShowNewUserDialog(false);
             setNewUsername('');
             setNewPassword('');
@@ -217,18 +216,18 @@ export const Admin = () => {
             setNewUserError('');
             loadUsers();
         } catch (error) {
-            setNewUserError(error.message || 'Fehler beim Erstellen.');
+            setNewUserError(error.message || t('admin.errors.createFailed'));
         }
     };
 
     const deleteUserHandler = async (userId, username) => {
-        if (!confirm(`Benutzer "${username}" wirklich löschen?`)) return;
+        if (!confirm(`${t('admin.confirm.deleteUser')} "${username}"?`)) return;
         try {
             await deleteRequest(`/admin/users/${userId}`);
-            toast.success(`Benutzer "${username}" gelöscht.`);
+            toast.success(t('admin.success.userDeleted'));
             loadUsers();
         } catch (error) {
-            toast.error(error.message || 'Fehler beim Löschen.');
+            toast.error(error.message || t('admin.errors.deleteFailed'));
         }
     };
 
@@ -236,26 +235,26 @@ export const Admin = () => {
         const newRole = currentRole === 'admin' ? 'teacher' : 'admin';
         try {
             await putRequest(`/admin/users/${userId}/role`, {role: newRole});
-            toast.success('Rolle aktualisiert.');
+            toast.success(t('admin.success.roleUpdated'));
             loadUsers();
         } catch (error) {
-            toast.error(error.message || 'Fehler beim Aktualisieren.');
+            toast.error(error.message || t('admin.errors.updateFailed'));
         }
     };
 
     const resetPassword = async () => {
         if (!newPasswordValue || newPasswordValue.length < 6) {
-            toast.error('Passwort muss mindestens 6 Zeichen lang sein.');
+            toast.error(t('admin.errors.passwordTooShort'));
             return;
         }
         try {
             await putRequest(`/admin/users/${passwordResetUserId}/password`, {password: newPasswordValue});
-            toast.success('Passwort zurückgesetzt.');
+            toast.success(t('admin.success.passwordReset'));
             setShowPasswordDialog(false);
             setPasswordResetUserId(null);
             setNewPasswordValue('');
         } catch (error) {
-            toast.error(error.message || 'Fehler beim Zurücksetzen.');
+            toast.error(error.message || t('admin.errors.resetFailed'));
         }
     };
 
@@ -275,147 +274,140 @@ export const Admin = () => {
                         <FontAwesomeIcon icon={faShieldAlt}/>
                         {user?.username}
                     </span>
-                    <Button text="Abmelden" icon={faRightFromBracket} type="secondary compact" onClick={handleLogout}/>
+                    <Button text={t('admin.logout')} icon={faRightFromBracket} type="secondary compact" onClick={handleLogout}/>
                 </div>
             </motion.div>
 
             <motion.div className="admin-content" initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} transition={{delay: 0.1}}>
                 <div className="admin-sidebar">
                     <button className={`sidebar-item ${activeTab === 'ai' ? 'active' : ''}`} onClick={() => setActiveTab('ai')}>
-                        <FontAwesomeIcon icon={faRobot}/> KI-Konfiguration
+                        <FontAwesomeIcon icon={faRobot}/> {t('admin.aiConfig')}
                     </button>
                     <button className={`sidebar-item ${activeTab === 'media' ? 'active' : ''}`} onClick={() => setActiveTab('media')}>
-                        <FontAwesomeIcon icon={faImage}/> Medien
+                        <FontAwesomeIcon icon={faImage}/> {t('admin.media')}
                     </button>
                     <button className={`sidebar-item ${activeTab === 'branding' ? 'active' : ''}`} onClick={() => setActiveTab('branding')}>
-                        <FontAwesomeIcon icon={faPalette}/> Branding
+                        <FontAwesomeIcon icon={faPalette}/> {t('admin.branding')}
                     </button>
                     <button className={`sidebar-item ${activeTab === 'users' ? 'active' : ''}`} onClick={() => setActiveTab('users')}>
-                        <FontAwesomeIcon icon={faUsers}/> Benutzerverwaltung
+                        <FontAwesomeIcon icon={faUsers}/> {t('admin.users')}
                     </button>
                 </div>
 
                 <div className="admin-panel">
                     {activeTab === 'ai' && (
                         <motion.div className="settings-section" initial={{opacity: 0}} animate={{opacity: 1}}>
-                            <h2><FontAwesomeIcon icon={faRobot}/> KI-Konfiguration</h2>
-                            <p className="section-description">Konfiguriere den KI-Anbieter für die automatische Quiz-Generierung.</p>
-
+                            <h2><FontAwesomeIcon icon={faRobot}/> {t('admin.aiConfig')}</h2>
+                            <p className="section-description">{t('admin.aiConfigDesc')}</p>
                             <div className="settings-form">
                                 <div className="form-group">
-                                    <label>Anbieter</label>
-                                    <SelectBox value={aiProvider} onChange={setAiProvider} options={AI_PROVIDERS} placeholder="Anbieter wählen..."/>
+                                    <label>{t('admin.provider')}</label>
+                                    <SelectBox value={aiProvider} onChange={setAiProvider} options={AI_PROVIDERS(t)} placeholder={t('admin.providerPlaceholder')}/>
                                 </div>
-
                                 {aiProvider && (
                                     <>
                                         {aiProvider !== 'ollama' && (
                                             <div className="form-group">
-                                                <label>API-Schlüssel</label>
+                                                <label>{t('admin.apiKey')}</label>
                                                 <Input placeholder="sk-..." value={aiApiKey} onChange={(e) => setAiApiKey(e.target.value)}/>
                                             </div>
                                         )}
                                         <div className="form-group">
-                                            <label>Modell</label>
+                                            <label>{t('admin.model')}</label>
                                             <SelectBox
                                                 value={aiModel}
                                                 onChange={setAiModel}
                                                 options={aiModels}
-                                                placeholder={modelsLoading ? 'Modelle werden geladen...' : 'Modell wählen...'}
+                                                placeholder={modelsLoading ? t('admin.modelLoading') : t('admin.modelPlaceholder')}
                                                 disabled={modelsLoading}
                                             />
                                         </div>
                                         {aiProvider === 'ollama' && (
                                             <div className="form-group">
-                                                <label>Basis-URL</label>
+                                                <label>{t('admin.baseUrl')}</label>
                                                 <Input placeholder="http://localhost:11434" value={aiBaseUrl} onChange={(e) => setAiBaseUrl(e.target.value)}/>
                                             </div>
                                         )}
                                     </>
                                 )}
-
-                                <Button text="Speichern" type="green compact" onClick={saveAiSettings}/>
+                                <Button text={t('admin.save')} type="green compact" onClick={saveAiSettings}/>
                             </div>
                         </motion.div>
                     )}
 
                     {activeTab === 'media' && (
                         <motion.div className="settings-section" initial={{opacity: 0}} animate={{opacity: 1}}>
-                            <h2><FontAwesomeIcon icon={faImage}/> Medien</h2>
-                            <p className="section-description">Konfiguriere API-Schlüssel für die Bildersuche im Quiz-Editor. Beide Dienste sind kostenlos.</p>
-
+                            <h2><FontAwesomeIcon icon={faImage}/> {t('admin.media')}</h2>
+                            <p className="section-description">{t('admin.mediaDesc')}</p>
                             <div className="settings-form">
                                 <div className="form-group">
                                     <label>Unsplash Access Key</label>
-                                    <span className="form-hint">Erstelle eine App auf <a href="https://unsplash.com/oauth/applications/new" target="_blank" rel="noopener noreferrer">unsplash.com/developers</a> und kopiere den "Access Key".</span>
-                                    <Input placeholder="z.B. ab12cd34ef56gh78ij90..." value={unsplashAccessKey} onChange={(e) => setUnsplashAccessKey(e.target.value)}/>
+                                    <span className="form-hint">{t('admin.unsplashHint')}</span>
+                                    <Input placeholder="e.g. ab12cd34ef56gh78ij90..." value={unsplashAccessKey} onChange={(e) => setUnsplashAccessKey(e.target.value)}/>
                                 </div>
                                 <div className="form-group">
                                     <label>Giphy API Key</label>
-                                    <span className="form-hint">Erstelle eine App auf <a href="https://developers.giphy.com/dashboard/?create=true" target="_blank" rel="noopener noreferrer">developers.giphy.com</a> und kopiere den "API Key".</span>
-                                    <Input placeholder="z.B. aBcDeFgHiJkLmNoPqRsT..." value={giphyApiKey} onChange={(e) => setGiphyApiKey(e.target.value)}/>
+                                    <span className="form-hint">{t('admin.giphyHint')}</span>
+                                    <Input placeholder="e.g. aBcDeFgHiJkLmNoPqRsT..." value={giphyApiKey} onChange={(e) => setGiphyApiKey(e.target.value)}/>
                                 </div>
-
-                                <Button text="Speichern" type="green compact" onClick={saveMediaSettings}/>
+                                <Button text={t('admin.save')} type="green compact" onClick={saveMediaSettings}/>
                             </div>
                         </motion.div>
                     )}
 
                     {activeTab === 'branding' && (
                         <motion.div className="settings-section" initial={{opacity: 0}} animate={{opacity: 1}}>
-                            <h2><FontAwesomeIcon icon={faPalette}/> Branding</h2>
-                            <p className="section-description">Passe das Erscheinungsbild deiner Quizzle-Instanz an.</p>
-
+                            <h2><FontAwesomeIcon icon={faPalette}/> {t('admin.branding')}</h2>
+                            <p className="section-description">{t('admin.brandingDesc')}</p>
                             <div className="settings-form">
                                 <div className="form-group">
-                                    <label>Logo</label>
+                                    <label>{t('admin.logo')}</label>
                                     <div className="image-upload-area">
                                         <img src={logoPreview || logoImg} alt="Logo" className="image-preview logo-preview"/>
                                         <div className="image-upload-actions">
                                             <label className="upload-btn">
-                                                <FontAwesomeIcon icon={faUpload}/> Bild wählen
+                                                <FontAwesomeIcon icon={faUpload}/> {t('admin.chooseImage')}
                                                 <input type="file" accept="image/*" hidden onChange={(e) => handleImageSelect('logo', e)}/>
                                             </label>
-                                            {logoPreview && <Button text="Hochladen" type="green compact" onClick={() => uploadImage('logo')}/>}
-                                            {!logoPreview && <button className="reset-btn" onClick={() => resetImage('logo')}><FontAwesomeIcon icon={faRotateLeft}/> Zurücksetzen</button>}
+                                            {logoPreview && <Button text={t('admin.upload')} type="green compact" onClick={() => uploadImage('logo')}/>}
+                                            {!logoPreview && <button className="reset-btn" onClick={() => resetImage('logo')}><FontAwesomeIcon icon={faRotateLeft}/> {t('admin.reset')}</button>}
                                         </div>
                                     </div>
                                 </div>
                                 <div className="form-group">
-                                    <label>Banner</label>
+                                    <label>{t('admin.banner')}</label>
                                     <div className="image-upload-area">
                                         <img src={titlePreview || titleImg} alt="Banner" className="image-preview title-preview"/>
                                         <div className="image-upload-actions">
                                             <label className="upload-btn">
-                                                <FontAwesomeIcon icon={faUpload}/> Bild wählen
+                                                <FontAwesomeIcon icon={faUpload}/> {t('admin.chooseImage')}
                                                 <input type="file" accept="image/*" hidden onChange={(e) => handleImageSelect('title', e)}/>
                                             </label>
-                                            {titlePreview && <Button text="Hochladen" type="green compact" onClick={() => uploadImage('title')}/>}
-                                            {!titlePreview && <button className="reset-btn" onClick={() => resetImage('title')}><FontAwesomeIcon icon={faRotateLeft}/> Zurücksetzen</button>}
+                                            {titlePreview && <Button text={t('admin.upload')} type="green compact" onClick={() => uploadImage('title')}/>}
+                                            {!titlePreview && <button className="reset-btn" onClick={() => resetImage('title')}><FontAwesomeIcon icon={faRotateLeft}/> {t('admin.reset')}</button>}
                                         </div>
                                     </div>
                                 </div>
                                 <div className="form-group">
-                                    <label>Name</label>
+                                    <label>{t('admin.name')}</label>
                                     <Input placeholder="Quizzle" value={brandName} onChange={(e) => setBrandName(e.target.value)}/>
                                 </div>
                                 <div className="form-group">
-                                    <label>Primärfarbe</label>
+                                    <label>{t('admin.primaryColor')}</label>
                                     <div className="color-input-row">
                                         <input type="color" value={brandColor || '#6547EE'} onChange={(e) => setBrandColor(e.target.value)} className="color-picker"/>
                                         <Input placeholder="#6547EE" value={brandColor} onChange={(e) => setBrandColor(e.target.value)}/>
                                     </div>
                                 </div>
                                 <div className="form-group">
-                                    <label>Impressum-URL</label>
+                                    <label>{t('admin.imprintUrl')}</label>
                                     <Input placeholder="https://..." value={brandImprint} onChange={(e) => setBrandImprint(e.target.value)}/>
                                 </div>
                                 <div className="form-group">
-                                    <label>Datenschutz-URL</label>
+                                    <label>{t('admin.privacyUrl')}</label>
                                     <Input placeholder="https://..." value={brandPrivacy} onChange={(e) => setBrandPrivacy(e.target.value)}/>
                                 </div>
-
-                                <Button text="Speichern" type="green compact" onClick={saveBrandingSettings}/>
+                                <Button text={t('admin.save')} type="green compact" onClick={saveBrandingSettings}/>
                             </div>
                         </motion.div>
                     )}
@@ -424,12 +416,11 @@ export const Admin = () => {
                         <motion.div className="settings-section" initial={{opacity: 0}} animate={{opacity: 1}}>
                             <div className="section-header-row">
                                 <div>
-                                    <h2><FontAwesomeIcon icon={faUsers}/> Benutzerverwaltung</h2>
-                                    <p className="section-description">Verwalte Benutzerkonten und Berechtigungen.</p>
+                                    <h2><FontAwesomeIcon icon={faUsers}/> {t('admin.users')}</h2>
+                                    <p className="section-description">{t('admin.usersDesc')}</p>
                                 </div>
-                                <Button text="Neuer Benutzer" icon={faPlus} type="primary compact" onClick={() => setShowNewUserDialog(true)}/>
+                                <Button text={t('admin.newUser')} icon={faPlus} type="primary compact" onClick={() => setShowNewUserDialog(true)}/>
                             </div>
-
                             <div className="user-list">
                                 {users.map(u => (
                                     <div key={u.id} className="user-card">
@@ -437,24 +428,24 @@ export const Admin = () => {
                                             <FontAwesomeIcon icon={u.role === 'admin' ? faShieldAlt : faChalkboardTeacher} className={`role-icon ${u.role}`}/>
                                             <div>
                                                 <span className="user-name">{u.username}</span>
-                                                <span className="user-role">{u.role === 'admin' ? 'Administrator' : 'Lehrkraft'}</span>
+                                                <span className="user-role">{u.role === 'admin' ? t('admin.administrator') : t('admin.teacher')}</span>
                                             </div>
                                         </div>
                                         <div className="user-actions">
                                             {u.id !== user?.id && (
                                                 <>
-                                                    <button className="icon-btn" title="Rolle wechseln" onClick={() => toggleRole(u.id, u.role)}>
+                                                    <button className="icon-btn" title={t('admin.roleSwitch')} onClick={() => toggleRole(u.id, u.role)}>
                                                         <FontAwesomeIcon icon={u.role === 'admin' ? faChalkboardTeacher : faShieldAlt}/>
                                                     </button>
-                                                    <button className="icon-btn" title="Passwort zurücksetzen" onClick={() => {setPasswordResetUserId(u.id); setShowPasswordDialog(true);}}>
+                                                    <button className="icon-btn" title={t('admin.passwordReset')} onClick={() => {setPasswordResetUserId(u.id); setShowPasswordDialog(true);}}>
                                                         <FontAwesomeIcon icon={faKey}/>
                                                     </button>
-                                                    <button className="icon-btn danger" title="Löschen" onClick={() => deleteUserHandler(u.id, u.username)}>
+                                                    <button className="icon-btn danger" title={t('admin.delete')} onClick={() => deleteUserHandler(u.id, u.username)}>
                                                         <FontAwesomeIcon icon={faTrash}/>
                                                     </button>
                                                 </>
                                             )}
-                                            {u.id === user?.id && <span className="you-badge">Du</span>}
+                                            {u.id === user?.id && <span className="you-badge">{t('admin.you')}</span>}
                                         </div>
                                     </div>
                                 ))}
@@ -468,19 +459,19 @@ export const Admin = () => {
                 isOpen={showNewUserDialog}
                 onClose={() => {setShowNewUserDialog(false); setNewUserError('');}}
                 onConfirm={createUser}
-                title="Neuen Benutzer erstellen"
-                confirmText="Erstellen"
-                cancelText="Abbrechen"
+                title={t('admin.newUser')}
+                confirmText={t('admin.createUser')}
+                cancelText={t('admin.cancel')}
             >
                 <div className="new-user-form">
-                    <Input placeholder="Benutzername" value={newUsername} onChange={(e) => {setNewUsername(e.target.value); setNewUserError('');}}/>
-                    <Input type="password" placeholder="Passwort" value={newPassword} onChange={(e) => {setNewPassword(e.target.value); setNewUserError('');}}/>
+                    <Input placeholder={t('loginDialog.usernamePlaceholder')} value={newUsername} onChange={(e) => {setNewUsername(e.target.value); setNewUserError('');}}/>
+                    <Input type="password" placeholder={t('loginDialog.passwordPlaceholder')} value={newPassword} onChange={(e) => {setNewPassword(e.target.value); setNewUserError('');}}/>
                     <SelectBox
                         value={newRole}
                         onChange={setNewRole}
                         options={[
-                            {value: 'teacher', label: 'Lehrkraft', icon: faChalkboardTeacher},
-                            {value: 'admin', label: 'Administrator', icon: faShieldAlt}
+                            {value: 'teacher', label: t('admin.teacher'), icon: faChalkboardTeacher},
+                            {value: 'admin', label: t('admin.administrator'), icon: faShieldAlt}
                         ]}
                     />
                     {newUserError && <div className="form-error">{newUserError}</div>}
@@ -491,12 +482,12 @@ export const Admin = () => {
                 isOpen={showPasswordDialog}
                 onClose={() => {setShowPasswordDialog(false); setNewPasswordValue('');}}
                 onConfirm={resetPassword}
-                title="Passwort zurücksetzen"
-                confirmText="Zurücksetzen"
-                cancelText="Abbrechen"
+                title={t('admin.resetPassword')}
+                confirmText={t('admin.resetPassword')}
+                cancelText={t('admin.cancel')}
             >
                 <div className="new-user-form">
-                    <Input type="password" placeholder="Neues Passwort (min. 6 Zeichen)" value={newPasswordValue} onChange={(e) => setNewPasswordValue(e.target.value)}/>
+                    <Input type="password" placeholder={t('admin.newPassword')} value={newPasswordValue} onChange={(e) => setNewPasswordValue(e.target.value)}/>
                 </div>
             </Dialog>
         </div>
