@@ -1,1 +1,1 @@
-export { Admin as default } from "./Admin.jsx";
+export {Admin as default} from "./Admin.jsx";
