@@ -1,1 +1,1 @@
-export {Home as default} from "./Home.jsx";
+export { Admin as default } from "./Admin.jsx";
