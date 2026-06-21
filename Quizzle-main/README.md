@@ -167,7 +167,7 @@ docker run -p 3000:3000 quizzle-main
 ## Dashboard
 
 ![Dashboard](assets/Dashboard.jpg)
-
+ 
 ---
 
 # System Architecture

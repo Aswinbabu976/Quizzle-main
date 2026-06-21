@@ -16,6 +16,7 @@ import SoundRenderer from "@/common/components/SoundRenderer";
 import SoundControl from "@/common/components/SoundControl";
 import BackgroundChooser from "@/common/components/BackgroundChooser";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
 export const Host = () => {
     const navigate = useNavigate();
@@ -24,6 +25,7 @@ export const Host = () => {
     const {titleImg} = useContext(BrandingContext);
     const soundManager = useSoundManager();
     const [qrShown, setQrShown] = useState(false);
+    const { t } = useTranslation();
 
     const [roomCode, setRoomCode] = useState("0000");
     const [players, setPlayers] = useState([]);
@@ -107,7 +109,7 @@ export const Host = () => {
         socket.emit("LOCK_ROOM", {}, (response) => {
             if (response?.success) {
                 setRoomLocked(response.locked);
-                toast.success(response.locked ? "Raum gesperrt" : "Raum entsperrt", {
+                toast.success(response.locked ? "Room locked" : "Room unlocked", {
                     duration: 2000
                 });
             }
@@ -121,7 +123,7 @@ export const Host = () => {
             soundManager.stopSound(lobbyAmbientId);
             setLobbyAmbientId(null);
         }
-        
+
         navigate("/host/ingame");
     }
 
@@ -130,7 +132,7 @@ export const Host = () => {
 
         const ambientId = soundManager.playAmbient('LOBBY');
         setLobbyAmbientId(ambientId);
-        
+
         return () => {
             if (ambientId) {
                 soundManager.stopSound(ambientId);
@@ -154,36 +156,51 @@ export const Host = () => {
                 <motion.div className="quiz-information" initial={{opacity: 0, y: -100}} animate={{opacity: 1, y: 0}}>
                     <div className="info-header">
                         <h1>“{quizRaw.title}”</h1>
-                        <QRCodeSVG value={getJoinUrl()} size={100} className="qr"
-                                onClick={() => setQrShown(!qrShown)}/>
+                        <QRCodeSVG
+                            value={getJoinUrl()}
+                            size={100}
+                            className="qr"
+                            onClick={() => setQrShown(!qrShown)}
+                        />
                     </div>
 
-                    <p>Verbinden über die Webseite <span>{location.host.split(":")[0]}</span> mit Code:</p>
+                    <p>
+                        Join via the website <span>{location.host.split(":")[0]}</span> using the code:
+                    </p>
+
                     <div className="room-code-container">
                         <h2>{roomCode}</h2>
-                        {roomLocked && <div className="lock-indicator">
-                            <FontAwesomeIcon icon={faLock} />
-                        </div>}
+                        {roomLocked && (
+                            <div className="lock-indicator">
+                                <FontAwesomeIcon icon={faLock}/>
+                            </div>
+                        )}
                     </div>
 
                     <Triangle/>
                 </motion.div>
+
                 <div className="host-actions">
-                    <Button 
-                        icon={roomLocked ? faLockOpen : faLock} 
-                        padding="0.5rem 0.8rem" 
+                    <Button
+                        icon={roomLocked ? faLockOpen : faLock}
+                        padding="0.5rem 0.8rem"
                         onClick={toggleRoomLock}
                         variant={roomLocked ? "secondary" : "primary"}
                     />
-                    <Button text="Starten" icon={faGamepad} padding="0.5rem 1rem" onClick={startGame}
-                            disabled={players.length === 0}/>
+                    <Button
+                        text="Start"
+                        icon={faGamepad}
+                        padding="0.5rem 1rem"
+                        onClick={startGame}
+                        disabled={players.length === 0}
+                    />
                 </div>
             </div>
 
-
             <motion.div className="member-info" initial={{opacity: 0, x: -100}} animate={{opacity: 1, x: 0}}>
                 <img src={titleImg} alt="Quiz Logo" className="quiz-logo"/>
-                {players.length === 0 && <h2>Warten auf Mitspieler...</h2>}
+
+                {players.length === 0 && <h2>Waiting for players...</h2>}
 
                 <div className="player-list">
                     {players.map(player => (
@@ -196,11 +213,18 @@ export const Host = () => {
                             onClick={() => kickPlayer(player)}
                             role="button"
                             tabIndex={0}
-                            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); kickPlayer(player); } }}
-                            aria-label={`${player.name} entfernen`}
-                            title="Klicken zum Entfernen"
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter' || e.key === ' ') {
+                                    e.preventDefault();
+                                    kickPlayer(player);
+                                }
+                            }}
+                            aria-label={`Remove ${player.name}`}
+                            title="Click to remove"
                         >
-                            <div className="player-character">{getCharacterEmoji(player.character)}</div>
+                            <div className="player-character">
+                                {getCharacterEmoji(player.character)}
+                            </div>
                             <h3>{player.name}</h3>
                         </motion.div>
                     ))}
@@ -212,8 +236,9 @@ export const Host = () => {
                 <SoundControl />
                 <BackgroundChooser />
             </motion.div>
-            
+
             <SoundRenderer />
         </div>
     );
 }
+

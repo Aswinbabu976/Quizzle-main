@@ -5,8 +5,7 @@ class GoogleProvider extends AIProvider {
         super(config);
         this.baseUrl = config.baseUrl || 'https://generativelanguage.googleapis.com/v1beta';
         this.model = config.model || 'gemini-2.0-flash';
-    }
-
+    }                                                                                            ..
     async listModels() {
         const response = await fetch(`${this.baseUrl}/models?key=${this.apiKey}`);
         if (!response.ok) return [];
@@ -34,6 +33,8 @@ class GoogleProvider extends AIProvider {
                 }
             })
         });
+
+        
 
         if (!response.ok) {
             const error = await response.text();

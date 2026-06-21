@@ -18,6 +18,7 @@ import {useSoundManager} from "@/common/utils/SoundManager.js";
 import SoundRenderer from "@/common/components/SoundRenderer";
 import SoundControl from "@/common/components/SoundControl";
 import {QUESTION_TYPES} from "@/common/constants/QuestionTypes.js";
+import { useTranslation } from "react-i18next";
 
 export const InGameHost = () => {
     const {isLoaded, pullNextQuestion, scoreboard, setScoreboard, playerCount, setPlayerCount} = useContext(QuizContext);
@@ -25,6 +26,7 @@ export const InGameHost = () => {
     const soundManager = useSoundManager();
     const inGameMusicRef = useRef(null);
     const lastAnsweredCountRef = useRef(0);
+    const { t } = useTranslation();
 
     const [currentQuestion, setCurrentQuestion] = useState({});
     const [gameState, setGameState] = useState('question');
@@ -171,8 +173,8 @@ export const InGameHost = () => {
         inGameMusicRef.current = soundManager.playAmbient('INGAME');
 
         socket.on("PLAYER_LEFT", (player) => {
-            toast.error(`${player.name} hat das Spiel verlassen`);
-            soundManager.playFeedback('PLAYER_LEFT');
+            toast.error(t("host.errorSkippingQuestion"));
+                    soundManager.playFeedback('PLAYER_LEFT');
             setPlayerCount(count => Math.max(0, count - 1));
         });
 
@@ -261,7 +263,7 @@ export const InGameHost = () => {
                 <div className="ingame-question">
                     {Object.keys(currentQuestion).length !== 0 && <div className="question-content-container">
                         <div className="top-area">
-                            <Button onClick={skipQuestion} text="Frage überspringen"
+                            <Button onClick={skipQuestion} text={t("host.skipQuestion")}
                                     padding="1rem 1.5rem" icon={faForward} />
                         </div>
                         
@@ -273,7 +275,7 @@ export const InGameHost = () => {
                             <div className="answer-progress-panel">
                                 <div className="answer-progress-counter">
                                     <span className="answer-progress-number">{answerProgress.answeredCount}</span>
-                                    <span className="answer-progress-label">Antworten</span>
+                                    <span className="answer-progress-label">{t("host.answers")}</span>
                                 </div>
                             </div>
                         )}
@@ -287,7 +289,7 @@ export const InGameHost = () => {
 
                         {questionAnimationState === 'answers-ready' && currentQuestion.type === QUESTION_TYPES.SLIDER && (
                             <div className={`text-question-indicator ${questionAnimationState}`}>
-                                <h2>Spieler bewegen den Schieberegler...</h2>
+                                <h2>{t("host.playersMovingSlider")}</h2>
                                 <div className="slider-host-preview">
                                     <div className="slider-range-bar">
                                         <span className="range-label">{currentQuestion.answers?.[0]?.min ?? 0}</span>
@@ -302,7 +304,7 @@ export const InGameHost = () => {
 
                         {questionAnimationState === 'answers-ready' && currentQuestion.type === QUESTION_TYPES.TEXT && (
                             <div className={`text-question-indicator ${questionAnimationState}`}>
-                                <h2>Spieler geben ihre Antworten ein...</h2>
+                                <h2>{t("host.playersTypingAnswers")}</h2>
                                 <div className="text-input-animation">
                                     <div className="typing-dots">
                                         <span></span>
@@ -315,7 +317,7 @@ export const InGameHost = () => {
 
                         {questionAnimationState === 'answers-ready' && currentQuestion.type === QUESTION_TYPES.SEQUENCE && (
                             <div className={`text-question-indicator ${questionAnimationState}`}>
-                                <h2>Spieler sortieren ihre Antworten...</h2>
+                                <h2>{t("host.playersSortingAnswers")}</h2>
                                 <div className="text-input-animation">
                                     <div className="typing-dots">
                                         <span></span>
