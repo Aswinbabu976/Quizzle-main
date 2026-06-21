@@ -460,7 +460,57 @@ module.exports = (io, socket) => {
         }, 5000);
         
         room.startTime = Date.now();
-        callback({success: true});
+
+// ── Server-side question timer ──────────────────────
+if (data.timeLimit && data.timeLimit > 0) {
+    // Clear any existing timer
+    if (room.questionTimer) {
+        clearTimeout(room.questionTimer);
+        room.questionTimer = null;
+    }
+
+    // Broadcast timer start to all players
+    io.to(currentRoomCode.toString()).emit('QUESTION_TIMER_START', {
+        duration: data.timeLimit,
+        startTime: Date.now()
+    });
+
+    // Auto-end question when timer expires
+    room.questionTimer = setTimeout(() => {
+        const currentRoom = rooms[currentRoomCode];
+        if (!currentRoom || currentRoom.currentQuestion.isCompleted) return;
+
+        currentRoom.currentQuestion.isCompleted = true;
+
+        // Generate results for unanswered players
+        const currentAnswers = currentRoom.playerAnswers[currentRoom.playerAnswers.length - 1];
+        const answerData = generateAnswerData(
+            currentRoom.currentQuestion,
+            currentAnswers,
+            currentRoom
+        );
+
+        // Broadcast results to everyone
+        broadcastAnswerResults(io, currentRoomCode, answerData, currentRoom);
+
+        io.to(currentRoom.host).emit('ANSWERS_RECEIVED', {
+            answers: currentAnswers,
+            scoreboard: currentRoom.players,
+            answerData,
+            activePlayerCount: Object.keys(getActivePlayers(currentRoom, io)).length,
+            totalPlayerCount: Object.keys(currentRoom.players).length,
+            allActiveAnswered: true,
+            timedOut: true
+        });
+
+        io.to(currentRoomCode.toString()).emit('QUESTION_TIMED_OUT', {
+            questionIndex: currentRoom.questionHistory.length - 1
+        });
+
+    }, (data.timeLimit + 1) * 1000); // +1 second grace period
+}
+
+callback({success: true});
     });
 
     socket.on('SUBMIT_ANSWER', (data, callback) => {

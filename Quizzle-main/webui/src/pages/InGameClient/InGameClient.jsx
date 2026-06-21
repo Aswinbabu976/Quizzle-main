@@ -47,6 +47,8 @@ export const InGameClient = () => {
     const [isReconnecting, setIsReconnecting] = useState(false);
     const [answersReady, setAnswersReady] = useState(false);
     const [clientCountdown, setClientCountdown] = useState(5);
+    const [serverTimer, setServerTimer] = useState(null);
+const [serverTimerRemaining, setServerTimerRemaining] = useState(null);
 
     useEffect(() => {
         if (practiceCode) {
@@ -240,6 +242,23 @@ export const InGameClient = () => {
         socket.on("KICKED_FROM_ROOM", kickedFromRoom);
         socket.on("disconnect", handleDisconnect);
         socket.on('connect', handleConnect);
+        socket.on("QUESTION_TIMER_START", (data) => {
+            const { duration, startTime } = data;
+            setServerTimerRemaining(duration);
+    
+            const timerInterval = setInterval(() => {
+                const elapsed = Math.floor((Date.now() - startTime) / 1000);
+                const remaining = Math.max(0, duration - elapsed);
+                setServerTimerRemaining(remaining);
+                if (remaining <= 0) clearInterval(timerInterval);
+            }, 500);
+            setServerTimer(timerInterval);
+    });
+
+    socket.on("QUESTION_TIMED_OUT", () => {
+        setServerTimerRemaining(0);
+        if (serverTimer) clearInterval(serverTimer);
+    });
         addReconnectionCallback(handleReconnection);
 
         return () => {
@@ -253,6 +272,9 @@ export const InGameClient = () => {
             socket.off("disconnect", handleDisconnect);
             socket.off('connect', handleConnect);
             socket.off('GAME_STATE_RESTORED');
+            socket.off("QUESTION_TIMER_START");
+            socket.off("QUESTION_TIMED_OUT");
+            if (serverTimer) clearInterval(serverTimer);
             removeReconnectionCallback(handleReconnection);
         }
     }, [roomCode, practiceCode]);
@@ -655,6 +677,23 @@ export const InGameClient = () => {
                             </div>
                         )}
                         <h2>{getCurrentQuestion().title}</h2>
+                        <h2>{getCurrentQuestion().title}</h2>
+
+{/* Server-side countdown timer */}
+{serverTimerRemaining !== null && serverTimerRemaining > 0 && (
+    <div className="server-timer-bar">
+        <div 
+            className="server-timer-fill"
+            style={{
+                width: `${(serverTimerRemaining / (serverTimerRemaining + 1)) * 100}%`,
+                backgroundColor: serverTimerRemaining <= 5 ? '#ef4444' : 
+                                 serverTimerRemaining <= 10 ? '#f97316' : '#6547EE',
+                transition: 'width 0.5s linear, background-color 0.5s'
+            }}
+        />
+        <span className="server-timer-text">{serverTimerRemaining}s</span>
+    </div>
+)}
                     </div>
                     
                     {getCurrentQuestion().b64_image && (
