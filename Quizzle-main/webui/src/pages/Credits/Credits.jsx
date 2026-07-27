@@ -4,6 +4,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faArrowLeft, faImage, faMusic, faFont, faCode, faHeart} from "@fortawesome/free-solid-svg-icons";
 import Button from "@/common/components/Button";
 import {CREDITS} from "@/common/data/credits";
+import { useTranslation } from 'react-i18next';
 import "./styles.sass";
 
 const SectionIcon = {
@@ -15,6 +16,7 @@ const SectionIcon = {
 
 export const Credits = () => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     return (
         <div className="credits-page">
@@ -25,16 +27,14 @@ export const Credits = () => {
                 transition={{duration: 0.4}}
             >
                 <div className="credits-header">
-                    <Button icon={faArrowLeft} onClick={() => navigate("/")} ariaLabel="Zurück">
-                        Zurück
+                    <Button icon={faArrowLeft} onClick={() => navigate("/")} ariaLabel={t('credits.back')}>
+                        {t('credits.back')}
                     </Button>
                     <h1>Credits &amp; Attributions</h1>
                     <p className="credits-subtitle">
-                        Quizzle wäre ohne die großartige Arbeit vieler Künstler:innen und Open-Source-Projekte
-                        nicht möglich. Vielen Dank!
+                        {t('credits.subtitle')}
                     </p>
                 </div>
-
                 {CREDITS.map((section) => (
                     <motion.section
                         key={section.id}
@@ -50,7 +50,6 @@ export const Credits = () => {
                         {section.description && (
                             <p className="section-description">{section.description}</p>
                         )}
-
                         <ul className="credits-list">
                             {section.entries.map((entry, idx) => (
                                 <li key={idx} className="credit-entry">
@@ -58,7 +57,7 @@ export const Credits = () => {
                                         <span className="credit-title">{entry.title}</span>
                                         {entry.author && (
                                             <span className="credit-author">
-                                                von{" "}
+                                                {t('credits.by')}{" "}
                                                 {entry.authorUrl ? (
                                                     <a href={entry.authorUrl} target="_blank" rel="noreferrer">
                                                         {entry.author}
@@ -72,7 +71,7 @@ export const Credits = () => {
                                     <div className="credit-meta">
                                         {entry.source && (
                                             <a href={entry.source} target="_blank" rel="noreferrer" className="credit-link">
-                                                {entry.sourceName || "Quelle"}
+                                                {entry.sourceName || t('credits.source')}
                                             </a>
                                         )}
                                         {entry.license && (

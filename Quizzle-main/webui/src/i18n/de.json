@@ -175,4 +175,45 @@
       "practiceCode": "Übungscode: "
     }
   }
+  ,
+  "quizLoader": {
+    "idPlaceholder": "Quiz-ID (z. B. JWTIOI)",
+    "dropFile": "Datei hier ablegen",
+    "uploadFile": "Datei hochladen",
+    "loadSuccess": "Quiz erfolgreich geladen!",
+    "invalidFormat": "Ungültiges Dateiformat.",
+    "idNotFound": "Quiz-ID nicht gefunden. Versichere dich, dass du die richtige ID eingegeben hast und das Quiz auf der Instanz von {{name}} läuft."
+  }
+  ,
+  "endingHost": {
+    "results": "Ergebnisse",
+    "analytics": "Analytics",
+    "switchView": "Ansicht wechseln",
+    "downloadExcel": "Als Excel herunterladen",
+    "home": "Startseite",
+    "noAnalytics": "Keine Analytics-Daten zum Exportieren verfügbar.",
+    "exportSuccess": "Analytics exportiert",
+    "exportError": "Fehler beim Exportieren der Daten",
+    "noAnalyticsData": "Keine Analytics-Daten verfügbar. Bitte stellen Sie sicher, dass das Quiz ordnungsgemäß beendet wurde."
+  }
+  ,
+  "credits": {
+    "back": "Zurück",
+    "subtitle": "Quizzle wäre ohne die großartige Arbeit vieler Künstler:innen und Open-Source-Projekte nicht möglich. Vielen Dank!",
+    "by": "von",
+    "source": "Quelle"
+  }
+  ,
+  "practiceResults": {
+    "loginRequired": "Anmeldung erforderlich.",
+    "notFound": "Übungsquiz nicht gefunden.",
+    "loadError": "Fehler beim Laden der Ergebnisse.",
+    "noExportData": "Keine Daten zum Exportieren verfügbar.",
+    "exportError": "Fehler beim Exportieren der Daten.",
+    "correct": "Richtig",
+    "answer": "Antwort",
+    "margin": "Marge",
+    "yourOrder": "Ihre Reihenfolge",
+    "correctOrder": "Richtige Reihenfolge"
+  }
 }

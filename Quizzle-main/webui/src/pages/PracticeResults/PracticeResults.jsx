@@ -13,11 +13,12 @@ import {exportPracticeResultsToExcel} from "@/common/utils/ExcelExport";
 import {QUESTION_TYPES, SLIDER_MARGIN_CONFIG} from "@/common/constants/QuestionTypes.js";
 import "./styles.sass";
 import toast from "react-hot-toast";
-
+import { useTranslation } from 'react-i18next';
 export const PracticeResults = () => {
     const {code} = useParams();
     const navigate = useNavigate();
     const {titleImg} = useContext(BrandingContext);
+    const { t } = useTranslation();
 
     const [results, setResults] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -36,9 +37,9 @@ export const PracticeResults = () => {
             setResults(response);
         } catch (error) {
             if (error.message?.includes('401')) {
-                toast.error('Anmeldung erforderlich.');
+                toast.error(t('practiceResults.loginRequired'));
             } else if (error.message?.includes('404')) {
-                toast.error('Übungsquiz nicht gefunden.');
+                toast.error(t('practiceResults.notFound'));
             } else {
                 toast.error('Fehler beim Laden der Ergebnisse.');
             }
@@ -87,7 +88,7 @@ export const PracticeResults = () => {
             toast.success(`Analytics exportiert: ${filename}`);
         } catch (error) {
             console.error('Error exporting to Excel:', error);
-            toast.error('Fehler beim Exportieren der Daten');
+            toast.error(t('practiceResults.exportError'));
         }
     };
 
@@ -208,7 +209,7 @@ export const PracticeResults = () => {
                     </div>
                     {result !== 'correct' && (
                         <div className="answer-line">
-                            <span className="answer-label">Richtig:</span>
+                            <span className="answer-label">{t('practiceResults.correct')}:</span>
                             <span className="answer-value correct">{correctAnswer}</span>
                         </div>
                     )}
@@ -234,7 +235,7 @@ export const PracticeResults = () => {
             return (
                 <div className="slider-answer">
                     <div className="answer-line">
-                        <span className="answer-label">Antwort:</span>
+                        <span className="answer-label">{t('practiceResults.answer')}:</span>
                         <span className={`answer-value ${result === 'incorrect' ? 'incorrect' : 'correct'}`}>
                             {Number.isFinite(userValue) ? userValue : '-'}
                         </span>
@@ -251,7 +252,7 @@ export const PracticeResults = () => {
 
                     {marginKey !== 'none' && Number.isFinite(acceptedMin) && Number.isFinite(acceptedMax) && (
                         <div className="answer-line">
-                            <span className="answer-label">Marge:</span>
+                            <span className="answer-label">{t('practiceResults.margin')}:</span>
                             <span className="answer-value">
                                 {acceptedMin.toFixed(2).replace(/\.00$/, '')} bis {acceptedMax.toFixed(2).replace(/\.00$/, '')}
                             </span>
@@ -294,7 +295,7 @@ export const PracticeResults = () => {
             return (
                 <div className="sequence-answer">
                     <div className="answer-line">
-                        <span className="answer-label">Ihre Reihenfolge:</span>
+                        <span className="answer-label">{t('practiceResults.yourOrder')}:</span>
                         <div className="sequence-list">
                             {userOrder.map((originalIndex, position) => {
                                 const answerContent = question.answers[originalIndex]?.content || `Antwort ${originalIndex + 1}`;
@@ -317,7 +318,7 @@ export const PracticeResults = () => {
                     </div>
                     {result !== 'correct' && (
                         <div className="answer-line">
-                            <span className="answer-label">Richtige Reihenfolge:</span>
+                            <span className="answer-label">{t('practiceResults.correctOrder')}:</span>
                             <div className="sequence-list correct-order">
                                 {correctOrder.map((content, position) => (
                                     <div key={position} className="sequence-item correct">
