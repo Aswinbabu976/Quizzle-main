@@ -175,4 +175,45 @@
       "practiceCode": "Practice code: "
     }
   }
+  ,
+  "quizLoader": {
+    "idPlaceholder": "Quiz ID (e.g. JWTIOI)",
+    "dropFile": "Drop file here",
+    "uploadFile": "Upload File",
+    "loadSuccess": "Quiz loaded successfully!",
+    "invalidFormat": "Invalid file format.",
+    "idNotFound": "Quiz ID not found. Make sure you entered the correct ID and the quiz is running on {{name}}."
+  }
+  ,
+  "endingHost": {
+    "results": "Results",
+    "analytics": "Analytics",
+    "switchView": "Switch view",
+    "downloadExcel": "Download as Excel",
+    "home": "Home",
+    "noAnalytics": "No analytics data available to export.",
+    "exportSuccess": "Analytics exported",
+    "exportError": "Error exporting data",
+    "noAnalyticsData": "No analytics data available. Please make sure the quiz ended properly."
+  }
+  ,
+  "credits": {
+    "back": "Back",
+    "subtitle": "Quizzle would not be possible without the amazing work of many artists and open-source projects. Thank you!",
+    "by": "by",
+    "source": "Source"
+  }
+  ,
+  "practiceResults": {
+    "loginRequired": "Login required.",
+    "notFound": "Practice quiz not found.",
+    "loadError": "Error loading results.",
+    "noExportData": "No data available to export.",
+    "exportError": "Error exporting data.",
+    "correct": "Correct",
+    "answer": "Answer",
+    "margin": "Margin",
+    "yourOrder": "Your order",
+    "correctOrder": "Correct order"
+  }
 }
