@@ -55,7 +55,7 @@ const [serverTimerRemaining, setServerTimerRemaining] = useState(null);
             setIsPracticeMode(true);
 
             if (!practiceUserData || !practiceUserData.name) {
-                toast.error('Bitte wähle zuerst einen Namen und Charakter.');
+                toast.error('Please choose a name and character first.');
                 navigate(`/?code=${practiceCode}`);
                 return;
             }
@@ -155,7 +155,7 @@ const [serverTimerRemaining, setServerTimerRemaining] = useState(null);
 
         const hostDisconnected = () => {
             clearCurrentSession();
-            toast.error("Der Host hat das Spiel verlassen.", {
+            toast.error("Host has left the game.", {
                 duration: 3000
             });
             setTimeout(() => navigate("/"), 1000);
@@ -163,7 +163,7 @@ const [serverTimerRemaining, setServerTimerRemaining] = useState(null);
 
         const kickedFromRoom = () => {
             clearCurrentSession();
-            toast.error("Du wurdest aus dem Raum entfernt.", {
+            toast.error("You have been removed from the room.", {
                 duration: 3000
             });
             setTimeout(() => navigate("/"), 1000);
@@ -202,17 +202,17 @@ const [serverTimerRemaining, setServerTimerRemaining] = useState(null);
                     
                     clearCurrentSession();
                     
-                    let message = "Sitzung abgelaufen. Zurück zur Startseite...";
+                    let message = "Session expired. Returning to home...";
                     if (error === 'Kicked from room') {
-                        message = "Du wurdest aus dem Raum entfernt. Zurück zur Startseite...";
+                                            message = "You have been removed from the room. Returning to home...";
                     } else if (error === 'Host disconnected') {
-                        message = "Der Host hat das Spiel verlassen. Zurück zur Startseite...";
+                                            message = "Host has left the game. Returning to home...";
                     }
                     
                     toast.error(message, { duration: 2000 });
                     setTimeout(() => navigate("/"), 500);
                 } else {
-                    toast.error("Verbindung unterbrochen. Versuche wieder zu verbinden...", { duration: 2000 });
+                    toast.error("Connection lost. Attempting to reconnect...", { duration: 2000 });
                 }
             }
         };
@@ -290,11 +290,11 @@ const [serverTimerRemaining, setServerTimerRemaining] = useState(null);
         } catch (error) {
             console.error('Error loading practice quiz:', error);
             if (error.message && error.message.includes('410')) {
-                toast.error('Dieses Übungsquiz ist abgelaufen.');
+                            toast.error('This practice quiz has expired.');
             } else if (error.message && error.message.includes('404')) {
-                toast.error('Übungsquiz nicht gefunden.');
+                            toast.error('Practice quiz not found.');
             } else {
-                toast.error('Fehler beim Laden des Übungsquiz.');
+                            toast.error('Error loading practice quiz.');
             }
             navigate('/');
         }
@@ -337,7 +337,7 @@ const [serverTimerRemaining, setServerTimerRemaining] = useState(null);
             }
         } catch (error) {
             console.error('Error submitting practice answer:', error);
-            toast.error('Fehler beim Senden der Antwort.');
+            toast.error('Error sending the answer.');
         }
     };
 

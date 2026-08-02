@@ -174,5 +174,10 @@
       "practiceSuccess": "Practice quiz created successfully!",
       "practiceCode": "Practice code: "
     }
+  },
+  "quizLoader": {
+    "dropHere": "Drop file here",
+    "uploadFile": "Upload file",
+    "quizIdNotFound": "Quiz ID not found. Ensure you entered the correct ID and that the quiz is running on {{name}}."
   }
 }
