@@ -4,6 +4,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faArrowLeft, faImage, faMusic, faFont, faCode, faHeart} from "@fortawesome/free-solid-svg-icons";
 import Button from "@/common/components/Button";
 import {CREDITS} from "@/common/data/credits";
+import { useTranslation } from 'react-i18next';
 import "./styles.sass";
 
 const SectionIcon = {
@@ -15,6 +16,7 @@ const SectionIcon = {
 
 export const Credits = () => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     return (
         <div className="credits-page">
@@ -34,7 +36,6 @@ export const Credits = () => {
                         Thank you!
                     </p>
                 </div>
-
                 {CREDITS.map((section) => (
                     <motion.section
                         key={section.id}
@@ -50,7 +51,6 @@ export const Credits = () => {
                         {section.description && (
                             <p className="section-description">{section.description}</p>
                         )}
-
                         <ul className="credits-list">
                             {section.entries.map((entry, idx) => (
                                 <li key={idx} className="credit-entry">

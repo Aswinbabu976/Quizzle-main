@@ -10,17 +10,17 @@ import {QuizContext} from "@/common/contexts/Quiz";
 import toast from "react-hot-toast";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import UploadImage from "./assets/Upload.jsx";
+import { useTranslation } from 'react-i18next';
 
 export const QuizLoader = () => {
     const { t } = useTranslation();
     const {setCirclePosition} = useOutletContext();
     const {titleImg, name} = useContext(BrandingContext);
     const {loadQuizById, loadQuizByContent, isLoaded} = useContext(QuizContext);
+    const { t } = useTranslation();
     const [dragActive, setDragActive] = useState(false);
     const query = new URLSearchParams(window.location.search);
-
     const navigate = useNavigate();
-
     const [quizId, setQuizId] = useState(query.get("id") || "");
 
     const runImport = (file) => {
@@ -90,15 +90,13 @@ export const QuizLoader = () => {
                     <FontAwesomeIcon icon={faFileImport} size="3x"/>
                     <h2>{t('quizLoader.dropHere')}</h2>
                 </div>
-            </div>}
+            )}
             <div className="quiz-loader">
                 <Link to="/"><img src={titleImg} alt="logo"/></Link>
-
                 <div className="code-input">
-                    <Input placeholder="Quiz-ID (z. B. JWTIOI)" value={quizId} onChange={(e) => setQuizId(e.target.value)}/>
-                    <Button icon={faPlay} padding="0.8rem 1.5rem" onClick={loadQuiz} />
+                    <Input placeholder={t('quizLoader.idPlaceholder')} value={quizId} onChange={(e) => setQuizId(e.target.value)}/>
+                    <Button icon={faPlay} padding="0.8rem 1.5rem" onClick={loadQuiz}/>
                 </div>
-
                 <div className="alternative">
                     <hr/>
                     <h2>{t('home.or')}</h2>
@@ -108,7 +106,6 @@ export const QuizLoader = () => {
                 <Button icon={faFileUpload} text={t('quizLoader.uploadFile')} padding="0.8rem 1.5rem"
                         onClick={importQuiz}/>
             </div>
-
             <UploadImage className="upload-image"/>
         </div>
     );

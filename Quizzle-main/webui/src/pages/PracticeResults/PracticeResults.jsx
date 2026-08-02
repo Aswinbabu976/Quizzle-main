@@ -13,11 +13,12 @@ import {exportPracticeResultsToExcel} from "@/common/utils/ExcelExport";
 import {QUESTION_TYPES, SLIDER_MARGIN_CONFIG} from "@/common/constants/QuestionTypes.js";
 import "./styles.sass";
 import toast from "react-hot-toast";
-
+import { useTranslation } from 'react-i18next';
 export const PracticeResults = () => {
     const {code} = useParams();
     const navigate = useNavigate();
     const {titleImg} = useContext(BrandingContext);
+    const { t } = useTranslation();
 
     const [results, setResults] = useState(null);
     const [loading, setLoading] = useState(true);

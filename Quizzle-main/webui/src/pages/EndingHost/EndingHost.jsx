@@ -13,35 +13,29 @@ import SoundControl from "@/common/components/SoundControl";
 import {exportLiveQuizToExcel} from "@/common/utils/ExcelExport";
 import {getCharacterEmoji} from "@/common/data/characters";
 import toast from "react-hot-toast";
+import { useTranslation } from 'react-i18next';
 
 export const EndingHost = () => {
     const {isLoaded, scoreboard} = useContext(QuizContext);
     const navigate = useNavigate();
     const soundManager = useSoundManager();
+    const { t } = useTranslation();
     const [activeView, setActiveView] = useState('scoreboard');
     const [analyticsData, setAnalyticsData] = useState(null);
     const [hasPlayedEndingSound, setHasPlayedEndingSound] = useState(false);
 
     useEffect(() => {
-        if (!isLoaded) {
-            navigate("/load");
-            return;
-        }
-
-        if (scoreboard?.analytics) {
-            setAnalyticsData(scoreboard.analytics);
-        }
+        if (!isLoaded) { navigate("/load"); return; }
+        if (scoreboard?.analytics) setAnalyticsData(scoreboard.analytics);
     }, [isLoaded, scoreboard]);
 
     useEffect(() => {
         if (!isLoaded) return;
-
         if (!hasPlayedEndingSound) {
             const timer = setTimeout(() => {
                 soundManager.playCelebration('GAME_COMPLETE');
                 setHasPlayedEndingSound(true);
             }, 500);
-
             return () => clearTimeout(timer);
         }
     }, [isLoaded, soundManager, hasPlayedEndingSound]);
@@ -51,7 +45,6 @@ export const EndingHost = () => {
             toast.error('No analytics data available for export');
             return;
         }
-
         try {
             const timestamp = new Date().toISOString().slice(0, 19).replace(/[:-]/g, '');
             const quizName = `LiveQuiz_${timestamp}`;
@@ -72,7 +65,7 @@ export const EndingHost = () => {
         <div className={`ending-page ${activeView === 'scoreboard' ? 'ending-page--scoreboard' : ''}`}>
             <SoundRenderer/>
             <div className="ending-sound-control">
-                <SoundControl />
+                <SoundControl/>
             </div>
 
             <div className="view-toggle" role="tablist" aria-label="Switch view">
@@ -135,11 +128,7 @@ export const EndingHost = () => {
 
             {activeView === 'analytics' && analyticsData && (
                 <div className="analytics-container">
-                    <AnalyticsTabs
-                        analyticsData={analyticsData}
-                        quizData={null}
-                        isLiveQuiz={true}
-                    />
+                    <AnalyticsTabs analyticsData={analyticsData} quizData={null} isLiveQuiz={true}/>
                 </div>
             )}
 
