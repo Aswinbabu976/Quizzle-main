@@ -6,6 +6,7 @@ const {firstStart} = require("./utils/file");
 const {startCleanupTask} = require("./utils/cleanup");
 
 const app = express();
+app.set('trust proxy', 1);
 const server = http.createServer(app);
 const io = socketIo(server, {path: '/api/ws', cors: {origin: '*'}, connectionStateRecovery: {maxDisconnectionDuration: 2 * 60 * 1000}});
 
