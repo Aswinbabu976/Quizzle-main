@@ -2,9 +2,11 @@ import {useContext, useEffect} from "react";
 import {postRequest} from "@/common/utils/RequestUtil.js";
 import {AuthContext} from "@/common/contexts/Auth";
 import toast from "react-hot-toast";
+import { useTranslation } from 'react-i18next';
 
 export const ResultsDialog = ({isOpen, onClose, practiceCode, onSuccess}) => {
     const {isAuthenticated, requireAuth} = useContext(AuthContext);
+    const { t } = useTranslation();
 
     useEffect(() => {
         if (!isOpen) return;
@@ -16,11 +18,11 @@ export const ResultsDialog = ({isOpen, onClose, practiceCode, onSuccess}) => {
                 onSuccess(practiceCode);
             } catch (error) {
                 if (error.message?.includes('404')) {
-                    toast.error('Übungsquiz nicht gefunden');
+                    toast.error(t('home.errors.practiceNotFound'));
                 } else if (error.message?.includes('401')) {
-                    toast.error('Anmeldung erforderlich');
+                    toast.error(t('quizCreator.errors.loginRequired'));
                 } else {
-                    toast.error('Fehler beim Laden der Ergebnisse');
+                    toast.error('Error loading results');
                 }
             }
         };

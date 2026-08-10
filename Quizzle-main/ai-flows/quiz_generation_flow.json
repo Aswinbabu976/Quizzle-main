@@ -1,0 +1,10 @@
+{
+  "flow_name": "quiz-generation-basic",
+  "version": "0.1.0",
+  "description": "A simple flow that takes topic and difficulty and returns a JSON quiz",
+  "nodes": [
+    { "id": "1", "type": "input", "name": "get_params", "schema": { "topic": "string", "numQuestions": "number" } },
+    { "id": "2", "type": "llm", "name": "generate_quiz", "template": "Generate a JSON quiz for topic: {{topic}} with {{numQuestions}} questions. Respond only with JSON." },
+    { "id": "3", "type": "output", "name": "return_json" }
+  ]
+}

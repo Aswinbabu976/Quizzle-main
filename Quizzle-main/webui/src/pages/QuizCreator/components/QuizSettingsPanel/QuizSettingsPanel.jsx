@@ -10,32 +10,35 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import {motion} from "framer-motion";
 import {DEFAULT_QUIZ_SETTINGS} from "@/common/constants/QuizSettings.js";
+import { useTranslation } from "react-i18next";
 
 export const QuizSettingsPanel = ({settings, onChange}) => {
     const s = {...DEFAULT_QUIZ_SETTINGS, ...settings};
+
+    const { t } = useTranslation();
 
     const update = (key, value) => {
         onChange({...s, [key]: value});
     };
 
     const difficultyOptions = [
-        {value: "none", label: "Keine Angabe", description: "Keine Schwierigkeit angegeben", icon: faSignal},
-        {value: "easy", label: "Einfach", description: "Für Einsteiger", icon: faSignal},
-        {value: "medium", label: "Mittel", description: "Fortgeschrittene Fragen", icon: faSignal},
-        {value: "hard", label: "Schwer", description: "Anspruchsvolle Fragen", icon: faSignal},
+            {value: "none", label: t('quizSettings.difficultyNone'), description: t('quizSettings.difficultyNoneDesc'), icon: faSignal},
+            {value: "easy", label: t('quizSettings.difficultyEasy'), description: t('quizSettings.difficultyEasyDesc'), icon: faSignal},
+            {value: "medium", label: t('quizSettings.difficultyMedium'), description: t('quizSettings.difficultyMediumDesc'), icon: faSignal},
+            {value: "hard", label: t('quizSettings.difficultyHard'), description: t('quizSettings.difficultyHardDesc'), icon: faSignal},
     ];
 
     const timerOptions = [
-        {value: "15", label: "15 Sekunden", description: "Sehr schnelle Fragen", icon: faClock},
-        {value: "30", label: "30 Sekunden", description: "Schnelle Fragen", icon: faClock},
-        {value: "60", label: "60 Sekunden", description: "Eine Minute pro Frage", icon: faClock},
-        {value: "120", label: "2 Minuten", description: "Mehr Zeit zum Nachdenken", icon: faClock},
-        {value: "-1", label: "Unbegrenzt", description: "Kein Zeitlimit", icon: faClock},
+            {value: "15", label: t('quizSettings.timer15'), description: t('quizSettings.timer15Desc'), icon: faClock},
+            {value: "30", label: t('quizSettings.timer30'), description: t('quizSettings.timer30Desc'), icon: faClock},
+            {value: "60", label: t('quizSettings.timer60'), description: t('quizSettings.timer60Desc'), icon: faClock},
+            {value: "120", label: t('quizSettings.timer120'), description: t('quizSettings.timer120Desc'), icon: faClock},
+            {value: "-1", label: t('quizSettings.timerUnlimited'), description: t('quizSettings.timerUnlimitedDesc'), icon: faClock},
     ];
 
     const scoringOptions = [
-        {value: "time-based", label: "Zeitbasiert", description: "Schnellere Antworten = mehr Punkte", icon: faCoins},
-        {value: "flat", label: "Gleichmäßig", description: "Feste Punkte pro richtiger Antwort", icon: faCoins},
+            {value: "time-based", label: t('quizSettings.scoringTimeBased'), description: t('quizSettings.scoringTimeBasedDesc'), icon: faCoins},
+            {value: "flat", label: t('quizSettings.scoringFlat'), description: t('quizSettings.scoringFlatDesc'), icon: faCoins},
     ];
 
     return (
@@ -46,7 +49,7 @@ export const QuizSettingsPanel = ({settings, onChange}) => {
             transition={{duration: 0.25, delay: 0.1, ease: "easeOut"}}
         >
             <div className="settings-header">
-                <h3>Quiz-Einstellungen</h3>
+                <h3>{t('quizSettings.title')}</h3>
             </div>
 
             <div className="settings-section">

@@ -37,11 +37,11 @@ export const PracticeResults = () => {
             setResults(response);
         } catch (error) {
             if (error.message?.includes('401')) {
-                toast.error(t('practiceResults.loginRequired'));
+                            toast.error('Login required.');
             } else if (error.message?.includes('404')) {
-                toast.error(t('practiceResults.notFound'));
+                            toast.error('Practice quiz not found.');
             } else {
-                toast.error('Fehler beim Laden der Ergebnisse.');
+                            toast.error('Error loading results.');
             }
             navigate('/');
         } finally {
@@ -50,7 +50,7 @@ export const PracticeResults = () => {
     };
 
     const formatDate = (dateString) => {
-        return new Date(dateString).toLocaleString('de-DE', {
+        return new Date(dateString).toLocaleString('en-US', {
             day: '2-digit',
             month: '2-digit',
             year: 'numeric',
@@ -79,16 +79,16 @@ export const PracticeResults = () => {
 
     const handleExportToExcel = () => {
         if (!results || !analyticsData) {
-            toast.error('Keine Daten zum Exportieren verfügbar');
+                    toast.error('No data available for export');
             return;
         }
 
         try {
             const filename = exportPracticeResultsToExcel(results, code);
-            toast.success(`Analytics exportiert: ${filename}`);
+                    toast.success(`Analytics exported: ${filename}`);
         } catch (error) {
             console.error('Error exporting to Excel:', error);
-            toast.error(t('practiceResults.exportError'));
+                    toast.error('Error exporting data');
         }
     };
 
@@ -198,7 +198,7 @@ export const PracticeResults = () => {
             return (
                 <div className="text-answer">
                     <div className="answer-line">
-                        <span className="answer-label">Antwort:</span>
+                        <span className="answer-label">Answer:</span>
                         <span className={`answer-value ${result === 'correct' ? 'correct' : 'incorrect'}`}>
                             {answer}
                         </span>
@@ -209,7 +209,7 @@ export const PracticeResults = () => {
                     </div>
                     {result !== 'correct' && (
                         <div className="answer-line">
-                            <span className="answer-label">{t('practiceResults.correct')}:</span>
+                            <span className="answer-label">Correct:</span>
                             <span className="answer-value correct">{correctAnswer}</span>
                         </div>
                     )}
@@ -235,7 +235,7 @@ export const PracticeResults = () => {
             return (
                 <div className="slider-answer">
                     <div className="answer-line">
-                        <span className="answer-label">{t('practiceResults.answer')}:</span>
+                        <span className="answer-label">Answer:</span>
                         <span className={`answer-value ${result === 'incorrect' ? 'incorrect' : 'correct'}`}>
                             {Number.isFinite(userValue) ? userValue : '-'}
                         </span>
@@ -246,15 +246,15 @@ export const PracticeResults = () => {
                     </div>
 
                     <div className="answer-line">
-                        <span className="answer-label">Richtig:</span>
+                        <span className="answer-label">Correct:</span>
                         <span className="answer-value correct">{Number.isFinite(correctValue) ? correctValue : '-'}</span>
                     </div>
 
                     {marginKey !== 'none' && Number.isFinite(acceptedMin) && Number.isFinite(acceptedMax) && (
                         <div className="answer-line">
-                            <span className="answer-label">{t('practiceResults.margin')}:</span>
+                            <span className="answer-label">Margin:</span>
                             <span className="answer-value">
-                                {acceptedMin.toFixed(2).replace(/\.00$/, '')} bis {acceptedMax.toFixed(2).replace(/\.00$/, '')}
+                                                            {acceptedMin.toFixed(2).replace(/\.00$/, '')} to {acceptedMax.toFixed(2).replace(/\.00$/, '')}
                             </span>
                         </div>
                     )}
@@ -295,10 +295,10 @@ export const PracticeResults = () => {
             return (
                 <div className="sequence-answer">
                     <div className="answer-line">
-                        <span className="answer-label">{t('practiceResults.yourOrder')}:</span>
+                        <span className="answer-label">Your order:</span>
                         <div className="sequence-list">
                             {userOrder.map((originalIndex, position) => {
-                                const answerContent = question.answers[originalIndex]?.content || `Antwort ${originalIndex + 1}`;
+                                const answerContent = question.answers[originalIndex]?.content || `Answer ${originalIndex + 1}`;
                                 const isCorrectPosition = userOrder[position] === position;
                                 return (
                                     <div 
@@ -318,7 +318,7 @@ export const PracticeResults = () => {
                     </div>
                     {result !== 'correct' && (
                         <div className="answer-line">
-                            <span className="answer-label">{t('practiceResults.correctOrder')}:</span>
+                            <span className="answer-label">Correct order:</span>
                             <div className="sequence-list correct-order">
                                 {correctOrder.map((content, position) => (
                                     <div key={position} className="sequence-item correct">
@@ -372,7 +372,7 @@ export const PracticeResults = () => {
             <div className="practice-results-page">
                 <div className="page-header">
                     <img src={titleImg} alt="logo" className="logo"/>
-                    <h1>Ergebnisse werden geladen...</h1>
+                    <h1>Loading results...</h1>
                 </div>
             </div>
         );
@@ -383,11 +383,11 @@ export const PracticeResults = () => {
             <div className="practice-results-page">
                 <div className="page-header">
                     <img src={titleImg} alt="logo" className="logo"/>
-                    <h1>Keine Ergebnisse gefunden</h1>
+                    <h1>No results found</h1>
                     <div className="code-display">Code: <strong>{code}</strong></div>
                 </div>
                 <motion.div className="auth-card" initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}}>
-                    <Button text="Zurück zur Startseite" onClick={() => navigate('/')} />
+                    <Button text="Back to home" onClick={() => navigate('/')} />
                 </motion.div>
             </div>
         );

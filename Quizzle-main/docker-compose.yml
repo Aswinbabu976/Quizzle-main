@@ -53,6 +53,26 @@ services:
       caddy: langflow.quizzleaba.duckdns.org
       caddy.reverse_proxy: "{{upstreams 7860}}"
 
+  # 3a. Minimal AI Core service for chat and flow execution
+  ai-core:
+    build: ./ai-core
+    container_name: ai-core
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - PORT=4000
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    volumes:
+      - ./ai-core:/usr/src/app:ro
+    networks:
+      - amantotom_langflow-net
+      - caddy
+    labels:
+      caddy: ai-core.quizzleaba.duckdns.org
+      caddy.reverse_proxy: "{{upstreams 4000}}"
+    depends_on:
+      - langflow
+
   # 4. Your Postgres Database Service
   postgres:
     image: postgres:16-trixie

@@ -1,4 +1,5 @@
 import {useContext, useEffect, useState} from "react";
+import { useTranslation } from 'react-i18next';
 import {Link, useNavigate, useOutletContext} from "react-router-dom";
 import {BrandingContext} from "@/common/contexts/Branding";
 import "./styles.sass";
@@ -12,6 +13,7 @@ import UploadImage from "./assets/Upload.jsx";
 import { useTranslation } from 'react-i18next';
 
 export const QuizLoader = () => {
+    const { t } = useTranslation();
     const {setCirclePosition} = useOutletContext();
     const {titleImg, name} = useContext(BrandingContext);
     const {loadQuizById, loadQuizByContent, isLoaded} = useContext(QuizContext);
@@ -27,11 +29,12 @@ export const QuizLoader = () => {
             try {
                 const isLoaded = loadQuizByContent(e.target.result);
                 if (!isLoaded) throw new Error("Invalid file format.");
-                toast.success(t('quizLoader.loadSuccess'));
+
+                toast.success(t('quizCreator.importSuccess'));
                 setCirclePosition(["-18rem 0 0 45%", "-35rem 0 0 55%"]);
                 setTimeout(() => navigate("/host/lobby"), 500);
             } catch (e) {
-                toast.error(t('quizLoader.invalidFormat'));
+                toast.error(t('quizCreator.errors.importFailed'));
             }
         }
         reader.readAsArrayBuffer(file);
@@ -50,11 +53,12 @@ export const QuizLoader = () => {
 
     const loadQuiz = async () => {
         const res = await loadQuizById(quizId);
-        if (!res) {
-            toast.error(t('quizLoader.idNotFound', { name }));
+        if (!res){
+            toast.error(t('quizLoader.quizIdNotFound', {name}));
             return;
         }
-        toast.success(t('quizLoader.loadSuccess'));
+
+        toast.success(t('quizCreator.importSuccess'));
         setCirclePosition(["-18rem 0 0 45%", "-35rem 0 0 55%"]);
         setTimeout(() => navigate("/host/lobby"), 500);
     }
@@ -66,7 +70,7 @@ export const QuizLoader = () => {
             const file = e.dataTransfer.files[0];
             runImport(file);
         } catch (e) {
-            toast.error(t('quizLoader.invalidFormat'));
+            toast.error(t('quizCreator.errors.importFailed'));
         }
     }
 
@@ -79,13 +83,12 @@ export const QuizLoader = () => {
     }, [isLoaded]);
 
     return (
-        <div className="loader-page" onDrop={onDrop} onDragOver={(e) => { e.preventDefault(); setDragActive(true); }} onDragLeave={() => setDragActive(false)}>
-            {dragActive && (
-                <div className="drag-overlay">
-                    <div className="drag-container">
-                        <FontAwesomeIcon icon={faFileImport} size="3x"/>
-                        <h2>{t('quizLoader.dropFile')}</h2>
-                    </div>
+        <div className="loader-page" onDrop={onDrop} onDragOver={(e) => {e.preventDefault();
+            setDragActive(true);}} onDragLeave={() => setDragActive(false)}>
+            {dragActive && <div className="drag-overlay">
+                <div className="drag-container">
+                    <FontAwesomeIcon icon={faFileImport} size="3x"/>
+                    <h2>{t('quizLoader.dropHere')}</h2>
                 </div>
             )}
             <div className="quiz-loader">
@@ -99,7 +102,9 @@ export const QuizLoader = () => {
                     <h2>{t('home.or')}</h2>
                     <hr/>
                 </div>
-                <Button icon={faFileUpload} text={t('quizLoader.uploadFile')} padding="0.8rem 1.5rem" onClick={importQuiz}/>
+
+                <Button icon={faFileUpload} text={t('quizLoader.uploadFile')} padding="0.8rem 1.5rem"
+                        onClick={importQuiz}/>
             </div>
             <UploadImage className="upload-image"/>
         </div>
