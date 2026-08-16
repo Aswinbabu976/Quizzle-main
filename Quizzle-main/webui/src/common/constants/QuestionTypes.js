@@ -10,17 +10,19 @@ export const QUESTION_TYPES = {
 
 export const DEFAULT_QUESTION_TYPE = QUESTION_TYPES.MULTIPLE_CHOICE;
 
-export const QUESTION_TYPE_CONFIG = [
-    {type: QUESTION_TYPES.MULTIPLE_CHOICE, icon: faListUl, name: 'Auswahlmöglichkeiten', description: 'Spieler wählen aus vorgegebenen Antwortmöglichkeiten'},
-    {type: QUESTION_TYPES.TRUE_FALSE, icon: faToggleOn, name: 'Wahr/Falsch', description: 'Spieler wählen zwischen Wahr und Falsch'},
-    {type: QUESTION_TYPES.TEXT, icon: faKeyboard, name: 'Text Eingabe', description: 'Spieler geben ihre Antwort als Text ein'},
-    {type: QUESTION_TYPES.SEQUENCE, icon: faSort, name: 'Reihenfolge', description: 'Spieler sortieren Antworten in die richtige Reihenfolge'},
-    {type: QUESTION_TYPES.SLIDER, icon: faSliders, name: 'Schieberegler', description: 'Spieler schätzen einen Wert auf einem Schieberegler'}
-];
+import i18n from '@/i18n';
 
+export const QUESTION_TYPE_CONFIG = [
+    {type: QUESTION_TYPES.MULTIPLE_CHOICE, icon: faListUl, name: 'questionType.multipleChoice', description: 'questionType.multipleChoiceDesc'},
+    {type: QUESTION_TYPES.TRUE_FALSE, icon: faToggleOn, name: 'questionType.trueFalse', description: 'questionType.trueFalseDesc'},
+    {type: QUESTION_TYPES.TEXT, icon: faKeyboard, name: 'questionType.text', description: 'questionType.textDesc'},
+    {type: QUESTION_TYPES.SEQUENCE, icon: faSort, name: 'questionType.sequence', description: 'questionType.sequenceDesc'},
+    {type: QUESTION_TYPES.SLIDER, icon: faSliders, name: 'questionType.slider', description: 'questionType.sliderDesc'}
+];
 const getQuestionTypeConfig = (type) => QUESTION_TYPE_CONFIG.find(config => config.type === type) || QUESTION_TYPE_CONFIG[0];
 export const getQuestionTypeIcon = (type) => getQuestionTypeConfig(type).icon;
-export const getQuestionTypeName = (type) => getQuestionTypeConfig(type).name;
+export const getQuestionTypeName = (type) => i18n.t(getQuestionTypeConfig(type).name);
+export const getQuestionTypeDescription = (type) => i18n.t(getQuestionTypeConfig(type).description);
 
 export const getDefaultAnswersForType = (type) => {
     switch (type) {

@@ -16,12 +16,14 @@ import {generateUuid} from "@/common/utils/UuidUtil.js";
 import {QUESTION_TYPES, SLIDER_MARGIN_CONFIG} from "@/common/constants/QuestionTypes.js";
 import {useSoundManager} from "@/common/utils/SoundManager.js";
 import toast from "react-hot-toast";
+import { useTranslation } from 'react-i18next';
 
 export const InGameClient = () => {
     const navigate = useNavigate();
     const {username, roomCode, practiceUserData} = useContext(QuizContext);
     const {practiceCode} = useParams();
     const soundManager = useSoundManager();
+    const { t } = useTranslation();
 
     const [isPracticeMode, setIsPracticeMode] = useState(false);
     const [practiceQuiz, setPracticeQuiz] = useState(null);
@@ -502,7 +504,7 @@ const [serverTimerRemaining, setServerTimerRemaining] = useState(null);
                 );
                 
             default:
-                return <div>Unbekannter Fragetyp: {question.type}</div>;
+                return <div>{t('inGame.unknownQuestionType', { type: question.type })}</div>;
         }
     };
 
@@ -539,13 +541,13 @@ const [serverTimerRemaining, setServerTimerRemaining] = useState(null);
         }
 
         if (!answersReady) {
-            toast.error("Antworten sind noch nicht bereit!");
+            toast.error(t('inGame.errors.answersNotReady'));
             return;
         }
 
         socket.emit("SUBMIT_ANSWER", {answers}, (response) => {
             if (!response.success) {
-                toast.error(response.error || "Fehler beim Senden der Antwort");
+                toast.error(response.error || t('inGame.errors.sendFailed'));
                 return;
             }
             setCurrentQuestion(null);

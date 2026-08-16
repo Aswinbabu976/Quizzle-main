@@ -252,6 +252,16 @@
     "yourOrder": "Your order",
     "correctOrder": "Correct order"
   },
+  "inGame": {
+    "textInput": {
+      "placeholder": "Type your answer...",
+      "ariaInput": "Answer input",
+      "ariaSubmit": "Submit answer"
+    },
+    "slider": {
+      "submit": "Send answer"
+    }
+  },
   "quizSettings": {
     "title": "Quiz Settings",
     "aboutTitle": "About the quiz",

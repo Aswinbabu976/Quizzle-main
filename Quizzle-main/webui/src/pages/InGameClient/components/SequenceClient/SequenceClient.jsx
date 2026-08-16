@@ -4,6 +4,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPaperPlane, faGripVertical, faSort, faRotateLeft} from "@fortawesome/free-solid-svg-icons";
 import {Reorder, AnimatePresence, motion} from "framer-motion";
 import AnswerContent from "@/common/components/AnswerContent";
+import { useTranslation } from 'react-i18next';
 
 const useIsTouchDevice = () => {
     const [isTouch, setIsTouch] = useState(false);
@@ -18,6 +19,7 @@ const useIsTouchDevice = () => {
 };
 
 export const SequenceClient = ({question, onSubmit}) => {
+    const { t } = useTranslation();
     const [sortableAnswers, setSortableAnswers] = useState([]);
     const [hasSubmitted, setHasSubmitted] = useState(false);
     const [pickedOrder, setPickedOrder] = useState([]);
@@ -78,7 +80,7 @@ export const SequenceClient = ({question, onSubmit}) => {
             <div className="sequence-client">
                 <div className="sequence-instructions">
                     <FontAwesomeIcon icon={faSort} className="sequence-icon" />
-                    <span>Warten auf Frage...</span>
+                    <span>{t('inGame.waitingForQuestion')}</span>
                 </div>
             </div>
         );
@@ -89,11 +91,11 @@ export const SequenceClient = ({question, onSubmit}) => {
             <div className="sequence-client">
                 <div className="sequence-instructions">
                     <FontAwesomeIcon icon={faSort} className="sequence-icon" />
-                    <span>Sortieraufgabe wird geladen...</span>
+                    <span>{t('inGame.sortingLoading')}</span>
                 </div>
                 <div className="sequence-error">
-                    <p>Reihenfolge-Fragen benötigen die Antwortinhalte.</p>
-                    <p>Bitte verwenden Sie den Übungsmodus für Reihenfolge-Fragen.</p>
+                    <p>{t('inGame.sequence.requireContent')}</p>
+                    <p>{t('inGame.sequence.usePracticeMode')}</p>
                 </div>
             </div>
         );
@@ -104,7 +106,7 @@ export const SequenceClient = ({question, onSubmit}) => {
             <div className="sequence-client">
                 <div className="sequence-instructions">
                     <FontAwesomeIcon icon={faSort} className="sequence-icon" />
-                    <span>Keine Antworten verfügbar</span>
+                    <span>{t('inGame.sequence.noAnswers')}</span>
                 </div>
             </div>
         );
@@ -135,7 +137,7 @@ export const SequenceClient = ({question, onSubmit}) => {
                 onClick={() => handleTapItem(answer.displayId)}
                 role="option"
                 aria-selected={isPicked}
-                aria-label={answer.type === "image" ? `Antwort ${index + 1}` : answer.content}
+                aria-label={answer.type === "image" ? t('common.answerAlt', { index: index + 1 }) : answer.content}
                 layout
                 transition={{type: "spring", stiffness: 400, damping: 30}}
             >
@@ -154,8 +156,8 @@ export const SequenceClient = ({question, onSubmit}) => {
             <div className="sequence-instructions">
                 <FontAwesomeIcon icon={faSort} className="sequence-icon" />
                 <span>{isTouchDevice
-                    ? "Tippe die Antworten in der richtigen Reihenfolge an"
-                    : "Ziehen Sie die Antworten in die richtige Reihenfolge"
+                    ? t('inGame.sequence.touchInstruction')
+                    : t('inGame.sequence.dragInstruction')
                 }</span>
             </div>
 

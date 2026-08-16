@@ -150,6 +150,16 @@
     "chooseCharacter": "Wähle deinen Charakter",
     "selectCharacter": "Charakter auswählen"
   },
+  "inGame": {
+    "textInput": {
+      "placeholder": "Geben Sie Ihre Antwort ein...",
+      "ariaInput": "Antwort eingeben",
+      "ariaSubmit": "Antwort absenden"
+    },
+    "slider": {
+      "submit": "Antwort senden"
+    }
+  },
   "quizCreator": {
     "titlePlaceholder": "Quiz-Titel eingeben",
     "undo": "Rückgängig (Strg+Z)",
