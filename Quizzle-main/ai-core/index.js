@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const bodyParser = require('express').json;
-const adapter = require('./adapters/openai');
+const adapter = require('./adapters/openai_stream');
 const { loadFlows } = require('./lib/flowLoader');
 const path = require('path');
 
@@ -65,14 +65,41 @@ app.post('/ai/run-flow', async (req, res) => {
 });
 
 app.post('/ai/chat', async (req, res) => {
-  const { sessionId, userMessage } = req.body || {};
+  const { sessionId, userMessage, history } = req.body || {};
   if (!userMessage) return res.status(400).json({ error: 'userMessage is required' });
+
+  // Persona: friendly polite teacher
+  const persona = "You are Quizzle Bot, a friendly and polite teacher. Answer clearly and encouragingly, explain quiz rules when asked, help create quiz prompts, and keep responses concise and helpful.";
+
+  // SSE headers
+  res.writeHead(200, {
+    'Content-Type': 'text/event-stream',
+    'Cache-Control': 'no-cache',
+    'Connection': 'keep-alive',
+    'X-Accel-Buffering': 'no'
+  });
+  const sendEvent = (evt) => res.write(`data: ${JSON.stringify(evt)}\n\n`);
+
   try {
+    // Stream through adapter.chatStream if available
+    if (adapter.chatStream) {
+      sendEvent({ type: 'status', stage: 'streaming' });
+      for await (const chunk of adapter.chatStream({ sessionId, userMessage, history, persona })) {
+        sendEvent({ type: 'chunk', chunk });
+      }
+      sendEvent({ type: 'done' });
+      return res.end();
+    }
+
+    // Fallback to single-shot
     const result = await adapter.chat({ sessionId, userMessage });
-    return res.json({ reply: result.text || result });
+    sendEvent({ type: 'chunk', chunk: result.text || result });
+    sendEvent({ type: 'done' });
+    return res.end();
   } catch (err) {
     console.error('chat error', err);
-    return res.status(500).json({ error: String(err) });
+    sendEvent({ type: 'error', message: String(err) });
+    return res.end();
   }
 });
 

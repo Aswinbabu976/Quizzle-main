@@ -469,4 +469,71 @@ app.post('/generate', requireAuth, limiter, async (req, res) => {
     res.end();
 });
 
+app.post('/chat', requireAuth, limiter, async (req, res) => {
+    if (!isConfigured()) return res.status(503).json({ message: "AI is not configured." });
+    const { message, history } = req.body || {};
+    if (!message || typeof message !== 'string') return res.status(400).json({ message: 'message is required' });
+
+    const provider = getProvider();
+    if (!provider) return res.status(503).json({ message: 'AI provider not available.' });
+
+    // Persona: friendly polite teacher
+    const persona = "You are Quizzle Bot, a friendly and polite teacher. Answer clearly and encouragingly, explain quiz rules when asked, help create quiz prompts, and keep responses concise and helpful.";
+
+    // Use SSE streaming so client can render progressively
+    res.writeHead(200, {
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache',
+        'Connection': 'keep-alive',
+        'X-Accel-Buffering': 'no'
+    });
+    const sendEvent = (evt) => res.write(`data: ${JSON.stringify(evt)}\n\n`);
+
+    try {
+        const promptParts = [];
+        promptParts.push(`System: ${persona}`);
+        if (Array.isArray(history)) {
+            for (const h of history) {
+                if (h && h.role && h.content) {
+                    promptParts.push(`${h.role === 'user' ? 'User' : 'Assistant'}: ${h.content}`);
+                }
+            }
+        }
+        promptParts.push(`User: ${message}`);
+        promptParts.push('Assistant:');
+        const prompt = promptParts.join('\n');
+
+        // If provider supports streaming, stream chunks as they arrive
+        if (provider.generateStream) {
+            sendEvent({ type: 'status', stage: 'streaming' });
+            try {
+                for await (const chunk of provider.generateStream({ prompt })) {
+                    sendEvent({ type: 'chunk', chunk });
+                }
+                sendEvent({ type: 'done' });
+            } catch (err) {
+                console.error('chat stream error', err);
+                sendEvent({ type: 'error', message: err.message || 'Error during streaming.' });
+            }
+            return res.end();
+        }
+
+        // Fallback to single-shot generation
+        if (provider.generateOnce) {
+            const out = await provider.generateOnce({ prompt });
+            const reply = typeof out === 'string' ? out : (out?.text || out?.raw || JSON.stringify(out));
+            sendEvent({ type: 'chunk', chunk: reply });
+            sendEvent({ type: 'done' });
+            return res.end();
+        }
+
+        sendEvent({ type: 'error', message: 'Provider has no generation method' });
+        return res.end();
+    } catch (err) {
+        console.error('chat error', err);
+        sendEvent({ type: 'error', message: err.message || 'Chat failed' });
+        return res.end();
+    }
+});
+
 module.exports = app;

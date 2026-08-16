@@ -12,6 +12,7 @@ import ResultsDialog from "@/pages/Home/components/ResultsDialog";
 import {QuizContext} from "@/common/contexts/Quiz";
 import { useTranslation } from 'react-i18next'
 import LanguageSwitcher from '@/common/components/LanguageSwitcher'
+import Chatbot from '@/common/components/Chatbot'
 import {AuthContext} from "@/common/contexts/Auth";
 import QrScanner from "qr-scanner";
 import toast from "react-hot-toast";
@@ -273,6 +274,7 @@ toast.success(t('home.errors.loggedOut'));                                }}/>
                 practiceCode={code}
                 onSuccess={handleResultsSuccess}
             />
+            <Chatbot />
             <LanguageSwitcher />
         </div>
     )

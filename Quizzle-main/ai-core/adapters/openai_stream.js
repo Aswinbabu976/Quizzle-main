@@ -1,6 +1,4 @@
-// Minimal adapter for demonstration. Uses global fetch (Node 18+/bun) if available.
-// If OPENAI_API_KEY is not set, adapter returns mock responses so the service is usable locally.
-
+// Streaming-capable OpenAI adapter for ai-core
 const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
 
 async function callOpenAI(messages, options = {}) {
@@ -8,12 +6,12 @@ async function callOpenAI(messages, options = {}) {
   if (!key) throw new Error('OPENAI_API_KEY not set');
   if (typeof fetch !== 'function') throw new Error('fetch is not available in this runtime. Use Node 18+ or bun, or add a fetch polyfill');
 
-  const body = Object.assign({ model: 'gpt-3.5-turbo', messages }, options);
+  const body = Object.assign({ model: options.model || 'gpt-3.5-turbo', messages }, options);
   const resp = await fetch(OPENAI_API_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${key}`,
+      'Authorization': `Bearer ${key}`
     },
     body: JSON.stringify(body),
   });
@@ -24,6 +22,51 @@ async function callOpenAI(messages, options = {}) {
   }
   const data = await resp.json();
   return data;
+}
+
+async function* callOpenAIStream(messages, options = {}) {
+  const key = process.env.OPENAI_API_KEY;
+  if (!key) throw new Error('OPENAI_API_KEY not set');
+  if (typeof fetch !== 'function') throw new Error('fetch is not available in this runtime. Use Node 18+ or bun, or add a fetch polyfill');
+
+  const body = Object.assign({ model: options.model || 'gpt-3.5-turbo', messages, stream: true }, options);
+  const resp = await fetch(OPENAI_API_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${key}`
+    },
+    body: JSON.stringify(body),
+  });
+
+  if (!resp.ok) {
+    const txt = await resp.text();
+    throw new Error(`OpenAI API error: ${resp.status} ${txt}`);
+  }
+
+  const reader = resp.body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = '';
+
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    buffer += decoder.decode(value, { stream: true });
+    const lines = buffer.split('\n');
+    buffer = lines.pop() || '';
+
+    for (const line of lines) {
+      const trimmed = line.trim();
+      if (!trimmed || !trimmed.startsWith('data: ')) continue;
+      const data = trimmed.slice(6);
+      if (data === '[DONE]') return;
+      try {
+        const parsed = JSON.parse(data);
+        const content = parsed.choices?.[0]?.delta?.content;
+        if (content) yield content;
+      } catch (e) {}
+    }
+  }
 }
 
 module.exports = {
@@ -40,7 +83,6 @@ module.exports = {
     return { text };
   },
 
-  // Streaming chat generator: yields text chunks as they arrive from OpenAI
   chatStream: async function* ({ sessionId, userMessage, history = [], persona = 'You are a helpful assistant for Quizzle.' }) {
     if (!process.env.OPENAI_API_KEY) {
       yield `Mock reply: received "${userMessage}". Set OPENAI_API_KEY to enable real model.`;
