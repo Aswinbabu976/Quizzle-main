@@ -24,7 +24,7 @@ export const getQuestionTypeName = (type) => getQuestionTypeConfig(type).name;
 
 export const getDefaultAnswersForType = (type) => {
     switch (type) {
-        case QUESTION_TYPES.TRUE_FALSE: return [{type: QUESTION_TYPES.TEXT, content: 'Wahr', is_correct: false}, {type: QUESTION_TYPES.TEXT, content: 'Falsch', is_correct: false}];
+        case QUESTION_TYPES.TRUE_FALSE: return [{type: QUESTION_TYPES.TEXT, content: 'True', is_correct: false}, {type: QUESTION_TYPES.TEXT, content: 'False', is_correct: false}];
         case QUESTION_TYPES.TEXT: return [{content: ''}];
         case QUESTION_TYPES.SEQUENCE: return [];
         case QUESTION_TYPES.SLIDER: return [{correctValue: 50, min: 0, max: 100, step: 1, answerMargin: 'medium'}];
@@ -50,9 +50,9 @@ export const MINIMUM_ANSWERS = {
 };
 
 export const SLIDER_MARGIN_CONFIG = {
-    none: { label: 'Keine', description: 'Nur die exakte Antwort akzeptieren', factor: 0 },
-    low: { label: 'Niedrig', description: 'Niedrige Fehlertoleranz', factor: 0.05 },
-    medium: { label: 'Mittel', description: 'Mittlere Fehlertoleranz', factor: 0.1 },
-    high: { label: 'Hoch', description: 'Hohe Fehlertoleranz', factor: 0.2 },
-    maximum: { label: 'Maximal', description: 'Nächste Antwort erhält mehr Punkte', factor: 0.4 }
+    none: { label: 'None', description: 'Only accept the exact answer', factor: 0 },
+    low: { label: 'Low', description: 'Low tolerance for error', factor: 0.05 },
+    medium: { label: 'Medium', description: 'Medium tolerance for error', factor: 0.1 },
+    high: { label: 'High', description: 'High tolerance for error', factor: 0.2 },
+    maximum: { label: 'Maximum', description: 'Next answer gets more points', factor: 0.4 }
 };

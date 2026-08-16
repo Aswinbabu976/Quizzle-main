@@ -153,6 +153,9 @@
   "quizCreator": {
     "titlePlaceholder": "Quiz-Titel eingeben",
     "undo": "Rückgängig (Strg+Z)",
+    "questionEditor": {
+      "placeholderTitle": "Fragentitel eingeben"
+    },
     "redo": "Wiederholen (Strg+Shift+Z)",
     "settings": "Quiz-Einstellungen",
     "import": "Quiz aus Datei importieren",
@@ -176,6 +179,18 @@
     }
   }
   ,
+  "questionType": {
+    "multipleChoice": "Auswahlmöglichkeiten",
+    "multipleChoiceDesc": "Spieler wählen aus vorgegebenen Antwortmöglichkeiten",
+    "trueFalse": "Wahr / Falsch",
+    "trueFalseDesc": "Spieler wählen zwischen Wahr und Falsch",
+    "text": "Texteingabe",
+    "textDesc": "Spieler geben ihre Antwort als Text ein",
+    "sequence": "Reihenfolge",
+    "sequenceDesc": "Spieler sortieren Antworten in die richtige Reihenfolge",
+    "slider": "Schieberegler",
+    "sliderDesc": "Spieler schätzen einen Wert mit einem Schieberegler"
+  },
   "quizLoader": {
     "idPlaceholder": "Quiz-ID (z. B. JWTIOI)",
     "dropFile": "Datei hier ablegen",

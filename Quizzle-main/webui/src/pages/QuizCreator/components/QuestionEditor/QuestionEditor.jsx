@@ -1,5 +1,6 @@
 import "./styles.sass";
 import Input from "@/common/components/Input";
+import { useTranslation } from 'react-i18next';
 import Button from "@/common/components/Button";
 import {faClone, faTrash} from "@fortawesome/free-solid-svg-icons";
 import ImagePresenter from "@/pages/QuizCreator/components/QuestionEditor/components/ImagePresenter";
@@ -38,17 +39,34 @@ export const QuestionEditor = ({question, onChange, onCommit, deleteQuestion, du
     if (!question) return null;
     const questionType = question.type || DEFAULT_QUESTION_TYPE;
 
+    const { t } = useTranslation();
     const getTypeIcon = (type) => getQuestionTypeIcon(type);
-    const getTypeName = (type) => getQuestionTypeName(type);
+    const getTypeName = (type) => {
+        // map types to i18n keys
+        const map = {
+            'multiple-choice': 'questionType.multipleChoice',
+            'true-false': 'questionType.trueFalse',
+            'text': 'questionType.text',
+            'sequence': 'questionType.sequence',
+            'slider': 'questionType.slider'
+        };
+        return t(map[type] || map[DEFAULT_QUESTION_TYPE]);
+    };
     const getTypeDescription = (type) => {
-        const config = QUESTION_TYPE_CONFIG.find(c => c.type === type);
-        return config ? config.description : '';
+        const map = {
+            'multiple-choice': 'questionType.multipleChoiceDesc',
+            'true-false': 'questionType.trueFalseDesc',
+            'text': 'questionType.textDesc',
+            'sequence': 'questionType.sequenceDesc',
+            'slider': 'questionType.sliderDesc'
+        };
+        return t(map[type] || map[DEFAULT_QUESTION_TYPE]);
     };
 
     return (
         <motion.div className="question-editor" initial={{x: -300, opacity: 0}} animate={{x: 0, opacity: 1}}>
             <div className="question-action-area">
-                <Input placeholder="Fragentitel eingeben" value={question.title} onChange={(e) => updateTitle(e.target.value)}
+                <Input placeholder={t('quizCreator.questionEditor.placeholderTitle')} value={question.title} onChange={(e) => updateTitle(e.target.value)}
                           textAlign="center"/>
                 
                 <div className="question-type-selector-container" ref={popoverRef}>
@@ -78,9 +96,9 @@ export const QuestionEditor = ({question, onChange, onCommit, deleteQuestion, du
                                     >
                                         <div className="type-option-header">
                                             <FontAwesomeIcon icon={typeOption.icon} />
-                                            <span className="type-name">{typeOption.name}</span>
+                                            <span className="type-name">{getTypeName(typeOption.type)}</span>
                                         </div>
-                                        <p className="type-description">{typeOption.description}</p>
+                                        <p className="type-description">{getTypeDescription(typeOption.type)}</p>
                                     </div>
                                 ))}
                             </motion.div>

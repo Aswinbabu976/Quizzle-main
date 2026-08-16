@@ -153,6 +153,9 @@
   "quizCreator": {
     "titlePlaceholder": "Enter quiz title",
     "undo": "Undo (Ctrl+Z)",
+    "questionEditor": {
+      "placeholderTitle": "Enter question title"
+    },
     "redo": "Redo (Ctrl+Shift+Z)",
     "settings": "Quiz Settings",
     "import": "Import quiz from file",
@@ -181,6 +184,18 @@
     "quizIdNotFound": "Quiz ID not found. Ensure you entered the correct ID and that the quiz is running on {{name}}."
   }
   ,
+  "questionType": {
+    "multipleChoice": "Multiple choice",
+    "multipleChoiceDesc": "Players pick from predefined answer options",
+    "trueFalse": "True / False",
+    "trueFalseDesc": "Players choose between true and false",
+    "text": "Text input",
+    "textDesc": "Players type their answer as text",
+    "sequence": "Ordering",
+    "sequenceDesc": "Players order answers into the correct sequence",
+    "slider": "Slider",
+    "sliderDesc": "Players estimate a value using a slider"
+  },
   "quizLoader": {
     "idPlaceholder": "Quiz ID (e.g. JWTIOI)",
     "dropFile": "Drop file here",
