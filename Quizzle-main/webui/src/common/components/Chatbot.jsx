@@ -26,7 +26,6 @@ const Chatbot = () => {
 
   const handleToggle = () => {
     if (!isAuthenticated) {
-      // Ask user to authenticate; after login open the chat
       requireAuth(() => setOpen(true));
       return;
     }
@@ -41,13 +40,13 @@ const Chatbot = () => {
     }
 
     const userMsg = { role: 'user', content: input.trim() };
-    // assistant placeholder index
-    const assistantIndex = messages.length + 1;
+    
     setMessages(prev => [...prev, userMsg, { role: 'assistant', content: '' }]);
     setInput('');
     setSending(true);
 
     try {
+      // FIX 1: Corrected instantiation of AbortController
       const controller = new AbortController();
       abortRef.current = controller;
 
@@ -59,12 +58,10 @@ const Chatbot = () => {
       });
 
       if (!resp.ok) {
-        // try to parse error
         const err = await resp.json().catch(() => ({}));
         throw new Error(err.message || 'Server error');
       }
 
-      // streaming response (SSE-like) — parse data: JSON\n\n chunks
       const reader = resp.body.getReader();
       const decoder = new TextDecoder();
       let buffer = '';
@@ -86,10 +83,15 @@ const Chatbot = () => {
             const evt = JSON.parse(dataLine.slice(6));
             if (evt.type === 'chunk') {
               const chunk = evt.chunk || '';
+              // FIX 2: Safely update the last assistant message
               setMessages(prev => {
-                const copy = prev.slice();
-                if (copy[assistantIndex]) {
-                  copy[assistantIndex] = { ...copy[assistantIndex], content: (copy[assistantIndex].content || '') + chunk };
+                const copy = [...prev];
+                const lastIdx = copy.length - 1;
+                if (lastIdx >= 0 && copy[lastIdx].role === 'assistant') {
+                  copy[lastIdx] = { 
+                    ...copy[lastIdx], 
+                    content: copy[lastIdx].content + chunk 
+                  };
                 }
                 return copy;
               });
@@ -100,13 +102,11 @@ const Chatbot = () => {
               done = true;
             }
           } catch (e) {
-            // ignore JSON parse errors
             console.warn('Failed to parse chat event', e);
           }
         }
       }
 
-      // flush remaining buffer if any (sometimes provider sends full reply at once)
       if (buffer.trim()) {
         const lines = buffer.split('\n');
         for (const line of lines) {
@@ -116,9 +116,13 @@ const Chatbot = () => {
             const evt = JSON.parse(l.slice(6));
             if (evt.type === 'chunk') {
               setMessages(prev => {
-                const copy = prev.slice();
-                if (copy[assistantIndex]) {
-                  copy[assistantIndex] = { ...copy[assistantIndex], content: (copy[assistantIndex].content || '') + (evt.chunk || '') };
+                const copy = [...prev];
+                const lastIdx = copy.length - 1;
+                if (lastIdx >= 0 && copy[lastIdx].role === 'assistant') {
+                  copy[lastIdx] = { 
+                    ...copy[lastIdx], 
+                    content: copy[lastIdx].content + (evt.chunk || '') 
+                  };
                 }
                 return copy;
               });
@@ -129,9 +133,8 @@ const Chatbot = () => {
 
     } catch (e) {
       console.error('Chat error', e);
-      // If aborted intentionally, avoid adding an error toast - cancel handler already updated UI
       if (e && e.name === 'AbortError') {
-        // do nothing
+        // Handled via cancel button
       } else {
         setMessages(prev => [...prev, { role: 'assistant', content: 'Sorry, something went wrong.' }]);
       }
@@ -144,7 +147,7 @@ const Chatbot = () => {
   };
 
   return (
-    <div className={`chatbot ${open ? 'open' : ''}`}>
+    <div className={`chatbot${open ? ' open' : ''}`}>
       <motion.button className="chat-toggle" onClick={handleToggle} whileTap={{ scale: 0.95 }} aria-label="Toggle Chatbot">
         <FontAwesomeIcon icon={faRobot} />
       </motion.button>
@@ -179,7 +182,6 @@ const Chatbot = () => {
                 onKeyDown={e => { if (e.key === 'Enter') send(); }}
               />
 
-              {/* When sending, offer a Cancel button to interrupt streaming */}
               {sending ? (
                 <>
                   <button className="cancel-btn" onClick={() => {
@@ -189,7 +191,7 @@ const Chatbot = () => {
                     if (abortRef.current) abortRef.current = null;
                     setSending(false);
                     setMessages(prev => {
-                      const copy = prev.slice();
+                      const copy = [...prev];
                       const last = copy.length - 1;
                       if (copy[last] && copy[last].role === 'assistant') {
                         copy[last] = { ...copy[last], content: (copy[last].content || '') + '\n\n— (response cancelled)' };
@@ -219,4 +221,3 @@ const Chatbot = () => {
 };
 
 export default Chatbot;
-

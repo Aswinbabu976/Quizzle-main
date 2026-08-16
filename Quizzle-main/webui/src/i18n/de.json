@@ -150,6 +150,16 @@
     "chooseCharacter": "Wähle deinen Charakter",
     "selectCharacter": "Charakter auswählen"
   },
+  "inGame": {
+    "textInput": {
+      "placeholder": "Geben Sie Ihre Antwort ein...",
+      "ariaInput": "Antwort eingeben",
+      "ariaSubmit": "Antwort absenden"
+    },
+    "slider": {
+      "submit": "Antwort senden"
+    }
+  },
   "quizCreator": {
     "titlePlaceholder": "Quiz-Titel eingeben",
     "undo": "Rückgängig (Strg+Z)",
@@ -160,11 +170,25 @@
     "settings": {
       "title": "Fragen-Einstellungen",
       "timeLimit": "Zeitlimit",
-      "timerPlaceholder": "Timer auswählen...",
+      "timerPlaceholder": "Zeitlimit auswählen...",
       "pointDistribution": "Punkteverteilung",
       "pointPlaceholder": "Punkteverteilung auswählen...",
-      "answerMargin": "Antwort-Marge",
-      "answerMarginPlaceholder": "Antwort-Marge auswählen..."
+      "answerMargin": "Antwort-Toleranz",
+      "answerMarginPlaceholder": "Toleranz auswählen...",
+      "standard": "Standard",
+      "unlimited": "Unbegrenzt",
+      "seconds": "Sekunden",
+      "minutes": "Minuten",
+      "fromQuizSettings": "Aus Quiz-Einstellungen",
+      "quickQuestions": "Schnelle Fragen",
+      "oneMinutePerQuestion": "Eine Minute pro Frage",
+      "moreTime": "Mehr Zeit zum Nachdenken",
+      "noTimeLimit": "Kein Zeitlimit",
+      "normalPoints": "Normale Punkteverteilung",
+      "noPoints": "Keine Punkte",
+      "noPointsDesc": "Für diese Frage gibt es keine Punkte",
+      "doublePoints": "Doppelte Punkte",
+      "doublePointsDesc": "Diese Frage bringt doppelte Punkte"
     },
     "import": "Quiz aus Datei importieren",
     "download": "Quiz als Datei herunterladen",

@@ -8,6 +8,7 @@ const { getConfig } = require('../utils/file');
 const fs = require('fs');
 const path = require('path');
 
+// Rate limiters
 const limiter = rateLimit({
     windowMs: 1 * 60 * 1000,
     limit: 10,
@@ -27,8 +28,9 @@ app.get('/status', (req, res) => {
     });
 });
 
-// --- Flow loader (loads ai-flows/*.json from project root) ---
+// --- Flow loader ---
 const flowsDir = path.join(process.cwd(), 'ai-flows');
+
 function loadFlowsFromDir(dir) {
     const result = {};
     try {
@@ -37,7 +39,11 @@ function loadFlowsFromDir(dir) {
         for (const f of files) {
             try {
                 const full = path.join(dir, f);
-                const j = JSON.parse(fs.readFileSync(full, 'utf8'));
+                // Ensure target path stays strictly inside flowsDir to avoid path traversal
+                if (!full.startsWith(dir)) continue;
+
+                const content = fs.readFileSync(full, 'utf8');
+                const j = JSON.parse(content);
                 const name = j.flow_name || path.basename(f, '.json');
                 result[name] = Object.assign({ _file: f, _path: full }, j);
             } catch (e) {
@@ -49,13 +55,24 @@ function loadFlowsFromDir(dir) {
     }
     return result;
 }
+
 let flows = loadFlowsFromDir(flowsDir);
 
-// Simple in-memory job queue for async generation jobs (development only)
+// In-memory job queue with basic retention cleanup
 const jobs = new Map();
+const MAX_JOBS = 500;
 let jobCounter = 1;
 const queue = [];
 let workerRunning = false;
+
+function pruneJobs() {
+    if (jobs.size > MAX_JOBS) {
+        const keysToDelete = Array.from(jobs.keys()).slice(0, jobs.size - MAX_JOBS);
+        for (const key of keysToDelete) {
+            jobs.delete(key);
+        }
+    }
+}
 
 async function workerLoop() {
     if (workerRunning) return;
@@ -68,13 +85,14 @@ async function workerLoop() {
             job.status = 'running';
             const provider = getProvider();
             if (!provider) throw new Error('No AI provider available');
-            const result = await provider.generateOnce ? provider.generateOnce(job.params) : (async () => {
-                // fallback: accumulate stream
-                let acc = '';
-                const stream = provider.generateStream(job.params);
-                for await (const chunk of stream) acc += chunk;
-                return { raw: acc };
-            })();
+            const result = provider.generateOnce 
+                ? await provider.generateOnce(job.params) 
+                : await (async () => {
+                    let acc = '';
+                    const stream = provider.generateStream(job.params);
+                    for await (const chunk of stream) acc += chunk;
+                    return { raw: acc };
+                })();
             job.status = 'done';
             job.result = result;
         } catch (err) {
@@ -85,34 +103,33 @@ async function workerLoop() {
     workerRunning = false;
 }
 
-// Expose available flows
 app.get('/flows', (req, res) => {
-    // reload on each request in dev so flows updates are picked up
+    // Reload dynamically on request
     flows = loadFlowsFromDir(flowsDir);
     return res.json({ flows: Object.keys(flows) });
 });
 
-// Run a named flow (improved runner: templating + basic node types)
+// Run a named flow
 app.post('/run-flow', requireAuth, async (req, res) => {
     if (!isConfigured()) return res.status(503).json({ message: 'AI is not configured.' });
     const { flowName, params } = req.body || {};
     if (!flowName) return res.status(400).json({ message: 'flowName is required' });
+
     const flow = flows[flowName];
     if (!flow) return res.status(404).json({ message: 'flow not found' });
 
     const provider = getProvider();
     if (!provider) return res.status(503).json({ message: 'AI provider not available.' });
 
-    // SSE streaming response
     res.writeHead(200, {
         'Content-Type': 'text/event-stream',
         'Cache-Control': 'no-cache',
         'Connection': 'keep-alive',
         'X-Accel-Buffering': 'no'
     });
+
     const sendEvent = (evt) => res.write(`data: ${JSON.stringify(evt)}\n\n`);
 
-    // Minimal template renderer for {{var}} and nested paths like {{user.name}}
     const renderTemplate = (template, ctx) => {
         if (typeof template !== 'string') return template;
         return template.replace(/{{\s*([^}]+)\s*}}/g, (_, pathExpr) => {
@@ -126,24 +143,20 @@ app.post('/run-flow', requireAuth, async (req, res) => {
         });
     };
 
-    // Execute nodes sequentially, passing a shared context object
     const context = Object.assign({}, params || {});
 
     try {
         for (const node of flow.nodes || []) {
-            // input node: merge given params (optional)
             if (node.type === 'input') {
                 if (node.name) context[node.name] = Object.assign({}, context[node.name] || {}, params || {});
                 continue;
             }
 
-            // llm node: render template to prompt and call provider
             if (node.type === 'llm' || node.type === 'generate_quiz') {
                 const tpl = node.template || '';
                 const prompt = renderTemplate(tpl, context);
                 sendEvent({ type: 'node_start', node: node.name || node.id, kind: 'llm' });
 
-                // prefer streaming if provider supports it
                 if (provider.generateStream) {
                     let acc = '';
                     for await (const chunk of provider.generateStream(Object.assign({}, context, { prompt }))) {
@@ -162,24 +175,22 @@ app.post('/run-flow', requireAuth, async (req, res) => {
                 continue;
             }
 
-            // http node: supports simple GET/POST with templated url/body
             if (node.type === 'http') {
                 const method = (node.method || 'GET').toUpperCase();
                 const url = renderTemplate(node.url || '', context);
                 const headers = Object.assign({}, node.headers || {});
-                let body = null;
-                if (node.body) body = renderTemplate(node.body, context);
+                let body = node.body ? renderTemplate(node.body, context) : null;
 
                 sendEvent({ type: 'node_start', node: node.name || node.id, kind: 'http', url });
                 try {
                     const fetchOpts = { method, headers };
-                    if (body && (method === 'POST' || method === 'PUT' || method === 'PATCH')) {
+                    if (body && ['POST', 'PUT', 'PATCH'].includes(method)) {
                         fetchOpts.body = body;
                     }
                     const resp = await fetch(url, fetchOpts);
                     const contentType = resp.headers.get('content-type') || '';
-                    let data;
-                    if (contentType.includes('application/json')) data = await resp.json(); else data = await resp.text();
+                    const data = contentType.includes('application/json') ? await resp.json() : await resp.text();
+
                     context[node.name || 'http_result'] = data;
                     sendEvent({ type: 'node_done', node: node.name || node.id, result: data });
                 } catch (err) {
@@ -189,9 +200,7 @@ app.post('/run-flow', requireAuth, async (req, res) => {
                 continue;
             }
 
-            // transform node: simple mapping from context keys
             if (node.type === 'transform') {
-                // node.map: { "outKey": "{{in.key}}" }
                 const map = node.map || {};
                 const out = {};
                 for (const k of Object.keys(map)) {
@@ -202,16 +211,13 @@ app.post('/run-flow', requireAuth, async (req, res) => {
                 continue;
             }
 
-            // output node: emit current context or specific field
             if (node.type === 'output') {
                 const field = node.field || null;
                 const payload = field ? (context[field] || null) : context;
                 sendEvent({ type: 'output', node: node.name || node.id, data: payload });
-                // do not end: let flow continue but commonly output is last
                 continue;
             }
 
-            // unknown node types: warn
             sendEvent({ type: 'node_skip', node: node.name || node.id, message: 'unknown node type: ' + node.type });
         }
 
@@ -224,14 +230,16 @@ app.post('/run-flow', requireAuth, async (req, res) => {
     res.end();
 });
 
-// Enqueue a generation job (returns job id) — uses in-memory queue
 app.post('/enqueue', requireAuth, async (req, res) => {
     if (!isConfigured()) return res.status(503).json({ message: 'AI is not configured.' });
     const params = req.body || {};
     const id = String(jobCounter++);
     const job = { id, status: 'queued', params, createdAt: new Date().toISOString() };
+
+    pruneJobs();
     jobs.set(id, job);
     queue.push(id);
+
     workerLoop().catch(e => console.error('worker error', e));
     return res.json({ jobId: id });
 });
@@ -268,41 +276,37 @@ const fetchQuestionImage = async (questionTitle) => {
 
         const buffer = await imgResponse.arrayBuffer();
         const contentType = imgResponse.headers.get('content-type') || 'image/jpeg';
-        const base64 = `data:${contentType};base64,${Buffer.from(buffer).toString('base64')}`;
-
-        return base64;
+        return `data:${contentType};base64,${Buffer.from(buffer).toString('base64')}`;
     } catch {
         return null;
     }
 };
 
 app.post('/extract', requireAuth, extractLimiter, async (req, res) => {
-    if (!isConfigured()) {
-        return res.status(503).json({ message: "AI is not configured." });
-    }
+    if (!isConfigured()) return res.status(503).json({ message: "AI is not configured." });
 
     const { type, url, query, lang, pdfBase64 } = req.body || {};
     if (!type || !['url', 'wikipedia', 'pdf'].includes(type)) {
-            return res.status(400).json({ message: "Unknown extraction type." });
+        return res.status(400).json({ message: "Unknown extraction type." });
     }
 
     try {
         let result;
         if (type === 'url') {
-                    if (!url || typeof url !== 'string') return res.status(400).json({ message: "URL is required." });
+            if (!url || typeof url !== 'string') return res.status(400).json({ message: "URL is required." });
             result = await extractFromUrl(url);
         } else if (type === 'wikipedia') {
-                    if (!query || typeof query !== 'string') return res.status(400).json({ message: "Search query is required." });
-                    result = await extractFromWikipedia(query, lang || 'en');
+            if (!query || typeof query !== 'string') return res.status(400).json({ message: "Search query is required." });
+            result = await extractFromWikipedia(query, lang || 'en');
         } else {
-                    if (!pdfBase64 || typeof pdfBase64 !== 'string') return res.status(400).json({ message: "PDF data missing." });
+            if (!pdfBase64 || typeof pdfBase64 !== 'string') return res.status(400).json({ message: "PDF data missing." });
             result = await extractFromPdf(pdfBase64);
         }
         return res.json({
             title: result.title || '',
             source: result.source || '',
             text: result.text,
-            length: result.text.length
+            length: result.text ? result.text.length : 0
         });
     } catch (error) {
         return res.status(400).json({ message: error.message || "Extraction failed." });
@@ -369,13 +373,13 @@ const validateGenerateRequest = (body) => {
     const hasContext = typeof context === 'string' && context.trim().length >= 50;
 
     if (!hasTopic && !hasContext) return { error: "A topic or context is required." };
-        if (hasTopic && topic.trim().length > 400) return { error: "Topic must be at most 400 characters." };
-        if (hasContext && context.length > 80000) return { error: "Context is too large." };
+    if (hasTopic && topic.trim().length > 400) return { error: "Topic must be at most 400 characters." };
+    if (hasContext && context.length > 80000) return { error: "Context is too large." };
     if (questionCount !== undefined && (typeof questionCount !== 'number' || questionCount < 1 || questionCount > 50)) {
-            return { error: "questionCount must be between 1 and 50." };
+        return { error: "questionCount must be between 1 and 50." };
     }
     if (difficulty !== undefined && difficulty !== null && !['none', 'easy', 'medium', 'hard'].includes(difficulty)) {
-            return { error: "Invalid difficulty." };
+        return { error: "Invalid difficulty." };
     }
     return { hasTopic, hasContext };
 };
@@ -477,10 +481,8 @@ app.post('/chat', requireAuth, limiter, async (req, res) => {
     const provider = getProvider();
     if (!provider) return res.status(503).json({ message: 'AI provider not available.' });
 
-    // Persona: friendly polite teacher
     const persona = "You are Quizzle Bot, a friendly and polite teacher. Answer clearly and encouragingly, explain quiz rules when asked, help create quiz prompts, and keep responses concise and helpful.";
 
-    // Use SSE streaming so client can render progressively
     res.writeHead(200, {
         'Content-Type': 'text/event-stream',
         'Cache-Control': 'no-cache',
@@ -490,8 +492,7 @@ app.post('/chat', requireAuth, limiter, async (req, res) => {
     const sendEvent = (evt) => res.write(`data: ${JSON.stringify(evt)}\n\n`);
 
     try {
-        const promptParts = [];
-        promptParts.push(`System: ${persona}`);
+        const promptParts = [`System: ${persona}`];
         if (Array.isArray(history)) {
             for (const h of history) {
                 if (h && h.role && h.content) {
@@ -503,7 +504,6 @@ app.post('/chat', requireAuth, limiter, async (req, res) => {
         promptParts.push('Assistant:');
         const prompt = promptParts.join('\n');
 
-        // If provider supports streaming, stream chunks as they arrive
         if (provider.generateStream) {
             sendEvent({ type: 'status', stage: 'streaming' });
             try {
@@ -518,7 +518,6 @@ app.post('/chat', requireAuth, limiter, async (req, res) => {
             return res.end();
         }
 
-        // Fallback to single-shot generation
         if (provider.generateOnce) {
             const out = await provider.generateOnce({ prompt });
             const reply = typeof out === 'string' ? out : (out?.text || out?.raw || JSON.stringify(out));

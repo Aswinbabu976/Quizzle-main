@@ -160,11 +160,25 @@
     "settings": {
       "title": "Question Settings",
       "timeLimit": "Time limit",
-      "timerPlaceholder": "Select timer...",
+      "timerPlaceholder": "Select time limit...",
       "pointDistribution": "Point distribution",
       "pointPlaceholder": "Select point distribution...",
       "answerMargin": "Answer margin",
-      "answerMarginPlaceholder": "Select answer margin..."
+      "answerMarginPlaceholder": "Select answer margin...",
+      "standard": "Standard",
+      "unlimited": "Unlimited",
+      "seconds": "seconds",
+      "minutes": "minutes",
+      "fromQuizSettings": "From quiz settings",
+      "quickQuestions": "Quick questions",
+      "oneMinutePerQuestion": "One minute per question",
+      "moreTime": "More time to think",
+      "noTimeLimit": "No time limit",
+      "normalPoints": "Normal point distribution",
+      "noPoints": "No points",
+      "noPointsDesc": "No points awarded for this question",
+      "doublePoints": "Double points",
+      "doublePointsDesc": "This question awards double points"
     },
     "import": "Import quiz from file",
     "download": "Download quiz as file",
@@ -251,6 +265,16 @@
     "margin": "Margin",
     "yourOrder": "Your order",
     "correctOrder": "Correct order"
+  },
+  "inGame": {
+    "textInput": {
+      "placeholder": "Type your answer...",
+      "ariaInput": "Answer input",
+      "ariaSubmit": "Submit answer"
+    },
+    "slider": {
+      "submit": "Send answer"
+    }
   },
   "quizSettings": {
     "title": "Quiz Settings",

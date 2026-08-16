@@ -1,13 +1,15 @@
 import "./styles.sass";
 import SelectBox from "@/common/components/SelectBox";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faClock, faInfinity, faCoins, faSliders} from "@fortawesome/free-solid-svg-icons";
-import {useState, useEffect} from "react";
-import {motion} from "framer-motion";
-import {QUESTION_TYPES, SLIDER_MARGIN_CONFIG} from "@/common/constants/QuestionTypes.js";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faClock, faInfinity, faCoins, faSliders } from "@fortawesome/free-solid-svg-icons";
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { QUESTION_TYPES, SLIDER_MARGIN_CONFIG } from "@/common/constants/QuestionTypes.js";
 import { useTranslation } from 'react-i18next';
 
-export const QuestionSettings = ({question, onChange, onCommit, defaultTimer = 60}) => {
+export const QuestionSettings = ({ question, onChange, onCommit, defaultTimer = 60 }) => {
+    const { t } = useTranslation();
+
     const [selectedTimer, setSelectedTimer] = useState(() => {
         if (question.timer === undefined || question.timer === null) return "default";
         if (question.timer === -1) return "unlimited";
@@ -21,37 +23,37 @@ export const QuestionSettings = ({question, onChange, onCommit, defaultTimer = 6
         return question.pointMultiplier;
     });
 
-    const defaultTimerLabel = defaultTimer === -1 ? "Unbegrenzt" : `${defaultTimer}s`;
+    const defaultTimerLabel = defaultTimer === -1 ? t('quizCreator.settings.unlimited') : `${defaultTimer}s`;
 
     const timerOptions = [
         {
             value: "default",
-            label: `Standard (${defaultTimerLabel})`,
-            description: "Aus Quiz-Einstellungen",
+            label: `${t('quizCreator.settings.standard')} (${defaultTimerLabel})`,
+            description: t('quizCreator.settings.fromQuizSettings'),
             icon: faClock
         },
         {
             value: "30",
-            label: "30 Sekunden",
-            description: "Schnelle Fragen",
+            label: `30 ${t('quizCreator.settings.seconds')}`,
+            description: t('quizCreator.settings.quickQuestions'),
             icon: faClock
         },
         {
             value: "60",
-            label: "60 Sekunden",
-            description: "Eine Minute pro Frage",
+            label: `60 ${t('quizCreator.settings.seconds')}`,
+            description: t('quizCreator.settings.oneMinutePerQuestion'),
             icon: faClock
         },
         {
             value: "120",
-            label: "2 Minuten",
-            description: "Mehr Zeit zum Nachdenken",
+            label: `2 ${t('quizCreator.settings.minutes')}`,
+            description: t('quizCreator.settings.moreTime'),
             icon: faClock
         },
         {
             value: "unlimited",
-            label: "Unbegrenzt",
-            description: "Kein Zeitlimit",
+            label: t('quizCreator.settings.unlimited'),
+            description: t('quizCreator.settings.noTimeLimit'),
             icon: faInfinity
         }
     ];
@@ -59,20 +61,20 @@ export const QuestionSettings = ({question, onChange, onCommit, defaultTimer = 6
     const pointMultiplierOptions = [
         {
             value: "standard",
-            label: "Standard",
-            description: "Normale Punkteverteilung",
+            label: t('quizCreator.settings.standard'),
+            description: t('quizCreator.settings.normalPoints'),
             icon: faCoins
         },
         {
             value: "none",
-            label: "Keine Punkte",
-            description: "Für diese Frage gibt es keine Punkte",
+            label: t('quizCreator.settings.noPoints'),
+            description: t('quizCreator.settings.noPointsDesc'),
             icon: faCoins
         },
         {
             value: "double",
-            label: "Doppelte Punkte",
-            description: "Diese Frage bringt doppelte Punkte",
+            label: t('quizCreator.settings.doublePoints'),
+            description: t('quizCreator.settings.doublePointsDesc'),
             icon: faCoins
         }
     ];
@@ -112,27 +114,27 @@ export const QuestionSettings = ({question, onChange, onCommit, defaultTimer = 6
             timerNum = 120;
         }
 
-        commit({...question, timer: timerNum});
+        commit({ ...question, timer: timerNum });
     };
 
     const handlePointMultiplierChange = (value) => {
         setSelectedPointMultiplier(value);
         const commit = onCommit || onChange;
         const multiplierValue = value === "standard" ? undefined : value;
-        commit({...question, pointMultiplier: multiplierValue});
+        commit({ ...question, pointMultiplier: multiplierValue });
     };
 
     const handleAnswerMarginChange = (value) => {
         const commit = onCommit || onChange;
-        const answers = question.answers || [{correctValue: 50, min: 0, max: 100, step: 1, answerMargin: 'medium'}];
-        const updatedAnswers = [{...answers[0], answerMargin: value}];
-        commit({...question, answers: updatedAnswers});
+        const answers = question.answers || [{ correctValue: 50, min: 0, max: 100, step: 1, answerMargin: 'medium' }];
+        const updatedAnswers = [{ ...answers[0], answerMargin: value }];
+        commit({ ...question, answers: updatedAnswers });
     };
 
     const answerMarginOptions = Object.entries(SLIDER_MARGIN_CONFIG).map(([key, config]) => ({
         value: key,
-        label: config.label,
-        description: config.description,
+        label: t(`quizCreator.settings.slider.${key}.label`, { defaultValue: config.label }),
+        description: t(`quizCreator.settings.slider.${key}.desc`, { defaultValue: config.description }),
         icon: faSliders
     }));
 
@@ -144,9 +146,9 @@ export const QuestionSettings = ({question, onChange, onCommit, defaultTimer = 6
     return (
         <motion.div
             className="question-settings"
-            initial={{opacity: 0, x: -20}}
-            animate={{opacity: 1, x: 0}}
-            transition={{duration: 0.25, delay: 0.2, ease: "easeOut"}}
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.25, delay: 0.2, ease: "easeOut" }}
         >
             <div className="settings-header">
                 <h3>{t('quizCreator.settings.title')}</h3>
@@ -154,30 +156,30 @@ export const QuestionSettings = ({question, onChange, onCommit, defaultTimer = 6
 
             <div className="setting-group">
                 <div className="setting-label">
-                    <FontAwesomeIcon icon={faClock}/>
+                    <FontAwesomeIcon icon={faClock} />
                     {t('quizCreator.settings.timeLimit')}
                 </div>
 
-                <SelectBox value={selectedTimer} onChange={handleTimerChange} options={timerOptions} placeholder={t("quizCreator.settings.timerPlaceholder")}/>
+                <SelectBox value={selectedTimer} onChange={handleTimerChange} options={timerOptions} placeholder={t("quizCreator.settings.timerPlaceholder")} />
             </div>
 
             <div className="setting-group">
                 <div className="setting-label">
-                    <FontAwesomeIcon icon={faCoins}/>
+                    <FontAwesomeIcon icon={faCoins} />
                     {t('quizCreator.settings.pointDistribution')}
                 </div>
 
-                <SelectBox value={selectedPointMultiplier} onChange={handlePointMultiplierChange} options={pointMultiplierOptions} placeholder={t("quizCreator.settings.pointPlaceholder")}/>
+                <SelectBox value={selectedPointMultiplier} onChange={handlePointMultiplierChange} options={pointMultiplierOptions} placeholder={t("quizCreator.settings.pointPlaceholder")} />
             </div>
 
             {isSliderType && (
                 <div className="setting-group">
                     <div className="setting-label">
-                        <FontAwesomeIcon icon={faSliders}/>
+                        <FontAwesomeIcon icon={faSliders} />
                         {t('quizCreator.settings.answerMargin')}
                     </div>
 
-                    <SelectBox value={currentAnswerMargin} onChange={handleAnswerMarginChange} options={answerMarginOptions} placeholder={t("quizCreator.settings.answerMarginPlaceholder")}/>
+                    <SelectBox value={currentAnswerMargin} onChange={handleAnswerMarginChange} options={answerMarginOptions} placeholder={t("quizCreator.settings.answerMarginPlaceholder")} />
                 </div>
             )}
         </motion.div>
