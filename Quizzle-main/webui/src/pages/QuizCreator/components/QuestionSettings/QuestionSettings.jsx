@@ -5,6 +5,7 @@ import {faClock, faInfinity, faCoins, faSliders} from "@fortawesome/free-solid-s
 import {useState, useEffect} from "react";
 import {motion} from "framer-motion";
 import {QUESTION_TYPES, SLIDER_MARGIN_CONFIG} from "@/common/constants/QuestionTypes.js";
+import { useTranslation } from 'react-i18next';
 
 export const QuestionSettings = ({question, onChange, onCommit, defaultTimer = 60}) => {
     const [selectedTimer, setSelectedTimer] = useState(() => {
@@ -148,35 +149,35 @@ export const QuestionSettings = ({question, onChange, onCommit, defaultTimer = 6
             transition={{duration: 0.25, delay: 0.2, ease: "easeOut"}}
         >
             <div className="settings-header">
-                <h3>Fragen-Einstellungen</h3>
+                <h3>{t('quizCreator.settings.title')}</h3>
             </div>
 
             <div className="setting-group">
                 <div className="setting-label">
                     <FontAwesomeIcon icon={faClock}/>
-                    <span>Zeitlimit</span>
+                    {t('quizCreator.settings.timeLimit')}
                 </div>
 
-                <SelectBox value={selectedTimer} onChange={handleTimerChange} options={timerOptions} placeholder="Timer auswählen..."/>
+                <SelectBox value={selectedTimer} onChange={handleTimerChange} options={timerOptions} placeholder={t("quizCreator.settings.timerPlaceholder")}/>
             </div>
 
             <div className="setting-group">
                 <div className="setting-label">
                     <FontAwesomeIcon icon={faCoins}/>
-                    <span>Punkteverteilung</span>
+                    {t('quizCreator.settings.pointDistribution')}
                 </div>
 
-                <SelectBox value={selectedPointMultiplier} onChange={handlePointMultiplierChange} options={pointMultiplierOptions} placeholder="Punkteverteilung auswählen..."/>
+                <SelectBox value={selectedPointMultiplier} onChange={handlePointMultiplierChange} options={pointMultiplierOptions} placeholder={t("quizCreator.settings.pointPlaceholder")}/>
             </div>
 
             {isSliderType && (
                 <div className="setting-group">
                     <div className="setting-label">
                         <FontAwesomeIcon icon={faSliders}/>
-                        <span>Antwort-Marge</span>
+                        {t('quizCreator.settings.answerMargin')}
                     </div>
 
-                    <SelectBox value={currentAnswerMargin} onChange={handleAnswerMarginChange} options={answerMarginOptions} placeholder="Antwort-Marge auswählen..."/>
+                    <SelectBox value={currentAnswerMargin} onChange={handleAnswerMarginChange} options={answerMarginOptions} placeholder={t("quizCreator.settings.answerMarginPlaceholder")}/>
                 </div>
             )}
         </motion.div>

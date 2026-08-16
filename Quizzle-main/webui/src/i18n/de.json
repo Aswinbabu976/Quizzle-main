@@ -157,7 +157,15 @@
       "placeholderTitle": "Fragentitel eingeben"
     },
     "redo": "Wiederholen (Strg+Shift+Z)",
-    "settings": "Quiz-Einstellungen",
+    "settings": {
+      "title": "Fragen-Einstellungen",
+      "timeLimit": "Zeitlimit",
+      "timerPlaceholder": "Timer auswählen...",
+      "pointDistribution": "Punkteverteilung",
+      "pointPlaceholder": "Punkteverteilung auswählen...",
+      "answerMargin": "Antwort-Marge",
+      "answerMarginPlaceholder": "Antwort-Marge auswählen..."
+    },
     "import": "Quiz aus Datei importieren",
     "download": "Quiz als Datei herunterladen",
     "uploadLive": "Als Live-Quiz hochladen",
@@ -176,9 +184,20 @@
       "quizId": "Quiz-ID: ",
       "practiceSuccess": "Übungsquiz erfolgreich erstellt!",
       "practiceCode": "Übungscode: "
+    },
+    "answerPlaceholder": "Antwort {{index}}",
+    "newAnswerPlaceholder": "Neue Antwort hinzufügen...",
+    "sequence": {
+      "answersTitle": "Antworten",
+      "hint": "Sortiere die Antworten in die richtige Reihenfolge",
+      "noAnswers": "Füge mindestens zwei Antworten hinzu"
+    },
+    "text": {
+      "correctAnswersTitle": "Richtige Antworten",
+      "hint": "Groß-/Kleinschreibung wird ignoriert",
+      "noAnswers": "Füge mindestens eine akzeptierte Antwort hinzu"
     }
-  }
-  ,
+  },
   "questionType": {
     "multipleChoice": "Auswahlmöglichkeiten",
     "multipleChoiceDesc": "Spieler wählen aus vorgegebenen Antwortmöglichkeiten",
@@ -198,8 +217,7 @@
     "loadSuccess": "Quiz erfolgreich geladen!",
     "invalidFormat": "Ungültiges Dateiformat.",
     "idNotFound": "Quiz-ID nicht gefunden. Versichere dich, dass du die richtige ID eingegeben hast und das Quiz auf der Instanz von {{name}} läuft."
-  }
-  ,
+  },
   "endingHost": {
     "results": "Ergebnisse",
     "analytics": "Analytics",
@@ -210,15 +228,13 @@
     "exportSuccess": "Analytics exportiert",
     "exportError": "Fehler beim Exportieren der Daten",
     "noAnalyticsData": "Keine Analytics-Daten verfügbar. Bitte stellen Sie sicher, dass das Quiz ordnungsgemäß beendet wurde."
-  }
-  ,
+  },
   "credits": {
     "back": "Zurück",
     "subtitle": "Quizzle wäre ohne die großartige Arbeit vieler Künstler:innen und Open-Source-Projekte nicht möglich. Vielen Dank!",
     "by": "von",
     "source": "Quelle"
-  }
-  ,
+  },
   "practiceResults": {
     "loginRequired": "Anmeldung erforderlich.",
     "notFound": "Übungsquiz nicht gefunden.",

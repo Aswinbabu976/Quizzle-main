@@ -157,7 +157,15 @@
       "placeholderTitle": "Enter question title"
     },
     "redo": "Redo (Ctrl+Shift+Z)",
-    "settings": "Quiz Settings",
+    "settings": {
+      "title": "Question Settings",
+      "timeLimit": "Time limit",
+      "timerPlaceholder": "Select timer...",
+      "pointDistribution": "Point distribution",
+      "pointPlaceholder": "Select point distribution...",
+      "answerMargin": "Answer margin",
+      "answerMarginPlaceholder": "Select answer margin..."
+    },
     "import": "Import quiz from file",
     "download": "Download quiz as file",
     "uploadLive": "Upload as live quiz",
@@ -176,14 +184,28 @@
       "quizId": "Quiz ID: ",
       "practiceSuccess": "Practice quiz created successfully!",
       "practiceCode": "Practice code: "
+    },
+    "answerPlaceholder": "Answer {{index}}",
+    "newAnswerPlaceholder": "Add new answer...",
+    "sequence": {
+      "answersTitle": "Answers",
+      "hint": "Sort the answers into the correct order",
+      "noAnswers": "Add at least two answers"
+    },
+    "text": {
+      "correctAnswersTitle": "Correct answers",
+      "hint": "Case is ignored",
+      "noAnswers": "Add at least one accepted answer"
     }
   },
   "quizLoader": {
-    "dropHere": "Drop file here",
-    "uploadFile": "Upload file",
-    "quizIdNotFound": "Quiz ID not found. Ensure you entered the correct ID and that the quiz is running on {{name}}."
-  }
-  ,
+    "idPlaceholder": "Quiz ID (e.g. JWTIOI)",
+    "dropFile": "Drop file here",
+    "uploadFile": "Upload File",
+    "loadSuccess": "Quiz loaded successfully!",
+    "invalidFormat": "Invalid file format.",
+    "idNotFound": "Quiz ID not found. Make sure you entered the correct ID and the quiz is running on {{name}}."
+  },
   "questionType": {
     "multipleChoice": "Multiple choice",
     "multipleChoiceDesc": "Players pick from predefined answer options",
@@ -196,15 +218,6 @@
     "slider": "Slider",
     "sliderDesc": "Players estimate a value using a slider"
   },
-  "quizLoader": {
-    "idPlaceholder": "Quiz ID (e.g. JWTIOI)",
-    "dropFile": "Drop file here",
-    "uploadFile": "Upload File",
-    "loadSuccess": "Quiz loaded successfully!",
-    "invalidFormat": "Invalid file format.",
-    "idNotFound": "Quiz ID not found. Make sure you entered the correct ID and the quiz is running on {{name}}."
-  }
-  ,
   "endingHost": {
     "results": "Results",
     "analytics": "Analytics",
@@ -215,15 +228,13 @@
     "exportSuccess": "Analytics exported",
     "exportError": "Error exporting data",
     "noAnalyticsData": "No analytics data available. Please make sure the quiz ended properly."
-  }
-  ,
+  },
   "credits": {
     "back": "Back",
     "subtitle": "Quizzle would not be possible without the amazing work of many artists and open-source projects. Thank you!",
     "by": "by",
     "source": "Source"
-  }
-  ,
+  },
   "practiceResults": {
     "loginRequired": "Login required.",
     "notFound": "Practice quiz not found.",

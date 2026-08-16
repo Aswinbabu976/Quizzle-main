@@ -2,6 +2,7 @@ import "./styles.sass";
 import {useState} from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPlus, faTrash} from "@fortawesome/free-solid-svg-icons";
+import { useTranslation } from 'react-i18next';
 
 export const TextAnswers = ({answers, onChange}) => {
     const [newAnswer, setNewAnswer] = useState("");
@@ -32,8 +33,8 @@ export const TextAnswers = ({answers, onChange}) => {
     return (
         <div className="text-answers-container">
             <div className="text-answers-header">
-                <h3>Richtige Antworten</h3>
-                <span className="text-answers-hint">Groß-/Kleinschreibung wird ignoriert</span>
+                <h3>{t('quizCreator.text.correctAnswersTitle')}</h3>
+                <span className="text-answers-hint">{t('quizCreator.text.hint')}</span>
             </div>
             
             <div className="text-answers-list">
@@ -44,7 +45,7 @@ export const TextAnswers = ({answers, onChange}) => {
                             type="text"
                             value={answer.content}
                             onChange={(e) => updateAnswer(index, e.target.value)}
-                            placeholder={`Antwort ${index + 1}`}
+                            placeholder={t('quizCreator.answerPlaceholder', {index: index + 1})}
                             className="text-answer-input"
                             maxLength={150}
                         />
@@ -65,7 +66,7 @@ export const TextAnswers = ({answers, onChange}) => {
                     type="text"
                     value={newAnswer}
                     onChange={(e) => setNewAnswer(e.target.value)}
-                    placeholder="Neue Antwort hinzufügen..."
+                    placeholder={t("quizCreator.newAnswerPlaceholder")}
                     className="new-answer-input"
                     maxLength={150}
                     onKeyPress={(e) => {
@@ -87,7 +88,7 @@ export const TextAnswers = ({answers, onChange}) => {
 
             {answers.length === 0 && (
                 <div className="no-answers-hint">
-                    Füge mindestens eine akzeptierte Antwort hinzu
+                    {t('quizCreator.text.noAnswers')}
                 </div>
             )}
         </div>
