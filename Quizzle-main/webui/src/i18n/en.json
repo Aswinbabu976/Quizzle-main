@@ -196,6 +196,11 @@
       "correctAnswersTitle": "Correct answers",
       "hint": "Case is ignored",
       "noAnswers": "Add at least one accepted answer"
+    },
+    "slider": {
+      "correctLabel": "Correct answer",
+      "minLabel": "Min.",
+      "maxLabel": "Max."
     }
   },
   "quizLoader": {
@@ -246,5 +251,22 @@
     "margin": "Margin",
     "yourOrder": "Your order",
     "correctOrder": "Correct order"
+  },
+  "quizSettings": {
+    "title": "Quiz Settings",
+    "aboutTitle": "About the quiz",
+    "description": "Description",
+    "descriptionPlaceholder": "What is this quiz about?",
+    "difficulty": "Difficulty",
+    "difficultyPlaceholder": "Select difficulty...",
+    "flowTitle": "Game flow",
+    "shuffleQuestions": "Shuffle questions",
+    "shuffleAnswers": "Shuffle answers",
+    "defaultTimer": "Default time limit",
+    "timerPlaceholder": "Select time limit...",
+    "scoring": "Scoring",
+    "scoringPlaceholder": "Select scoring...",
+    "toggleOn": "On",
+    "toggleOff": "Off"
   }
 }

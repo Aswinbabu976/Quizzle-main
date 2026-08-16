@@ -196,6 +196,11 @@
       "correctAnswersTitle": "Richtige Antworten",
       "hint": "Groß-/Kleinschreibung wird ignoriert",
       "noAnswers": "Füge mindestens eine akzeptierte Antwort hinzu"
+    },
+    "slider": {
+      "correctLabel": "Richtige Antwort",
+      "minLabel": "Min.",
+      "maxLabel": "Max."
     }
   },
   "questionType": {
@@ -246,5 +251,22 @@
     "margin": "Marge",
     "yourOrder": "Ihre Reihenfolge",
     "correctOrder": "Richtige Reihenfolge"
+  },
+  "quizSettings": {
+    "title": "Quiz-Einstellungen",
+    "aboutTitle": "Über das Quiz",
+    "description": "Beschreibung",
+    "descriptionPlaceholder": "Worum geht es in diesem Quiz?",
+    "difficulty": "Schwierigkeit",
+    "difficultyPlaceholder": "Schwierigkeit auswählen...",
+    "flowTitle": "Spielablauf",
+    "shuffleQuestions": "Fragen mischen",
+    "shuffleAnswers": "Antworten mischen",
+    "defaultTimer": "Standard-Zeitlimit",
+    "timerPlaceholder": "Zeitlimit auswählen...",
+    "scoring": "Punktevergabe",
+    "scoringPlaceholder": "Punktevergabe auswählen...",
+    "toggleOn": "Ein",
+    "toggleOff": "Aus"
   }
 }

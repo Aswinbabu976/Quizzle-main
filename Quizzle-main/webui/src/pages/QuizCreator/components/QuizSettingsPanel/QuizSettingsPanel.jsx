@@ -53,16 +53,16 @@ export const QuizSettingsPanel = ({settings, onChange}) => {
             </div>
 
             <div className="settings-section">
-                <div className="section-title">Über das Quiz</div>
+                <div className="section-title">{t('quizSettings.aboutTitle')}</div>
 
                 <div className="setting-group">
                     <div className="setting-label">
                         <FontAwesomeIcon icon={faAlignLeft}/>
-                        <span>Beschreibung</span>
+                        {t("quizSettings.description")}
                     </div>
                     <textarea
                         className="settings-textarea"
-                        placeholder="Worum geht es in diesem Quiz?"
+                        placeholder={t("quizSettings.descriptionPlaceholder")}
                         value={s.description}
                         onChange={(e) => update("description", e.target.value)}
                         maxLength={300}
@@ -74,69 +74,67 @@ export const QuizSettingsPanel = ({settings, onChange}) => {
                 <div className="setting-group">
                     <div className="setting-label">
                         <FontAwesomeIcon icon={faSignal}/>
-                        <span>Schwierigkeit</span>
+                        {t("quizSettings.difficulty")}
                     </div>
                     <SelectBox
                         value={s.difficulty || "none"}
                         onChange={(v) => update("difficulty", v === "none" ? null : v)}
                         options={difficultyOptions}
-                        placeholder="Schwierigkeit auswählen..."
+                        placeholder={t("quizSettings.difficultyPlaceholder")}
                     />
                 </div>
             </div>
 
             <div className="settings-section">
-                <div className="section-title">Spielablauf</div>
+                <div className="section-title">{t('quizSettings.flowTitle')}</div>
 
                 <div className="setting-group">
                     <div className="setting-label">
                         <FontAwesomeIcon icon={faShuffle}/>
-                        <span>Fragen mischen</span>
+                        {t("quizSettings.shuffleQuestions")}
                     </div>
                     <div className="toggle-row" onClick={() => update("shuffleQuestions", !s.shuffleQuestions)}>
                         <div className={`toggle ${s.shuffleQuestions ? "active" : ""}`}>
                             <div className="toggle-knob"/>
                         </div>
-                        <span className="toggle-text">{s.shuffleQuestions ? "Ein" : "Aus"}</span>
+                        <span className="toggle-text">{s.shuffleQuestions ? t('quizSettings.toggleOn') : t('quizSettings.toggleOff')}</span>
                     </div>
                 </div>
 
                 <div className="setting-group">
                     <div className="setting-label">
                         <FontAwesomeIcon icon={faShuffle}/>
-                        <span>Antworten mischen</span>
+                        {t("quizSettings.shuffleAnswers")}
                     </div>
                     <div className="toggle-row" onClick={() => update("shuffleAnswers", !s.shuffleAnswers)}>
                         <div className={`toggle ${s.shuffleAnswers ? "active" : ""}`}>
                             <div className="toggle-knob"/>
                         </div>
-                        <span className="toggle-text">{s.shuffleAnswers ? "Ein" : "Aus"}</span>
+                        <span className="toggle-text">{s.shuffleAnswers ? t('quizSettings.toggleOn') : t('quizSettings.toggleOff')}</span>
                     </div>
                 </div>
 
                 <div className="setting-group">
-                    <div className="setting-label">
-                        <FontAwesomeIcon icon={faClock}/>
-                        <span>Standard-Zeitlimit</span>
+                    <div className="setting-label">{t("quizSettings.defaultTimer")}
                     </div>
                     <SelectBox
                         value={String(s.defaultTimer)}
                         onChange={(v) => update("defaultTimer", parseInt(v))}
                         options={timerOptions}
-                        placeholder="Zeitlimit auswählen..."
+                        placeholder={t("quizSettings.timerPlaceholder")}
                     />
                 </div>
 
                 <div className="setting-group">
                     <div className="setting-label">
                         <FontAwesomeIcon icon={faCoins}/>
-                        <span>Punktevergabe</span>
+                        {t("quizSettings.scoring")}
                     </div>
                     <SelectBox
                         value={s.scoringMode}
                         onChange={(v) => update("scoringMode", v)}
                         options={scoringOptions}
-                        placeholder="Punktevergabe auswählen..."
+                        placeholder={t("quizSettings.scoringPlaceholder")}
                     />
                 </div>
             </div>

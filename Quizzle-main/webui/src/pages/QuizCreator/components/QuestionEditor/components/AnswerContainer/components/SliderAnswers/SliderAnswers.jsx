@@ -1,6 +1,7 @@
 import "./styles.sass";
 import {useMemo, useRef, useCallback, useState, useEffect} from "react";
 import {SLIDER_MARGIN_CONFIG} from "@/common/constants/QuestionTypes.js";
+import { useTranslation } from "react-i18next";
 
 const TICK_COUNT = 40;
 
@@ -15,6 +16,7 @@ const computeStep = (min, max) => {
 };
 
 export const SliderAnswers = ({answers, onChange}) => {
+    const { t } = useTranslation();
     const config = answers[0] || {correctValue: 50, min: 0, max: 100, step: 1, answerMargin: 'medium'};
     const trackRef = useRef(null);
     const dragging = useRef(false);
@@ -112,12 +114,12 @@ export const SliderAnswers = ({answers, onChange}) => {
                     max={config.max}
                     step={step}
                 />
-                <span className="slider-value-label">Richtige Antwort</span>
+                <span className="slider-value-label">{t('quizCreator.slider.correctLabel')}</span>
             </div>
 
             <div className="slider-track-row">
                 <div className="edge-input">
-                    <span className="edge-label">Min.</span>
+                    <span className="edge-label">{t('quizCreator.slider.minLabel')}</span>
                     <input
                         type="number"
                         value={minInput}
@@ -140,7 +142,7 @@ export const SliderAnswers = ({answers, onChange}) => {
                 </div>
 
                 <div className="edge-input">
-                    <span className="edge-label">Max.</span>
+                    <span className="edge-label">{t('quizCreator.slider.maxLabel')}</span>
                     <input
                         type="number"
                         value={maxInput}
