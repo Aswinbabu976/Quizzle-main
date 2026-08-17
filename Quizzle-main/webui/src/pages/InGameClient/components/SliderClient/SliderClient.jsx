@@ -3,6 +3,7 @@ import {useState, useEffect, useRef} from "react";
 import { useTranslation } from 'react-i18next';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPaperPlane, faChevronLeft, faChevronRight} from "@fortawesome/free-solid-svg-icons";
+import {useTranslation} from "react-i18next";
 
 export const SliderClient = ({question, onSubmit}) => {
     const { t } = useTranslation();
@@ -97,7 +98,11 @@ export const SliderClient = ({question, onSubmit}) => {
                 className={`submit-slider-answer ${!submitted ? 'submit-shown' : ''}`}
             >
                 <FontAwesomeIcon icon={faPaperPlane} />
+<<<<<<< Updated upstream
                 <span>{t('inGame.slider.submit')}</span>
+=======
+                <span>{t('inGameClient.sendAnswer')}</span>
+>>>>>>> Stashed changes
             </button>
         </div>
     );

@@ -1,8 +1,10 @@
 import React, {useState} from 'react';
 import {getCharacterEmoji} from '@/common/data/characters';
+import {useTranslation} from 'react-i18next';
 import './styles.sass';
 
 const StudentAnalytics = ({analyticsData, isLiveQuiz}) => {
+    const { t } = useTranslation();
     const {studentAnalytics} = analyticsData;
     const [sortBy, setSortBy] = useState(isLiveQuiz ? 'totalPoints' : 'accuracy');
 
@@ -13,10 +15,10 @@ const StudentAnalytics = ({analyticsData, isLiveQuiz}) => {
     return (
         <div className="student-analytics">
             <div className="sa-toolbar">
-                <button className={sortBy === 'accuracy' ? 'active' : ''} onClick={() => setSortBy('accuracy')}>Nach Genauigkeit</button>
-                <button className={sortBy === 'correctAnswers' ? 'active' : ''} onClick={() => setSortBy('correctAnswers')}>Nach Richtigen</button>
+                <button className={sortBy === 'accuracy' ? 'active' : ''} onClick={() => setSortBy('accuracy')}>{t('analytics.sortByAccuracy')}</button>
+                <button className={sortBy === 'correctAnswers' ? 'active' : ''} onClick={() => setSortBy('correctAnswers')}>{t('analytics.sortByCorrect')}</button>
                 {isLiveQuiz && (
-                    <button className={sortBy === 'totalPoints' ? 'active' : ''} onClick={() => setSortBy('totalPoints')}>Nach Punkten</button>
+                    <button className={sortBy === 'totalPoints' ? 'active' : ''} onClick={() => setSortBy('totalPoints')}>{t('analytics.sortByPoints')}</button>
                 )}
             </div>
 

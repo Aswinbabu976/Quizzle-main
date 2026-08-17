@@ -100,7 +100,11 @@ export const SequenceAnswers = ({answers, onChange}) => {
                                         value={answer.content}
                                         onChange={(e) => updateAnswer(index, e.target.value)}
                                         onBlur={(e) => handleInputBlur(index, e.target.value)}
+<<<<<<< Updated upstream
                                         placeholder={t('quizCreator.answerPlaceholder', {index: index + 1})}
+=======
+                                        placeholder={`${t('quizCreator.answer')} ${index + 1}`}
+>>>>>>> Stashed changes
                                         className="sequence-answer-input"
                                         maxLength={150}
                                     />

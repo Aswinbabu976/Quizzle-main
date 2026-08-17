@@ -4,15 +4,17 @@ import { faChartPie, faUsers, faQuestionCircle } from '@fortawesome/free-solid-s
 import ClassOverview from '../ClassOverview';
 import StudentAnalytics from '../StudentAnalytics';
 import QuestionAnalytics from '../QuestionAnalytics';
+import { useTranslation } from 'react-i18next';
 import './styles.sass';
 
 const AnalyticsTabs = ({ analyticsData, quizData, isLiveQuiz = false }) => {
+    const { t } = useTranslation();
     const [activeTab, setActiveTab] = useState('overview');
 
     const tabs = [
-        {id: 'overview', title: 'Übersicht', icon: faChartPie, component: ClassOverview},
-        {id: 'students', title: 'Schüler', icon: faUsers, component: StudentAnalytics},
-        {id: 'questions', title: 'Fragen', icon: faQuestionCircle, component: QuestionAnalytics}
+        {id: 'overview', title: t('analytics.overview'), icon: faChartPie, component: ClassOverview},
+        {id: 'students', title: t('analytics.students'), icon: faUsers, component: StudentAnalytics},
+        {id: 'questions', title: t('analytics.questions'), icon: faQuestionCircle, component: QuestionAnalytics}
     ];
 
     const ActiveComponent = tabs.find(tab => tab.id === activeTab)?.component;

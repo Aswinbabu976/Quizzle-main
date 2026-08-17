@@ -109,7 +109,7 @@ export const Host = () => {
         socket.emit("LOCK_ROOM", {}, (response) => {
             if (response?.success) {
                 setRoomLocked(response.locked);
-                toast.success(response.locked ? "Room locked" : "Room unlocked", {
+                toast.success(response.locked ? t('inGameHost.roomLocked') : t('inGameHost.roomUnlocked'), {
                     duration: 2000
                 });
             }
@@ -165,7 +165,7 @@ export const Host = () => {
                     </div>
 
                     <p>
-                        Join via the website <span>{location.host.split(":")[0]}</span> using the code:
+                        {t('inGameHost.joinVia')} <span>{location.host.split(":")[0]}</span> {t('inGameHost.usingCode')}
                     </p>
 
                     <div className="room-code-container">
@@ -185,7 +185,7 @@ export const Host = () => {
                         icon={roomLocked ? faLockOpen : faLock}
                         padding="0.5rem 0.8rem"
                         onClick={toggleRoomLock}
-                        variant={roomLocked ? "secondary" : "primary"}
+                        type={roomLocked ? "secondary compact" : "primary compact"}
                     />
                     <Button
                         text="Start"
@@ -200,7 +200,7 @@ export const Host = () => {
             <motion.div className="member-info" initial={{opacity: 0, x: -100}} animate={{opacity: 1, x: 0}}>
                 <img src={titleImg} alt="Quiz Logo" className="quiz-logo"/>
 
-                {players.length === 0 && <h2>Waiting for players...</h2>}
+                {players.length === 0 && <h2>{t('inGameHost.waitingForPlayers')}</h2>}
 
                 <div className="player-list">
                     {players.map(player => (
@@ -241,4 +241,3 @@ export const Host = () => {
         </div>
     );
 }
-

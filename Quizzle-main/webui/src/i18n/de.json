@@ -1,4 +1,28 @@
 {
+  "common": {
+    "or": "oder",
+    "back": "Zurück",
+    "next": "Weiter",
+    "finish": "Abschließen",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "upload": "Hochladen",
+    "reset": "Zurücksetzen",
+    "chooseImage": "Bild wählen",
+    "delete": "Löschen",
+    "edit": "Bearbeiten",
+    "loading": "Laden...",
+    "search": "Suche...",
+    "ok": "OK",
+    "yes": "Ja",
+    "no": "Nein",
+    "true": "Wahr",
+    "false": "Falsch",
+    "easy": "Einfach",
+    "medium": "Mittel",
+    "hard": "Schwer",
+    "unknown": "Unbekannt"
+  },
   "home": {
     "imprint": "Impressum",
     "privacy": "Datenschutz",
@@ -106,7 +130,8 @@
     "passwordReset": "Passwort zurücksetzen",
     "delete": "Löschen",
     "providers": {
-      "disabled": "Deaktiviert"
+      "disabled": "Deaktiviert",
+      "deepseek": "DeepSeek (LiteLLM)"
     },
     "errors": {
       "settingsLoadFailed": "Einstellungen konnten nicht geladen werden.",
@@ -150,6 +175,7 @@
     "chooseCharacter": "Wähle deinen Charakter",
     "selectCharacter": "Charakter auswählen"
   },
+<<<<<<< Updated upstream
   "inGame": {
     "textInput": {
       "placeholder": "Geben Sie Ihre Antwort ein...",
@@ -159,14 +185,130 @@
     "slider": {
       "submit": "Antwort senden"
     }
+=======
+  "characters": {
+    "wizard": "Zauberer",
+    "robot": "Roboter",
+    "alien": "Alien",
+    "ninja": "Ninja",
+    "pirate": "Pirat",
+    "knight": "Ritter",
+    "scientist": "Forscher",
+    "astronaut": "Astronaut"
+  },
+  "hostBackgrounds": {
+    "changeBackground": "Hintergrund ändern",
+    "chooseBackground": "Hintergrund wählen",
+    "classroom": "Klassenzimmer",
+    "library": "Bibliothek",
+    "stadium": "Stadion",
+    "space": "Weltraum",
+    "beach": "Strand",
+    "studio": "Studio"
+  },
+  "analytics": {
+    "overview": "Übersicht",
+    "students": "Schüler",
+    "questions": "Fragen",
+    "participants": "Teilnehmer",
+    "avgAccuracy": "Ø Genauigkeit",
+    "avgPoints": "Ø Punkte",
+    "difficultyDistribution": "Schwierigkeitsverteilung",
+    "sortByAccuracy": "Nach Genauigkeit",
+    "sortByCorrect": "Nach Richtigen",
+    "sortByPoints": "Nach Punkten",
+    "question": "Frage",
+    "correct": "richtig",
+    "partial": "teilweise",
+    "incorrect": "falsch",
+    "easyCount": "Einfach · {{count}}",
+    "mediumCount": "Mittel · {{count}}",
+    "hardCount": "Schwer · {{count}}"
+  },
+  "mediaDialog": {
+    "title": "Medien einfügen",
+    "images": "Bilder",
+    "gifs": "GIFs",
+    "upload": "Hochladen",
+    "searchPlaceholder": "Suche...",
+    "dropHere": "Datei hierher ziehen oder klicken",
+    "formats": "PNG, JPG, GIF, WebP",
+    "noResults": "Keine Ergebnisse gefunden.",
+    "onlyImagesAllowed": "Nur Bilddateien sind erlaubt.",
+    "searchError": "Fehler bei der Suche.",
+    "loadError": "Fehler beim Laden des Mediums.",
+    "resultsFrom": "Ergebnisse von",
+    "popularFrom": "Beliebte Bilder von"
+  },
+  "inGameClient": {
+    "yourAnswer": "Deine Antwort",
+    "correctAnswer": "Richtige Antwort",
+    "correctAnswers": "Richtige Antworten",
+    "noAnswerGiven": "Keine Antwort abgegeben",
+    "noOrderGiven": "Keine Reihenfolge abgegeben",
+    "correctValue": "Richtiger Wert",
+    "deviation": "Abweichung",
+    "tapInOrder": "Tippe die Antworten in der richtigen Reihenfolge an",
+    "dragInOrder": "Ziehen Sie die Antworten in die richtige Reihenfolge",
+    "waitingForQuestion": "Warten auf Frage...",
+    "loadingSortingTask": "Sortieraufgabe wird geladen...",
+    "enterAnswerPlaceholder": "Geben Sie Ihre Antwort ein...",
+    "sendAnswer": "Antwort senden",
+    "correct": "Richtig!",
+    "partial": "Teilweise richtig!",
+    "keepGoing": "Weiter so!",
+    "almostCorrect": "Fast richtig!",
+    "notQuite": "Nicht ganz!",
+    "nextQuestion": "Nächste Frage",
+    "quizCompleted": "Quiz abgeschlossen! 🎉",
+    "backToHome": "Zurück zur Startseite",
+    "questionProgress": "Frage {{current}} von {{total}}",
+    "streakInRow": "Richtige in Folge",
+    "rankOf": "Platz {{rank}} von {{total}}",
+    "gapToNext": "{{gap}} Punkte bis zum nächsten Platz",
+    "leading": "Du führst!",
+    "reconnecting": "Verbinde wieder...",
+    "connectionLost": "Verbindung verloren",
+    "reconnectedSuccess": "Erfolgreich wieder verbunden!",
+    "hostLeft": "Der Host hat das Spiel verlassen.",
+    "kicked": "Du wurdest aus dem Raum entfernt.",
+    "answersNotReady": "Antworten sind noch nicht bereit!"
+  },
+  "inGameHost": {
+    "showScoreboard": "Scoreboard anzeigen",
+    "showResults": "Ergebnisse",
+    "next": "Weiter",
+    "home": "Startseite",
+    "finalScore": "Endstand",
+    "scoreboard": "Scoreboard",
+    "correctAnswerIs": "Richtige Antwort: {{value}}",
+    "correctAnswersTitle": "Richtige Antworten",
+    "correctOrderTitle": "Richtige Reihenfolge",
+    "answersTitle": "Antworten",
+    "doublePointsTitle": "Doppelte Punkte!",
+    "doublePointsSubtitle": "Diese Frage bringt die doppelte Punktzahl!",
+    "waitingForPlayers": "Warten auf Spieler...",
+    "roomLocked": "Raum gesperrt",
+    "roomUnlocked": "Raum entsperrt",
+    "joinVia": "Tritt über die Website bei",
+    "usingCode": "mit dem Code:"
+  },
+  "sound": {
+    "volume": "Lautstärke",
+    "soundOn": "Ton einschalten",
+    "soundOff": "Ton ausschalten"
+>>>>>>> Stashed changes
   },
   "quizCreator": {
     "titlePlaceholder": "Quiz-Titel eingeben",
+    "noTitle": "Kein Fragentitel",
+    "questionTitlePlaceholder": "Fragentitel eingeben",
     "undo": "Rückgängig (Strg+Z)",
     "questionEditor": {
       "placeholderTitle": "Fragentitel eingeben"
     },
     "redo": "Wiederholen (Strg+Shift+Z)",
+<<<<<<< Updated upstream
     "settings": {
       "title": "Fragen-Einstellungen",
       "timeLimit": "Zeitlimit",
@@ -190,12 +332,88 @@
       "doublePoints": "Doppelte Punkte",
       "doublePointsDesc": "Diese Frage bringt doppelte Punkte"
     },
+=======
+    "settings": "Quiz-Einstellungen",
+    "aboutQuiz": "ÜBER DAS QUIZ",
+    "description": "Beschreibung",
+    "descriptionPlaceholder": "Worum geht es in diesem Quiz?",
+    "difficulty": "Schwierigkeit",
+    "noDifficulty": "Keine Angabe",
+    "gameplay": "SPIELABLAUF",
+    "shuffleQuestions": "Fragen mischen",
+    "shuffleAnswers": "Antworten mischen",
+    "defaultTimer": "Standard-Zeitlimit",
+    "on": "Ein",
+    "off": "Aus",
+>>>>>>> Stashed changes
     "import": "Quiz aus Datei importieren",
     "download": "Quiz als Datei herunterladen",
     "uploadLive": "Als Live-Quiz hochladen",
     "uploadPractice": "Als Übungsquiz veröffentlichen",
     "loginRequired": "Anmeldung erforderlich",
     "clearQuiz": "Quiz zurücksetzen",
+    "questionSettings": "Fragen-Einstellungen",
+    "timeLimit": "Zeitlimit",
+    "pointDistribution": "Punkteverteilung",
+    "answerMargin": "Antwort-Marge",
+    "standard": "Standard",
+    "unlimited": "Unbegrenzt",
+    "noTimeLimit": "Kein Zeitlimit",
+    "fromQuizSettings": "Aus Quiz-Einstellungen",
+    "30seconds": "30 Sekunden",
+    "60seconds": "60 Sekunden",
+    "2minutes": "2 Minuten",
+    "quickQuestions": "Schnelle Fragen",
+    "oneMinute": "Eine Minute pro Frage",
+    "moreTime": "Mehr Zeit zum Nachdenken",
+    "noPoints": "Keine Punkte",
+    "noPointsDesc": "Für diese Frage gibt es keine Punkte",
+    "doublePoints": "Doppelte Punkte",
+    "doublePointsDesc": "Diese Frage bringt doppelte Punkte",
+    "normalPoints": "Normale Punkteverteilung",
+    "selectTimer": "Timer auswählen...",
+    "selectPoints": "Punkteverteilung auswählen...",
+    "selectMargin": "Antwort-Marge auswählen...",
+    "answer": "Antwort",
+    "answerPlaceholder": "Antwort {{number}}",
+    "aiTopicPopover": {
+      "topicPlaceholder": "Thema eingeben...",
+      "countPlaceholder": "Anz.",
+      "advancedOptions": "Erweiterte Optionen: PDF, URL, Wikipedia",
+      "generateQuiz": "Quiz generieren",
+      "cancelGeneration": "Generierung abbrechen",
+      "generateWithAi": "Quiz mit KI generieren"
+    },
+    "questionTypes": {
+      "multipleChoice": "Auswahlmöglichkeiten",
+      "multipleChoiceDesc": "Spieler wählen aus vorgegebenen Antwortmöglichkeiten",
+      "trueFalse": "Wahr/Falsch",
+      "trueFalseDesc": "Spieler wählen zwischen Wahr und Falsch",
+      "text": "Text Eingabe",
+      "textDesc": "Spieler geben ihre Antwort als Text ein",
+      "sequence": "Reihenfolge",
+      "sequenceDesc": "Spieler sortieren Antworten in die richtige Reihenfolge",
+      "slider": "Schieberegler",
+      "sliderDesc": "Spieler schätzen einen Wert auf einem Schieberegler"
+    },
+    "difficulties": {
+      "none": "Keine Angabe",
+      "easy": "Einfach",
+      "medium": "Mittel",
+      "hard": "Schwer"
+    },
+    "sliderMargins": {
+      "none": "Keine",
+      "noneDesc": "Nur die exakte Antwort akzeptieren",
+      "low": "Niedrig",
+      "lowDesc": "Niedrige Fehlertoleranz",
+      "medium": "Mittel",
+      "mediumDesc": "Mittlere Fehlertoleranz",
+      "high": "Hoch",
+      "highDesc": "Hohe Fehlertoleranz",
+      "maximum": "Maximal",
+      "maximumDesc": "Nächste Antwort erhält mehr Punkte"
+    },
     "errors": {
       "titleEmpty": "Quiz-Titel darf nicht leer sein.",
       "importFailed": "Ungültiges Dateiformat.",
@@ -227,6 +445,7 @@
       "maxLabel": "Max."
     }
   },
+<<<<<<< Updated upstream
   "questionType": {
     "multipleChoice": "Auswahlmöglichkeiten",
     "multipleChoiceDesc": "Spieler wählen aus vorgegebenen Antwortmöglichkeiten",
@@ -239,6 +458,8 @@
     "slider": "Schieberegler",
     "sliderDesc": "Spieler schätzen einen Wert mit einem Schieberegler"
   },
+=======
+>>>>>>> Stashed changes
   "quizLoader": {
     "idPlaceholder": "Quiz-ID (z. B. JWTIOI)",
     "dropFile": "Datei hier ablegen",
@@ -292,5 +513,42 @@
     "scoringPlaceholder": "Punktevergabe auswählen...",
     "toggleOn": "Ein",
     "toggleOff": "Aus"
+  }
+  ,
+  "ai": {
+    "enterTopic": "Thema eingeben...",
+    "count": "Anz.",
+    "advancedOptions": "Erweiterte Optionen: PDF, URL, Wikipedia",
+    "generate": "Quiz generieren",
+    "stopGenerating": "Generierung abbrechen",
+    "generateWithAI": "Quiz mit KI generieren",
+    "topic": "Thema",
+    "pdf": "PDF",
+    "url": "URL",
+    "wikipedia": "Wikipedia",
+    "topicDesc": "Fragen aus einem Thema generieren",
+    "pdfDesc": "Fragen aus einem PDF-Dokument",
+    "urlDesc": "Fragen aus einer Website",
+    "wikipediaDesc": "Fragen aus einem Wikipedia-Artikel",
+    "auto": "Automatisch",
+    "easy": "Einfach",
+    "medium": "Mittel",
+    "hard": "Schwer",
+    "difficulty": "Schwierigkeit",
+    "language": "Sprache",
+    "questionCount": "Anzahl der Fragen",
+    "generateBtn": "Generieren",
+    "stopBtn": "Stopp",
+    "uploadPdf": "PDF hochladen",
+    "enterUrl": "URL eingeben...",
+    "enterWikiTopic": "Wikipedia-Thema eingeben...",
+    "enterTopicPlaceholder": "Thema eingeben...",
+    "pdfTooBig": "PDF ist zu groß (max. 25 MB)",
+    "advancedTitle": "Erweiterte KI-Generierung",
+    "generating": "KI generiert Fragen...",
+    "existingTitle": "Vorhandener Titel",
+    "existingDescription": "Vorhandene Beschreibung",
+    "keepExisting": "Vorhandene Metadaten behalten",
+    "overwrite": "Mit KI überschreiben"
   }
 }

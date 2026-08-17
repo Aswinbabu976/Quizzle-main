@@ -3,9 +3,11 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faVolumeUp, faVolumeMute, faVolumeDown, faVolumeOff} from "@fortawesome/free-solid-svg-icons";
 import {AnimatePresence, motion} from "framer-motion";
 import {QuizContext} from "@/common/contexts/Quiz";
+import {useTranslation} from "react-i18next";
 import "./styles.sass";
 
 export const SoundControl = ({className = ""}) => {
+    const { t } = useTranslation();
     const {soundEnabled, toggleSound, masterVolume, setMasterVolume} = useContext(QuizContext);
     const [expanded, setExpanded] = useState(false);
     const hideTimeoutRef = useRef(null);
@@ -74,7 +76,7 @@ export const SoundControl = ({className = ""}) => {
                                 step={1}
                                 value={soundEnabled ? masterVolume : 0}
                                 onChange={handleSliderChange}
-                                aria-label="Lautstärke"
+                                aria-label={t('sound.volume')}
                                 style={{"--fill": `${soundEnabled ? masterVolume : 0}%`}}
                             />
                             <span className="sound-control-value">{soundEnabled ? masterVolume : 0}</span>
@@ -87,7 +89,7 @@ export const SoundControl = ({className = ""}) => {
                 type="button"
                 className="sound-control-button"
                 onClick={toggleSound}
-                aria-label={soundEnabled ? "Ton ausschalten" : "Ton einschalten"}
+                aria-label={soundEnabled ? t('sound.soundOff') : t('sound.soundOn')}
                 aria-pressed={!soundEnabled}
             >
                 <FontAwesomeIcon icon={icon} aria-hidden="true"/>

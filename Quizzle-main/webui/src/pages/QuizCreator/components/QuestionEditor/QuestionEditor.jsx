@@ -9,8 +9,10 @@ import {motion, AnimatePresence} from "framer-motion";
 import {useState, useRef, useEffect} from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {QUESTION_TYPE_CONFIG, getQuestionTypeIcon, getQuestionTypeName, getDefaultAnswersForType, DEFAULT_QUESTION_TYPE} from "@/common/constants/QuestionTypes.js";
+import { useTranslation } from 'react-i18next';
 
 export const QuestionEditor = ({question, onChange, onCommit, deleteQuestion, duplicateQuestion}) => {
+    const { t } = useTranslation();
     const [showTypeSelector, setShowTypeSelector] = useState(false);
     const popoverRef = useRef(null);
     
@@ -66,7 +68,11 @@ export const QuestionEditor = ({question, onChange, onCommit, deleteQuestion, du
     return (
         <motion.div className="question-editor" initial={{x: -300, opacity: 0}} animate={{x: 0, opacity: 1}}>
             <div className="question-action-area">
+<<<<<<< Updated upstream
                 <Input placeholder={t('quizCreator.questionEditor.placeholderTitle')} value={question.title} onChange={(e) => updateTitle(e.target.value)}
+=======
+                <Input placeholder={t('quizCreator.questionTitlePlaceholder')} value={question.title} onChange={(e) => updateTitle(e.target.value)}
+>>>>>>> Stashed changes
                           textAlign="center"/>
                 
                 <div className="question-type-selector-container" ref={popoverRef}>

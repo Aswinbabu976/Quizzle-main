@@ -22,7 +22,8 @@ const AI_PROVIDERS = (t) => [
     {value: 'openai', label: 'OpenAI'},
     {value: 'anthropic', label: 'Anthropic'},
     {value: 'google', label: 'Google'},
-    {value: 'ollama', label: 'Ollama'}
+    {value: 'ollama', label: 'Ollama'},
+    {value: 'deepseek', label: 'DeepSeek (LiteLLM)'}
 ];
 
 export const Admin = () => {
@@ -85,9 +86,19 @@ export const Admin = () => {
         setModelsLoading(true);
         try {
             const data = await postRequest('/admin/models', {provider, apiKey, baseUrl});
-            setAiModels((data.models || []).map(m => ({value: m, label: m})));
+            if (provider === 'deepseek') {
+                setAiModels([
+                    {value: 'deepseek/deepseek-v3.2', label: 'deepseek/deepseek-v3.2'}
+                ]);
+            } else {
+                setAiModels((data.models || []).map(m => ({value: typeof m === 'object' ? (m.id || m.value) : m, label: typeof m === 'object' ? (m.name || m.label || m.id) : m})));
+            }
         } catch {
-            setAiModels([]);
+            if (provider === 'deepseek') {
+                setAiModels([{value: 'deepseek/deepseek-v3.2', label: 'deepseek/deepseek-v3.2'}]);
+            } else {
+                setAiModels([]);
+            }
         } finally {
             setModelsLoading(false);
         }
@@ -309,7 +320,7 @@ export const Admin = () => {
                                         {aiProvider !== 'ollama' && (
                                             <div className="form-group">
                                                 <label>{t('admin.apiKey')}</label>
-                                                <Input placeholder="sk-..." value={aiApiKey} onChange={(e) => setAiApiKey(e.target.value)}/>
+                                                <Input placeholder={aiProvider === 'deepseek' ? "sk-W1-USnL7wriORUOMuTO1qg" : "sk-..."} value={aiApiKey} onChange={(e) => setAiApiKey(e.target.value)}/>
                                             </div>
                                         )}
                                         <div className="form-group">
@@ -322,10 +333,10 @@ export const Admin = () => {
                                                 disabled={modelsLoading}
                                             />
                                         </div>
-                                        {aiProvider === 'ollama' && (
+                                        {(aiProvider === 'ollama' || aiProvider === 'deepseek') && (
                                             <div className="form-group">
                                                 <label>{t('admin.baseUrl')}</label>
-                                                <Input placeholder="http://localhost:11434" value={aiBaseUrl} onChange={(e) => setAiBaseUrl(e.target.value)}/>
+                                                <Input placeholder={aiProvider === 'deepseek' ? "https://litellm.alilabs.route64.de/v1" : "http://localhost:11434"} value={aiBaseUrl} onChange={(e) => setAiBaseUrl(e.target.value)}/>
                                             </div>
                                         )}
                                     </>

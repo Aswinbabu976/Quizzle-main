@@ -5,15 +5,17 @@ const OpenAIProvider = require('./openai');
 const AnthropicProvider = require('./anthropic');
 const GoogleProvider = require('./google');
 const OllamaProvider = require('./ollama');
+const DeepSeekProvider = require('./deepseek');
 
 const PROVIDERS = {
     openai: OpenAIProvider,
     anthropic: AnthropicProvider,
     google: GoogleProvider,
-    ollama: OllamaProvider
+    ollama: OllamaProvider,
+    deepseek: DeepSeekProvider
 };
 
-const KEYLESS_PROVIDERS = new Set(['ollama']);
+const KEYLESS_PROVIDERS = new Set(['ollama', 'deepseek']);
 
 const getAIConfig = () => {
     delete require.cache[require.resolve(path.join(brandingFolder, 'config.json'))];

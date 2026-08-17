@@ -45,7 +45,11 @@ export const TextAnswers = ({answers, onChange}) => {
                             type="text"
                             value={answer.content}
                             onChange={(e) => updateAnswer(index, e.target.value)}
+<<<<<<< Updated upstream
                             placeholder={t('quizCreator.answerPlaceholder', {index: index + 1})}
+=======
+                            placeholder={`${t('quizCreator.answer')} ${index + 1}`}
+>>>>>>> Stashed changes
                             className="text-answer-input"
                             maxLength={150}
                         />

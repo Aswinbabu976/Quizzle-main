@@ -2,7 +2,8 @@ import {motion} from "framer-motion";
 import "./styles.sass";
 import {getAnswerColor, getAnswerGradient} from "@/common/utils/AnswerColorUtil.js";
 import AnswerShape from "@/common/components/AnswerShape";
-
+import { useTranslation } from 'react-i18next';
+const { t } = useTranslation();
 export const Answer = ({answer, index, questionType}) => {
 
     const getTextSize = (content) => {
