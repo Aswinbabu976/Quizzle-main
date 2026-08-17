@@ -1,5 +1,4 @@
 import {useContext, useEffect, useState} from "react";
-import { useTranslation } from 'react-i18next';
 import {Link, useNavigate, useOutletContext} from "react-router-dom";
 import {BrandingContext} from "@/common/contexts/Branding";
 import "./styles.sass";
@@ -17,7 +16,6 @@ export const QuizLoader = () => {
     const {setCirclePosition} = useOutletContext();
     const {titleImg, name} = useContext(BrandingContext);
     const {loadQuizById, loadQuizByContent, isLoaded} = useContext(QuizContext);
-    const { t } = useTranslation();
     const [dragActive, setDragActive] = useState(false);
     const query = new URLSearchParams(window.location.search);
     const navigate = useNavigate();
@@ -30,7 +28,7 @@ export const QuizLoader = () => {
                 const isLoaded = loadQuizByContent(e.target.result);
                 if (!isLoaded) throw new Error("Invalid file format.");
 
-                toast.success(t('quizCreator.importSuccess'));
+                toast.success(t('quizCreator.errors.importSuccess'));
                 setCirclePosition(["-18rem 0 0 45%", "-35rem 0 0 55%"]);
                 setTimeout(() => navigate("/host/lobby"), 500);
             } catch (e) {
@@ -54,11 +52,11 @@ export const QuizLoader = () => {
     const loadQuiz = async () => {
         const res = await loadQuizById(quizId);
         if (!res){
-            toast.error(t('quizLoader.quizIdNotFound', {name}));
+            toast.error(t('quizLoader.idNotFound', {name}));
             return;
         }
 
-        toast.success(t('quizCreator.importSuccess'));
+        toast.success(t('quizCreator.errors.importSuccess'));
         setCirclePosition(["-18rem 0 0 45%", "-35rem 0 0 55%"]);
         setTimeout(() => navigate("/host/lobby"), 500);
     }
@@ -85,10 +83,12 @@ export const QuizLoader = () => {
     return (
         <div className="loader-page" onDrop={onDrop} onDragOver={(e) => {e.preventDefault();
             setDragActive(true);}} onDragLeave={() => setDragActive(false)}>
-            {dragActive && <div className="drag-overlay">
-                <div className="drag-container">
-                    <FontAwesomeIcon icon={faFileImport} size="3x"/>
-                    <h2>{t('quizLoader.dropHere')}</h2>
+            {dragActive && (
+                <div className="drag-overlay">
+                    <div className="drag-container">
+                        <FontAwesomeIcon icon={faFileImport} size="3x"/>
+                        <h2>{t('quizLoader.dropFile')}</h2>
+                    </div>
                 </div>
             )}
             <div className="quiz-loader">
@@ -110,3 +110,5 @@ export const QuizLoader = () => {
         </div>
     );
 }
+
+export default QuizLoader;
